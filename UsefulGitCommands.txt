@@ -1,0 +1,21 @@
+git clone <repository address> <folder name> | clone a repository at <repository address> into the folder <folder name>
+
+git pull | update the code from the upstream remote repository (github.com)
+git pull <remote name> | update the code from the specified remote repository
+
+git push | push your changes to the upstream remote repository
+git push <remote name> | push your changes to the specified remote repository
+
+git add . | add all of the changed files in your current directory and down to the next commit (note the period is required)
+git add -A | add ALL of the changed files in the repository to the next commit
+git add <file name> | add the specific file to the next commit
+
+git commit -m "<commit message>" | make a commit with all of the files you've added to it
+
+git checkout <branch name> | switch the current branch you're working on
+git checkout -b <new branch name> | take the current state of your branch and make a new branch named what you specify
+
+git merge --no-ff <branch name> | merges the specified branch into your current branch, maintaining history (thats what the no-ff is for)
+
+git branch -d <branch name> | will delete the specified branch if it's history is fully merged into the repository, if its not fully merged the deletion will fail
+git branch -D <branch name> | will force the specified branch to be deleted even if the old history isn't fully merged
