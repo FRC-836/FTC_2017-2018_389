@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Ben's Tartarus Code", group="Linear Opmode")
+@Autonomous(name="Ben's Rousseau/Hobbes Code", group="Linear Opmode")
 public class TankBot_Processor extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -63,10 +63,10 @@ public class TankBot_Processor extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        DcMotor frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftdrive");
-        DcMotor frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightdrive");
-        DcMotor backLeftDrive  = hardwareMap.get(DcMotor.class, "backLeftdrive");
-        DcMotor backRightDrive = hardwareMap.get(DcMotor.class, "backRightdrive");
+        DcMotor frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        DcMotor frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        DcMotor backLeftDrive  = hardwareMap.get(DcMotor.class, "backLeftDrive");
+        DcMotor backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
