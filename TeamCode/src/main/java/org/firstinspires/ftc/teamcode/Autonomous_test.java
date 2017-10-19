@@ -34,9 +34,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -51,17 +51,15 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Basic; TankBot", group="Linear TankBot")
-public class TankBotEncoder extends LinearOpMode {
-
-    final double MILLISECONDS_PER_FOOT = 1000.0;
+@Autonomous(name="Zach's Cool Code", group="Linear Opmode")
+public class Autonomous_test extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor frontLeftDrive = null;
-    private DcMotor frontRightDrive = null;
     private DcMotor backLeftDrive = null;
+    private DcMotor frontLeftDrive = null;
     private DcMotor backRightDrive = null;
+    private DcMotor frontRightDrive = null;
 
     @Override
     public void runOpMode() {
@@ -71,54 +69,45 @@ public class TankBotEncoder extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        frontLeftDrive  = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        backLeftDrive  = hardwareMap.get(DcMotor.class, "backLeftDrive");
+        frontRightDrive  = hardwareMap.get(DcMotor.class, "frontRightDrive");
         backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
-        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
 
+        // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
-        forwardTime(2.0);
-        drive(0.0, 0.0);
-        sleep(5000);
-        drive(0.55, 0.0);
+        moveStraightTime(4.0)
+    }
+    private void setDrive(double leftPower, double rightPower) {
+        frontRightDrive.setPower(rightPower);
+        backRightDrive.setPower(rightPower);
+        frontLeftDrive.setPower(leftPower);
+        backLeftDrive.setPower(leftPower);
+    }
+    private void moveStraightTime(double feet) {
+        setDrive(0.8, 0.8);
+        sleep(3500);
+        setDrive(0.0, 0.0);
+    }
+    private void turntime(double degree) {
+        setDrive(1.0, -1.0);
         sleep(2000);
-        drive(0.55, 0.55);
-        sleep(2000);
-        drive(0.0, 0.0);
-        drive(1.0, -1.0);
-        sleep(2000);
-        drive(0.0, .75);
-        sleep(2000);
-        drive(0.0, 0.0);
-
-        /*
-        Forwards 1 second
-        Turn Right 1 second
-        Forward 1 second
-        Stop
-
-         */
+        setDrive(0.0, 0.0);
     }
 
-    private void forwardTime(double feet){
-        drive(1.0, 1.0);
-        sleep((long) (feet * MILLISECONDS_PER_FOOT));
-        drive(0.0, 0.0);
+
+
+
     }
 
-    private void drive(double leftDrive, double rightDrive) {
-        frontRightDrive.setPower(rightDrive);
-        backRightDrive.setPower(rightDrive);
-        frontLeftDrive.setPower(leftDrive);
-        backLeftDrive.setPower(leftDrive);
-    }
+
 }
