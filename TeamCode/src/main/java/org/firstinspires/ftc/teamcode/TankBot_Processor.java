@@ -62,6 +62,7 @@ public class TankBot_Processor extends LinearOpMode {
     private DcMotor backRightDrive = null;
 
     private final double BEEP_MS_PER_FEET = 545.5;
+    private final double BEEP_EC_PER_FEET = 99.9;
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -85,7 +86,7 @@ public class TankBot_Processor extends LinearOpMode {
         backLeftDrive.setPower(leftPower);
         backRightDrive.setPower(rightPower);
     }
-
+        // Watch those wrist rockets
     private void moveStraightTime(double distanceInFeet) {
         setDrive(1.0, 1.0);
         sleep((long)(BEEP_MS_PER_FEET * distanceInFeet));
@@ -97,4 +98,14 @@ public class TankBot_Processor extends LinearOpMode {
         sleep(1000);
         setDrive(0.0, 0.0);
     }
+    private void moveStraightEncoder(double distanceInFeet) {
+        int targetPos = frontLeftDrive.getCurrentPosition() + (int)(distanceInFeet * BEEP_EC_PER_FEET);
+        setDrive(0.5, 0.5);
+        while(frontLeftDrive.getCurrentPosition()<targetPos) {
+
+        }
+
+        setDrive(0.0, 0.0);
+    }
 }
+// I AM THE SENATE I AM THE SENATE I AM THE SENATE I AM THE SENATE I AM THE SENATE
