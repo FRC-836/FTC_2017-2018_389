@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -59,22 +60,23 @@ public class TankBot_Processor extends LinearOpMode {
     private DcMotor frontRightDrive = null;
     private DcMotor backLeftDrive = null;
     private DcMotor backRightDrive = null;
+
+    private final double BEEP_MS_PER_FEET = 545.5;
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        DcMotor frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        DcMotor frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        DcMotor backLeftDrive  = hardwareMap.get(DcMotor.class, "backLeftDrive");
-        DcMotor backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
-        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        backLeftDrive  = hardwareMap.get(DcMotor.class, "backLeftDrive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
         waitForStart();
         runtime.reset();
-        moveStraightTime(4.0);
-
+        moveStraightTime(6.0);
     }
 
     private void setDrive(double leftPower, double rightPower) {
@@ -84,9 +86,9 @@ public class TankBot_Processor extends LinearOpMode {
         backRightDrive.setPower(rightPower);
     }
 
-    private void moveStraightTime(double feet) {
+    private void moveStraightTime(double distanceInFeet) {
         setDrive(1.0, 1.0);
-        sleep(2000);
+        sleep((long)(BEEP_MS_PER_FEET * distanceInFeet));
         setDrive(0.0, 0.0);
     }
 
