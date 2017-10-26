@@ -119,9 +119,9 @@ public class Team389TestCode extends LinearOpMode {
     private void moveStraightEncoder(double distance){
         int startingPoint = frontLeftDrive.getCurrentPosition();
         setDrive(0.40, 0.40);
-        while (/*the robot hasn't moved far enough*/) {
+        //while (/*the robot hasn't moved far enough*/) {
             //continue driving
-        }
+        //}
         setDrive(0.0, 0.0);
     }
 

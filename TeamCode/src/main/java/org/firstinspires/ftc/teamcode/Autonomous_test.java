@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.google.gson.typeadapters.UtcDateTypeAdapter;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -61,6 +62,8 @@ public class Autonomous_test extends LinearOpMode {
     private DcMotor backRightDrive = null;
     private DcMotor frontRightDrive = null;
 
+    private final double DRIVE_MS_PER_FT = 545.5;
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -69,7 +72,7 @@ public class Autonomous_test extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        frontRightDrive  = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
         backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
         frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
         backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
@@ -87,24 +90,23 @@ public class Autonomous_test extends LinearOpMode {
 
         moveStraightTime(4.0);
     }
+
     private void setDrive(double leftPower, double rightPower) {
         frontRightDrive.setPower(rightPower);
         backRightDrive.setPower(rightPower);
         frontLeftDrive.setPower(leftPower);
         backLeftDrive.setPower(leftPower);
     }
-    private void moveStraightTime(double feet) {
+
+    private void moveStraightTime(double distanceInFeet) {
         setDrive(0.8, 0.8);
-        sleep(3500);
+        sleep((long) (DRIVE_MS_PER_FT * distanceInFeet));
         setDrive(0.0, 0.0);
     }
-    private void turntime(double degree) {
+
+    private void turnTime(double degree) {
         setDrive(1.0, -1.0);
         sleep(2000);
         setDrive(0.0, 0.0);
     }
-
-
-
-
-    }
+}
