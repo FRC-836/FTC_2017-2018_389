@@ -40,17 +40,18 @@ import com.qualcomm.robotcore.util.Range;
 
 
 /**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
+* This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
  * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
  *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
+ * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robotthis Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
+ //* It includes all the skeletal structure that all linear OpModes contain.
+// * Jake Schmelzer is beast!!!
+// * Use Android Studios to Copy
+    // JAKE IS THE GOAT!!!!
 
 @Autonomous(name="Jake's The G.O.A.T Code", group="Linear Opmode")
 public class Team389TestCode extends LinearOpMode {
@@ -63,8 +64,10 @@ public class Team389TestCode extends LinearOpMode {
     private DcMotor frontLeftDrive = null;
 
     private final double DRIVE_MS_PER_FT = 680.1;
+    private final double DRIVE_EC_PER_FT = 8.0;
 
     @Override
+
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -111,20 +114,20 @@ public class Team389TestCode extends LinearOpMode {
 
 
     private void turnTime(double Time){
-        setDrive(1.0, -1.0);
         sleep(3000);
         setDrive(0.0, 0.0);
+        setDrive(1.0, -1.0);
     }
 
     private void moveStraightEncoder(double distance){
-        int startingPoint = frontLeftDrive.getCurrentPosition();
+        int targetpoint = frontLeftDrive.getCurrentPosition() + (int)(distance * DRIVE_EC_PER_FT);
         setDrive(0.40, 0.40);
-        //while (/*the robot hasn't moved far enough*/) {
-            //continue driving
-        //}
-        setDrive(0.0, 0.0);
-    }
+        while (frontLeftDrive.getCurrentPosition() <targetpoint) {
 
+        }
+        setDrive(0.0, 0.0);
+
+    }
 }
 
-// Estimate: 7 seconds run time
+// JAKE IS THE GOAT!!!!
