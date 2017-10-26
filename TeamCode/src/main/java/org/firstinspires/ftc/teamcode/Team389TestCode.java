@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -51,7 +52,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Jake's The G.O.A.T Code", group="Linear Opmode")
+@Autonomous(name="Jake's The G.O.A.T Code", group="Linear Opmode")
 public class Team389TestCode extends LinearOpMode {
 
     // Declare OpMode members.
@@ -60,6 +61,8 @@ public class Team389TestCode extends LinearOpMode {
     private DcMotor backRightDrive = null;
     private DcMotor frontRightDrive = null;
     private DcMotor frontLeftDrive = null;
+
+    private final double DRIVE_MS_PER_FT = 680.1;
 
     @Override
     public void runOpMode() {
@@ -75,14 +78,15 @@ public class Team389TestCode extends LinearOpMode {
         frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        backRightDrive.setDirection(DcMotor.Direction.REVERSE);
-        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-        moveStraightTime(4.0);
+        moveStraightEncoder(8.0);
+
 
 
         // run until the end of the match (driver presses STOP)
@@ -97,9 +101,9 @@ public class Team389TestCode extends LinearOpMode {
         frontLeftDrive.setPower(LeftPower);
     }
 
-    private void moveStraightTime(double Distance) {
+    private void moveStraightTime(double distance) {
         setDrive(0.40, 0.40);
-        sleep(7000);
+        sleep((long) (DRIVE_MS_PER_FT * distance));
         setDrive(0.0, 0.0);
 
 
@@ -111,6 +115,16 @@ public class Team389TestCode extends LinearOpMode {
         sleep(3000);
         setDrive(0.0, 0.0);
     }
+
+    private void moveStraightEncoder(double distance){
+        int startingPoint = frontLeftDrive.getCurrentPosition();
+        setDrive(0.40, 0.40);
+        while (/*the robot hasn't moved far enough*/) {
+            //continue driving
+        }
+        setDrive(0.0, 0.0);
+    }
+
 }
 
 // Estimate: 7 seconds run time
