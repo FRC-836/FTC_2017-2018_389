@@ -62,7 +62,7 @@ public class TankBot_Processor extends LinearOpMode {
     private DcMotor backRightDrive = null;
 
     private final double BEEP_MS_PER_FEET = 545.5;
-    private final double BEEP_EC_PER_FEET = 99.9;
+    private final double BEEP_EC_PER_FEET = 1950.0;
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -77,7 +77,7 @@ public class TankBot_Processor extends LinearOpMode {
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
         waitForStart();
         runtime.reset();
-        moveStraightTime(6.0);
+        moveStraightEncoder(8.0);
     }
 
     private void setDrive(double leftPower, double rightPower) {
