@@ -63,6 +63,7 @@ public class TankBot_Processor extends LinearOpMode {
 
     private final double BEEP_MS_PER_FEET = 545.5;
     private final double BEEP_EC_PER_FEET = 1950.0;
+    private final double BEEP_EC_PER_DEGREES = 92.2 / 4.0;
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -75,9 +76,12 @@ public class TankBot_Processor extends LinearOpMode {
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+
         waitForStart();
         runtime.reset();
-        moveStraightEncoder(8.0);
+        //moveStraightEncoder(8.0);
+        moveRightEncoder(720.0);
+
     }
 
     private void setDrive(double leftPower, double rightPower) {
@@ -86,14 +90,8 @@ public class TankBot_Processor extends LinearOpMode {
         backLeftDrive.setPower(leftPower);
         backRightDrive.setPower(rightPower);
     }
-        // Watch those wrist rockets
-    private void moveStraightTime(double distanceInFeet) {
-        setDrive(1.0, 1.0);
-        sleep((long)(BEEP_MS_PER_FEET * distanceInFeet));
-        setDrive(0.0, 0.0);
-    }
-
-    private void turnTime(double Jean_Jacques_Rousseau) {
+        // Watch those wrist rockets}
+    private void turnRight(double Jean_Jacques_Rousseau) {
         setDrive(1.0, -1.0);
         sleep(1000);
         setDrive(0.0, 0.0);
@@ -101,10 +99,21 @@ public class TankBot_Processor extends LinearOpMode {
     private void moveStraightEncoder(double distanceInFeet) {
         int targetPos = frontLeftDrive.getCurrentPosition() + (int)(distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(0.5, 0.5);
-        while(frontLeftDrive.getCurrentPosition()<targetPos) {
+        while(frontLeftDrive.getCurrentPosition()<targetPos);
+        setDrive(0.0, 0.0);
+    }
 
+
+    private void moveRightEncoder(double degreesOfTurn) {
+        int origPos = frontLeftDrive.getCurrentPosition();
+        int targetPos = origPos + (int)(degreesOfTurn * BEEP_EC_PER_DEGREES);
+        setDrive(1.0, -1.0);
+        while(frontLeftDrive.getCurrentPosition()<targetPos)
+        {
+            telemetry.addData("absolute data", "%d - %d - %d", origPos, frontLeftDrive.getCurrentPosition(), targetPos);
+            telemetry.addData("relative data", "%d - %d - %d", 0, frontLeftDrive.getCurrentPosition() - origPos, targetPos - origPos);
+            telemetry.update();
         }
-
         setDrive(0.0, 0.0);
     }
 }
