@@ -121,4 +121,19 @@ public class Competition_Teleop extends OpMode
     public void stop() {
     }
 
+    private void setDrive(double leftPower, double rightPower){
+        backLeftDrive.setPower(leftPower);
+        backRightDrive.setPower(rightPower);
+        frontLeftDrive.setPower(leftPower);
+        frontRightDrive.setPower(rightPower);
+    }
+
+    private void setLift(double liftPower){
+        liftMotor.setPower(liftPower);
+    }
+
+    private void setIntake(double intakePower){
+        intakeRight.setPower(intakePower);
+        intakeLeft.setPower(intakePower);
+    }
 }
