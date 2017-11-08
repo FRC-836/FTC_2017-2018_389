@@ -48,6 +48,7 @@ public class Competition_Teleop extends OpMode
     private DcMotor intakeRight = null;
     private DcMotor intakeLeft = null;
 
+
     @Override
     public void init() {
         telemetry.addData("Status", "Initialized");
@@ -107,8 +108,29 @@ public class Competition_Teleop extends OpMode
         rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
         // Send calculated power to wheels
-        //leftDrive.setPower(leftPower);
-        //rightDrive.setPower(rightPower);
+        setDrive(leftPower, rightPower);
+
+        // Set lift power
+        if (gamepad1.y) {
+            setLift(0.5);
+        }
+        else if(gamepad1.x) {
+            setLift(-0.5);
+        }
+        else {
+            setLift(0.0);
+        }
+
+        // Set intake power
+        if (gamepad1.b) {
+            setIntake(0.5);
+        }
+        else if (gamepad1.a) {
+            setIntake(-0.5);
+        }
+        else {
+            setIntake(0.0);
+        }
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
