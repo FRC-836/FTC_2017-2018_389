@@ -34,8 +34,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 
 @TeleOp(name="Competition/Main", group="Competition")
 public class Competition_Teleop extends OpMode
@@ -47,7 +50,7 @@ public class Competition_Teleop extends OpMode
     private DcMotor liftMotor = null;
     private DcMotor intakeRight = null;
     private DcMotor intakeLeft = null;
-
+    private DigitalChannel glyphHolder = null;
 
     @Override
     public void init() {
@@ -63,6 +66,8 @@ public class Competition_Teleop extends OpMode
         liftMotor = hardwareMap.get(DcMotor.class, "lift");
         intakeRight = hardwareMap.get(DcMotor.class, "intake_right");
         intakeLeft = hardwareMap.get(DcMotor.class, "intake_left");
+        glyphHolder = hardwareMap.get(DigitalChannel.class, "glyph_holder");
+
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -155,7 +160,14 @@ public class Competition_Teleop extends OpMode
     }
 
     private void setIntake(double intakePower){
-        intakeRight.setPower(intakePower);
-        intakeLeft.setPower(intakePower);
+        if (glyphHolder.getState() && intakePower > 0.0) {
+            intakeLeft.setPower(0.0);
+            intakeRight.setPower(0.0);
+        }
+        else {
+            intakeRight.setPower(intakePower);
+            intakeLeft.setPower(intakePower);
+        }
     }
+
 }
