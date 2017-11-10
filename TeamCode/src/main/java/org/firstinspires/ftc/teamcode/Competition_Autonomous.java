@@ -66,11 +66,11 @@ public class Competition_Autonomous extends LinearOpMode {
     private DcMotor intakeLeft = null;
     private DigitalChannel glyphHolder = null;
 
+    private final double BEEP_EC_PER_FEET = 1950.0;
+    private final double BEEP_EC_PER_DEGREES = 92.2 / 4.0;
+
     @Override
     public void runOpMode() {
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
-
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
@@ -112,5 +112,24 @@ public class Competition_Autonomous extends LinearOpMode {
         intakeRight.setPower(0.0);
         intakeRight.setPower(intakePower);
         intakeLeft.setPower(intakePower);
+    }
+    private void moveStraightLeftEncoder(double distanceInFeet) {
+        int targetPos = backLeftDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
+        setDrive(0.5, 0.5);
+        while (backLeftDrive.getCurrentPosition() < targetPos) ;
+        setDrive(0.0, 0.0);
+    }
+
+    private void turnRightEncoder(double degreesOfTurn) {
+        int origPos = frontLeftDrive.getCurrentPosition();
+        int targetPos = origPos + (int)(degreesOfTurn * BEEP_EC_PER_DEGREES);
+        setDrive(1.0, -1.0);
+        while(frontLeftDrive.getCurrentPosition()<targetPos)
+        {
+            telemetry.addData("absolute data", "%d - %d - %d", origPos, frontLeftDrive.getCurrentPosition(), targetPos);
+            telemetry.addData("relative data", "%d - %d - %d", 0, frontLeftDrive.getCurrentPosition() - origPos, targetPos - origPos);
+            telemetry.update();
+        }
+        setDrive(0.0, 0.0);
     }
 }
