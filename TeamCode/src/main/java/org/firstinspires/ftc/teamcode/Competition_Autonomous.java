@@ -30,13 +30,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -94,6 +91,7 @@ public class Competition_Autonomous extends LinearOpMode {
         setDrive(0.5, 0.5);
         setLift(10.0);
         setIntake(10.0);
+        moveStraightRightEncoder(15.0);
     }
 
     private void setDrive(double leftPower, double rightPower) {
@@ -113,11 +111,23 @@ public class Competition_Autonomous extends LinearOpMode {
         intakeRight.setPower(intakePower);
         intakeLeft.setPower(intakePower);
     }
+
     private void moveStraightLeftEncoder(double distanceInFeet) {
         int targetPos = backLeftDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(0.5, 0.5);
         while (backLeftDrive.getCurrentPosition() < targetPos) ;
         setDrive(0.0, 0.0);
+    }
+    private void moveStraightRightEncoder(double distanceInFeet) {
+        int targetPos = backRightDrive.getCurrentPosition() + (int)(distanceInFeet * BEEP_EC_PER_FEET);
+        setDrive(0.5, 0.5);
+        while(backRightDrive.getCurrentPosition()<targetPos);
+        setDrive(0.0, 0.0);
+    }
+    private void moveStraightAllEncoder(double distanceInFeet) {
+        int targetPos = backLeftDrive.getCurrentPosition() + backRightDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
+        while(backRightDrive.getCurrentPosition() + backLeftDrive.getCurrentPosition() <targetPos);
+        setDrive(0.0,0.0);
     }
 
     private void turnRightEncoder(double degreesOfTurn) {

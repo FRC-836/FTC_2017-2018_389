@@ -79,7 +79,7 @@ public class TankBot_Processor extends LinearOpMode {
 
         waitForStart();
         runtime.reset();
-        //moveStraightEncoder(8.0);
+        moveStraightEncoder(8.0);
         moveRightEncoder(720.0);
 
     }
