@@ -1,44 +1,12 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 
 @TeleOp(name="Competition/Main", group="Competition")
 public class Competition_Teleop extends OpMode
@@ -51,6 +19,10 @@ public class Competition_Teleop extends OpMode
     private DcMotor intakeRight = null;
     private DcMotor intakeLeft = null;
     private DigitalChannel glyphHolder = null;
+    private Servo jewelArm = null;
+
+    private final double JEWEL_ARM_DOWN = 0.5;
+    private final double JEWEL_ARM_UP = 0.0;
 
     @Override
     public void init() {
@@ -67,6 +39,7 @@ public class Competition_Teleop extends OpMode
         intakeRight = hardwareMap.get(DcMotor.class, "intake_right");
         intakeLeft = hardwareMap.get(DcMotor.class, "intake_left");
         glyphHolder = hardwareMap.get(DigitalChannel.class, "glyph_holder");
+        jewelArm = hardwareMap.get(Servo.class, "jewel_arm");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -77,6 +50,7 @@ public class Competition_Teleop extends OpMode
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
         intakeRight.setDirection(DcMotor.Direction.FORWARD);
         intakeLeft.setDirection(DcMotor.Direction.REVERSE);
+        jewelArm.setDirection(Servo.Direction.FORWARD);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -119,7 +93,7 @@ public class Competition_Teleop extends OpMode
         if (gamepad1.y) {
             setLift(0.5);
         }
-        else if(gamepad1.x) {
+        else if(gamepad1.a) {
             setLift(-0.5);
         }
         else {
@@ -130,17 +104,22 @@ public class Competition_Teleop extends OpMode
         if (gamepad1.b) {
             setIntake(0.5);
         }
-        else if (gamepad1.a) {
+        else if (gamepad1.x) {
             setIntake(-0.5);
         }
         else {
             setIntake(0.0);
         }
+        if(gamepad1.start)
+        {
+            setJewelArm(JEWEL_ARM_UP);
+        }
+        else if(gamepad1.back) {
+            setJewelArm(JEWEL_ARM_DOWN); }
+            // Show the elapsed game time and wheel power.
+            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
 
-        // Show the elapsed game time and wheel power.
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-    }
-
+        }
     /*
      * Code to run ONCE after the driver hits STOP
      */
@@ -169,5 +148,7 @@ public class Competition_Teleop extends OpMode
             intakeLeft.setPower(intakePower);
         }
     }
-
+    private void setJewelArm(double position) {
+        jewelArm.setPosition(position);
+    }
 }
