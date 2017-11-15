@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
@@ -15,14 +16,10 @@ public class Competition_Teleop extends OpMode
     private DcMotor backRightDrive = null;
     private DcMotor frontLeftDrive = null;
     private DcMotor frontRightDrive = null;
-    private DcMotor liftMotor = null;
-    private DcMotor intakeRight = null;
-    private DcMotor intakeLeft = null;
-    private DigitalChannel glyphHolder = null;
-    private Servo jewelArm = null;
 
     private final double JEWEL_ARM_DOWN = 0.5;
     private final double JEWEL_ARM_UP = 0.0;
+    private final double CONTROLLER_THRESHOLD = 0.1;
 
     @Override
     public void init() {
@@ -35,22 +32,18 @@ public class Competition_Teleop extends OpMode
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
-        liftMotor = hardwareMap.get(DcMotor.class, "lift");
-        intakeRight = hardwareMap.get(DcMotor.class, "intake_right");
-        intakeLeft = hardwareMap.get(DcMotor.class, "intake_left");
-        glyphHolder = hardwareMap.get(DigitalChannel.class, "glyph_holder");
-        jewelArm = hardwareMap.get(Servo.class, "jewel_arm");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        backRightDrive.setDirection(DcMotor.Direction.REVERSE);
-        frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
-        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        liftMotor.setDirection(DcMotor.Direction.FORWARD);
-        intakeRight.setDirection(DcMotor.Direction.FORWARD);
-        intakeLeft.setDirection(DcMotor.Direction.REVERSE);
-        jewelArm.setDirection(Servo.Direction.FORWARD);
+        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -81,8 +74,8 @@ public class Competition_Teleop extends OpMode
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = -gamepad1.left_stick_y;
-        double turn  =  gamepad1.right_stick_x;
+        double drive = controllerThreshold(-gamepad1.left_stick_y);
+        double turn  = controllerThreshold(gamepad1.right_stick_x);
         leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
         rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
@@ -135,20 +128,25 @@ public class Competition_Teleop extends OpMode
     }
 
     private void setLift(double liftPower){
-        liftMotor.setPower(liftPower);
+
     }
 
     private void setIntake(double intakePower){
-        if (glyphHolder.getState() && intakePower > 0.0) {
-            intakeLeft.setPower(0.0);
-            intakeRight.setPower(0.0);
-        }
-        else {
-            intakeRight.setPower(intakePower);
-            intakeLeft.setPower(intakePower);
-        }
+
     }
     private void setJewelArm(double position) {
-        jewelArm.setPosition(position);
+
+    }
+    private double controllerThreshold(double joystickValue)
+    {
+        if(joystickValue >= CONTROLLER_THRESHOLD) {
+            return joystickValue;
+        }
+        else if(-joystickValue >= CONTROLLER_THRESHOLD){
+            return joystickValue;
+    }
+        else {
+            return 0.0;
+        }
     }
 }
