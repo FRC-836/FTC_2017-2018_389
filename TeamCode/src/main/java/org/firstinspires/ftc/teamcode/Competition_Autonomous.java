@@ -88,10 +88,11 @@ public class Competition_Autonomous extends LinearOpMode {
         intakeLeft.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
         runtime.reset();
-        setDrive(0.5, 0.5);
-        setLift(10.0);
-        setIntake(10.0);
-        moveStraightRightEncoder(15.0);
+        // These two steps move the robot from the red platform to the red goal.
+
+        moveStraightRightEncoder(2.9);
+        turnRightEncoder(90);
+        dropGlyphIntoCryptobox();
     }
 
     private void setDrive(double leftPower, double rightPower) {
@@ -124,15 +125,10 @@ public class Competition_Autonomous extends LinearOpMode {
         while(backRightDrive.getCurrentPosition()<targetPos);
         setDrive(0.0, 0.0);
     }
-    private void moveStraightAllEncoder(double distanceInFeet) {
-        int targetPos = backLeftDrive.getCurrentPosition() + backRightDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
-        while(backRightDrive.getCurrentPosition() + backLeftDrive.getCurrentPosition() <targetPos);
-        setDrive(0.0,0.0);
-    }
 
     private void turnRightEncoder(double degreesOfTurn) {
         int origPos = frontLeftDrive.getCurrentPosition();
-        int targetPos = origPos + (int)(degreesOfTurn * BEEP_EC_PER_DEGREES);
+        int targetPos = origPos - (int)(degreesOfTurn * BEEP_EC_PER_DEGREES);
         setDrive(1.0, -1.0);
         while(frontLeftDrive.getCurrentPosition()<targetPos)
         {
@@ -141,5 +137,8 @@ public class Competition_Autonomous extends LinearOpMode {
             telemetry.update();
         }
         setDrive(0.0, 0.0);
+    }
+    private void dropGlyphIntoCryptobox() {
+
     }
 }
