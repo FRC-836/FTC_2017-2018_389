@@ -70,14 +70,21 @@ public class Competition_Autonomous_A extends LinearOpMode {
     private DcMotor frontLeftDrive = null;
     private DcMotor frontRightDrive = null;
     private DcMotor liftMotor = null;
-    private CRServo intakeRight = null;
-    private CRServo intakeLeft = null;
+    //private CRServo intakeRight = null;
+    //private CRServo intakeLeft = null;
+    private Servo servoIntake = null;
     private ColorSensor colorSensor = null;
     private DigitalChannel glyphHolder = null;
     private Servo jewelArm = null;
 
     private final double BEEP_EC_PER_FEET = 1950.0;
     private final double BEEP_EC_PER_DEGREES = 92.2 / 4.0;
+    private final double DROP_GLYPH_VALUE = 0.25;
+    private final double PICK_UP_GLYPH_VALUE = 0.5;
+    private final double INTAKE_FULLY_OPEN = 0.0;
+    private final double JEWEL_ARM_UP = 0.9;
+    private final double JEWEL_ARM_FULLY_UP = 1.0;
+    private final double JEWEL_ARM_DOWN = 0.5;
 
     @Override
     public void runOpMode() {
@@ -86,8 +93,9 @@ public class Competition_Autonomous_A extends LinearOpMode {
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
         liftMotor = hardwareMap.get(DcMotor.class, "lift");
-        intakeRight = hardwareMap.get(CRServo.class, "intake_right");
-        intakeLeft = hardwareMap.get(CRServo.class, "intake_left");
+        //intakeRight = hardwareMap.get(CRServo.class, "intake_right");
+        //intakeLeft = hardwareMap.get(CRServo.class, "intake_left");
+        servoIntake = hardwareMap.get(Servo.class, "intake");
         glyphHolder = hardwareMap.get(DigitalChannel.class, "glyph_holder");
         colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
         jewelArm = hardwareMap.get(Servo.class, "jewel_arm");
@@ -99,13 +107,12 @@ public class Competition_Autonomous_A extends LinearOpMode {
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
-        intakeRight.setDirection(DcMotor.Direction.FORWARD);
-        intakeLeft.setDirection(DcMotor.Direction.REVERSE);
-        raiseJewelArm();
-        waitForStart();
-        runtime.reset();
-        raiseJewelArm();
-        lowerJewelArm();
+        //intakeRight.setDirection(DcMotor.Direction.FORWARD);
+        //intakeLeft.setDirection(DcMotor.Direction.REVERSE);
+        servoIntake.setDirection(Servo.Direction.FORWARD);
+
+        startUp();
+
         //Move Jewel arm to where it sees a jewel
 
 
@@ -146,9 +153,8 @@ public class Competition_Autonomous_A extends LinearOpMode {
         liftMotor.setPower(liftPower);
     }
 
-    private void setIntake(double intakePower) {
-        intakeRight.setPower(intakePower);
-        intakeLeft.setPower(intakePower);
+    private void setIntake(double intakePosition) {
+        servoIntake.setPosition(intakePosition);
     }
 
     private void moveStraightTime(double setSpeed, long timeInMilliseconds) {
@@ -195,27 +201,25 @@ public class Competition_Autonomous_A extends LinearOpMode {
     }
 
     private void dropGlyph() {
-        setIntake(-0.5);
+        setIntake(DROP_GLYPH_VALUE);
     }
 
     private void pickUpGlyph() {
-        setIntake(0.5);
+        setIntake(PICK_UP_GLYPH_VALUE);
     }
 
     private void intakeOff() {
-        setIntake(0.0);
+        //setIntake(0.0);
     }
 
     private void raiseJewelArm() {
-        jewelArm.setPosition(0.9);
+        jewelArm.setPosition(JEWEL_ARM_UP);
     }
-
     private void raiseJewelArmMore() {
-        jewelArm.setPosition(1.0);
+        jewelArm.setPosition(JEWEL_ARM_FULLY_UP);
     }
-
     private void lowerJewelArm() {
-        jewelArm.setPosition(0.5);
+        jewelArm.setPosition(JEWEL_ARM_DOWN);
     }
 
     private ColorViewed getColorSeen() {
@@ -229,5 +233,18 @@ public class Competition_Autonomous_A extends LinearOpMode {
         } else {
             return ColorViewed.NEITHER;
         }
+    }
+
+    private void startUp() {
+        raiseJewelArm(); // Locks jewel arm
+        setIntake(INTAKE_FULLY_OPEN);
+
+        waitForStart();
+        runtime.reset();
+
+        pickUpGlyph();
+        raiseJewelArmMore();
+        sleep(1000);
+        raiseJewelArm();
     }
 }
