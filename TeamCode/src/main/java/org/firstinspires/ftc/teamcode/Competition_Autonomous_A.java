@@ -102,10 +102,12 @@ public class Competition_Autonomous_A extends LinearOpMode {
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
         intakeRight.setDirection(DcMotor.Direction.FORWARD);
         intakeLeft.setDirection(DcMotor.Direction.REVERSE);
-
+        raiseJewelArm();
+        pickUpGlyph();
         waitForStart();
         runtime.reset();
-
+        raiseJewelArm();
+        lowerJewelArm();
         //Move Jewel arm to where it sees a jewel
 
 
@@ -193,19 +195,18 @@ public class Competition_Autonomous_A extends LinearOpMode {
         setIntake(0.0);
     }
     private void raiseJewelArm() {
-        jewelArm.setPosition(1.0);
+        jewelArm.setPosition(0.9);
     }
+    private void raiseJewelArmMore() {jewelArm.setPosition(1.0);}
     private void lowerJewelArm() {
         jewelArm.setPosition(0.5);
     }
     private ColorViewed getColorSeen() {
-        if (ColorViewed.RED >= ColorViewed.BLUE);
+        if ( > 1);
                 return ColorViewed.RED;
-            else if (ColorViewed.RED <= ColorViewed.BLUE);
+            else if (ColorViewed.RED/ColorViewed.BLUE < 0.8);
                 return ColorViewed.BLUE;
-            else (ColorViewed.RED = ColorViewed.BLUE);
+            else(ColorViewed.RED = ColorViewed.BLUE);
                 return ColorViewed.NEITHER;
-    }
-
     }
 }
