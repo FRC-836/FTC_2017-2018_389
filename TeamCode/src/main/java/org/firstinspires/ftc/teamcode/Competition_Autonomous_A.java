@@ -31,9 +31,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 
 
 /**
@@ -49,8 +53,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Basic: Linear OpMode", group="Linear Opmode")
-public class Competition_Autonomous extends LinearOpMode {
+@Autonomous(name="Red Left", group="Linear Opmode")
+public class Competition_Autonomous_A extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -59,8 +63,9 @@ public class Competition_Autonomous extends LinearOpMode {
     private DcMotor frontLeftDrive = null;
     private DcMotor frontRightDrive = null;
     private DcMotor liftMotor = null;
-    private DcMotor intakeRight = null;
-    private DcMotor intakeLeft = null;
+    private CRServo intakeRight = null;
+    private CRServo intakeLeft = null;
+    private ColorSensor colorSensor = null;
     private DigitalChannel glyphHolder = null;
 
     private final double BEEP_EC_PER_FEET = 1950.0;
@@ -73,9 +78,10 @@ public class Competition_Autonomous extends LinearOpMode {
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
         liftMotor = hardwareMap.get(DcMotor.class, "lift");
-        intakeRight = hardwareMap.get(DcMotor.class, "intake_right");
-        intakeLeft = hardwareMap.get(DcMotor.class, "intake_left");
+        intakeRight = hardwareMap.get(CRServo.class, "intake_right");
+        intakeLeft = hardwareMap.get(CRServo.class, "intake_left");
         glyphHolder = hardwareMap.get(DigitalChannel.class, "glyph_holder");
+        colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -88,11 +94,17 @@ public class Competition_Autonomous extends LinearOpMode {
         intakeLeft.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
         runtime.reset();
-        // These two steps move the robot from the red platform to the red goal.
 
+        // These two steps move the robot from the red platform to the red goal.
         moveStraightRightEncoder(2.9);
         turnRightEncoder(90);
-        dropGlyphIntoCryptobox();
+        moveStraightTime(0.5, 1000);
+        // Drops pre-loaded glyph into the cryptobox
+        dropGlyph();
+        moveStraightRightEncoder(2.0);
+        sleep(1000);
+
+
     }
 
     private void setDrive(double leftPower, double rightPower) {
@@ -107,10 +119,14 @@ public class Competition_Autonomous extends LinearOpMode {
     }
 
     private void setIntake(double intakePower) {
-        intakeLeft.setPower(0.0);
-        intakeRight.setPower(0.0);
         intakeRight.setPower(intakePower);
         intakeLeft.setPower(intakePower);
+    }
+
+    private void moveStraightTime(double setSpeed ,long timeInMilliseconds) {
+        setDrive(setSpeed, setSpeed);
+        sleep(timeInMilliseconds);
+        setDrive(0.0, 0.0);
     }
 
     private void moveStraightLeftEncoder(double distanceInFeet) {
@@ -138,7 +154,14 @@ public class Competition_Autonomous extends LinearOpMode {
         }
         setDrive(0.0, 0.0);
     }
-    private void dropGlyphIntoCryptobox() {
-
+    private void dropGlyph() {
+        setIntake(-0.5);
     }
+    private void pickUpGlyph() {
+        setIntake(0.5);
+    }
+    private void intakeOff() {
+        setIntake(0.0);
+    }
+    //private void knockOffJewel
 }
