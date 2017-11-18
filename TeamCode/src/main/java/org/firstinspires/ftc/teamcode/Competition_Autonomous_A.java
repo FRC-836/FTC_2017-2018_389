@@ -219,7 +219,9 @@ public class Competition_Autonomous_A extends LinearOpMode {
     }
 
     private ColorViewed getColorSeen() {
-        if (((double)colorSensor.red()) / ((double)colorSensor.blue()) > 1.2) {
+        if(colorSensor.blue() == 0){
+            return ColorViewed.NEITHER;}
+         else if(((double)colorSensor.red()) / ((double)colorSensor.blue()) > 1.2) {
             return ColorViewed.RED;
 
         } else if (((double)colorSensor.red()) / ((double)colorSensor.blue()) < 0.8) {
