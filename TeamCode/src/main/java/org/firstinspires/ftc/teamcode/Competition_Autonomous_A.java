@@ -112,11 +112,11 @@ public class Competition_Autonomous_A extends LinearOpMode {
         //Test what color it sees
         switch (getColorSeen()) {
             case RED:
-                moveStraightRightEncoder(-0.4);
+                moveStraightRightEncoder(0.4);
                 raiseJewelArm();
                 break;
             case BLUE:
-                moveStraightRightEncoder(0.4);
+                moveStraightRightEncoder(-0.4);
                 raiseJewelArm();
                 break;
             case NEITHER:
