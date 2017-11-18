@@ -185,6 +185,18 @@ public class Competition_Autonomous_A extends LinearOpMode {
         }
         setDrive(0.0, 0.0);
     }
+    private void turnLeftEncoder(double degreesOfTurn) {
+        int origPos = frontLeftDrive.getCurrentPosition();
+        int targetPos = origPos - (int)(degreesOfTurn * BEEP_EC_PER_DEGREES);
+        setDrive(-1.0, 1.0);
+        while(frontLeftDrive.getCurrentPosition() > targetPos)
+        {
+            telemetry.addData("absolute data", "%d - %d - %d", origPos, frontLeftDrive.getCurrentPosition(), targetPos);
+            telemetry.addData("relative data", "%d - %d - %d", 0, frontLeftDrive.getCurrentPosition() - origPos, targetPos - origPos);
+            telemetry.update();
+        }
+        setDrive(0.0, 0.0);
+    }
     private void dropGlyph() {
         setIntake(-0.5);
     }
