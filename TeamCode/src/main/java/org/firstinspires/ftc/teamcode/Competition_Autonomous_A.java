@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
@@ -56,6 +57,13 @@ import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch
 @Autonomous(name="Red Left", group="Linear Opmode")
 public class Competition_Autonomous_A extends LinearOpMode {
 
+    enum ColorViewed
+    {
+        RED,
+        BLUE,
+        NEITHER
+    }
+
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor backLeftDrive = null;
@@ -67,6 +75,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
     private CRServo intakeLeft = null;
     private ColorSensor colorSensor = null;
     private DigitalChannel glyphHolder = null;
+    private Servo jewelArm = null;
 
     private final double BEEP_EC_PER_FEET = 1950.0;
     private final double BEEP_EC_PER_DEGREES = 92.2 / 4.0;
@@ -82,6 +91,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
         intakeLeft = hardwareMap.get(CRServo.class, "intake_left");
         glyphHolder = hardwareMap.get(DigitalChannel.class, "glyph_holder");
         colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
+        jewelArm = hardwareMap.get(Servo.class, "jewel_arm");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -92,8 +102,30 @@ public class Competition_Autonomous_A extends LinearOpMode {
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
         intakeRight.setDirection(DcMotor.Direction.FORWARD);
         intakeLeft.setDirection(DcMotor.Direction.REVERSE);
+        raiseJewelArm();
+        pickUpGlyph();
         waitForStart();
         runtime.reset();
+        raiseJewelArm();
+        lowerJewelArm();
+        //Move Jewel arm to where it sees a jewel
+
+
+        //Test what color it sees
+        switch (getColorSeen())
+        {
+            case RED:
+                moveStraightRightEncoder(-0.4);
+                raiseJewelArm();
+                break;
+            case BLUE:
+                moveStraightRightEncoder(0.4);
+                raiseJewelArm();
+                break;
+            case NEITHER:
+                raiseJewelArm();
+                break;
+        }
 
         // These two steps move the robot from the red platform to the red goal.
         moveStraightRightEncoder(2.9);
@@ -103,7 +135,6 @@ public class Competition_Autonomous_A extends LinearOpMode {
         dropGlyph();
         moveStraightRightEncoder(2.0);
         sleep(1000);
-
 
     }
 
@@ -129,12 +160,12 @@ public class Competition_Autonomous_A extends LinearOpMode {
         setDrive(0.0, 0.0);
     }
 
-    private void moveStraightLeftEncoder(double distanceInFeet) {
-        int targetPos = backLeftDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
-        setDrive(0.5, 0.5);
-        while (backLeftDrive.getCurrentPosition() < targetPos) ;
+    /*private void moveStraightBackEncoder(double distanceInFeet) {
+        int targetPos = backRightDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
+        setDrive(-0.5, -0.5);
+        while (backRightDrive.getCurrentPosition() < targetPos) ;
         setDrive(0.0, 0.0);
-    }
+    }*/
     private void moveStraightRightEncoder(double distanceInFeet) {
         int targetPos = backRightDrive.getCurrentPosition() + (int)(distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(0.5, 0.5);
@@ -175,5 +206,19 @@ public class Competition_Autonomous_A extends LinearOpMode {
     private void intakeOff() {
         setIntake(0.0);
     }
-    //private void knockOffJewel
+    private void raiseJewelArm() {
+        jewelArm.setPosition(0.9);
+    }
+    private void raiseJewelArmMore() {jewelArm.setPosition(1.0);}
+    private void lowerJewelArm() {
+        jewelArm.setPosition(0.5);
+    }
+    private ColorViewed getColorSeen() {
+        if ( > 1);
+                return ColorViewed.RED;
+            else if (ColorViewed.RED/ColorViewed.BLUE < 0.8);
+                return ColorViewed.BLUE;
+            else(ColorViewed.RED = ColorViewed.BLUE);
+                return ColorViewed.NEITHER;
+    }
 }
