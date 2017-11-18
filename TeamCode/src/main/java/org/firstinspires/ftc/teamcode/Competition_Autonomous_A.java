@@ -57,8 +57,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch
 @Autonomous(name="Red Left", group="Linear Opmode")
 public class Competition_Autonomous_A extends LinearOpMode {
 
-    enum ColorViewed
-    {
+    enum ColorViewed {
         RED,
         BLUE,
         NEITHER
@@ -103,7 +102,6 @@ public class Competition_Autonomous_A extends LinearOpMode {
         intakeRight.setDirection(DcMotor.Direction.FORWARD);
         intakeLeft.setDirection(DcMotor.Direction.REVERSE);
         raiseJewelArm();
-        pickUpGlyph();
         waitForStart();
         runtime.reset();
         raiseJewelArm();
@@ -112,8 +110,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
 
 
         //Test what color it sees
-        switch (getColorSeen())
-        {
+        switch (getColorSeen()) {
             case RED:
                 moveStraightRightEncoder(-0.4);
                 raiseJewelArm();
@@ -133,7 +130,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
         moveStraightTime(0.5, 1000);
         // Drops pre-loaded glyph into the cryptobox
         dropGlyph();
-        moveStraightRightEncoder(2.0);
+        moveStraightRightEncoder(-2.0);
         sleep(1000);
 
     }
@@ -154,7 +151,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
         intakeLeft.setPower(intakePower);
     }
 
-    private void moveStraightTime(double setSpeed ,long timeInMilliseconds) {
+    private void moveStraightTime(double setSpeed, long timeInMilliseconds) {
         setDrive(setSpeed, setSpeed);
         sleep(timeInMilliseconds);
         setDrive(0.0, 0.0);
@@ -167,58 +164,68 @@ public class Competition_Autonomous_A extends LinearOpMode {
         setDrive(0.0, 0.0);
     }*/
     private void moveStraightRightEncoder(double distanceInFeet) {
-        int targetPos = backRightDrive.getCurrentPosition() + (int)(distanceInFeet * BEEP_EC_PER_FEET);
+        int targetPos = backRightDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(0.5, 0.5);
-        while(backRightDrive.getCurrentPosition()<targetPos);
+        while (backRightDrive.getCurrentPosition() < targetPos) ;
         setDrive(0.0, 0.0);
     }
 
     private void turnRightEncoder(double degreesOfTurn) {
         int origPos = frontLeftDrive.getCurrentPosition();
-        int targetPos = origPos - (int)(degreesOfTurn * BEEP_EC_PER_DEGREES);
+        int targetPos = origPos - (int) (degreesOfTurn * BEEP_EC_PER_DEGREES);
         setDrive(1.0, -1.0);
-        while(frontLeftDrive.getCurrentPosition()<targetPos)
-        {
+        while (frontLeftDrive.getCurrentPosition() < targetPos) {
             telemetry.addData("absolute data", "%d - %d - %d", origPos, frontLeftDrive.getCurrentPosition(), targetPos);
             telemetry.addData("relative data", "%d - %d - %d", 0, frontLeftDrive.getCurrentPosition() - origPos, targetPos - origPos);
             telemetry.update();
         }
         setDrive(0.0, 0.0);
     }
+
     private void turnLeftEncoder(double degreesOfTurn) {
         int origPos = frontLeftDrive.getCurrentPosition();
-        int targetPos = origPos - (int)(degreesOfTurn * BEEP_EC_PER_DEGREES);
+        int targetPos = origPos - (int) (degreesOfTurn * BEEP_EC_PER_DEGREES);
         setDrive(-1.0, 1.0);
-        while(frontLeftDrive.getCurrentPosition() > targetPos)
-        {
+        while (frontLeftDrive.getCurrentPosition() > targetPos) {
             telemetry.addData("absolute data", "%d - %d - %d", origPos, frontLeftDrive.getCurrentPosition(), targetPos);
             telemetry.addData("relative data", "%d - %d - %d", 0, frontLeftDrive.getCurrentPosition() - origPos, targetPos - origPos);
             telemetry.update();
         }
         setDrive(0.0, 0.0);
     }
+
     private void dropGlyph() {
         setIntake(-0.5);
     }
+
     private void pickUpGlyph() {
         setIntake(0.5);
     }
+
     private void intakeOff() {
         setIntake(0.0);
     }
+
     private void raiseJewelArm() {
         jewelArm.setPosition(0.9);
     }
-    private void raiseJewelArmMore() {jewelArm.setPosition(1.0);}
+
+    private void raiseJewelArmMore() {
+        jewelArm.setPosition(1.0);
+    }
+
     private void lowerJewelArm() {
         jewelArm.setPosition(0.5);
     }
+
     private ColorViewed getColorSeen() {
-        if ( > 1);
-                return ColorViewed.RED;
-            else if (ColorViewed.RED/ColorViewed.BLUE < 0.8);
-                return ColorViewed.BLUE;
-            else(ColorViewed.RED = ColorViewed.BLUE);
-                return ColorViewed.NEITHER;
+        if (((double)colorSensor.red()) / ((double)colorSensor.blue()) > 1.2) {
+            return ColorViewed.RED;
+
+        } else if (((double)colorSensor.red()) / ((double)colorSensor.blue()) < 0.8) {
+            return ColorViewed.BLUE;
+        } else {
+            return ColorViewed.NEITHER;
+        }
     }
 }
