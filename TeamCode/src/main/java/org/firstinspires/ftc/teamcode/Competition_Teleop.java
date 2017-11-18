@@ -42,8 +42,8 @@ public class Competition_Teleop extends OpMode
 
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -123,8 +123,10 @@ public class Competition_Teleop extends OpMode
     private void setDrive(double leftPower, double rightPower){
         backLeftDrive.setPower(leftPower);
         backRightDrive.setPower(rightPower);
-        frontLeftDrive.setPower(leftPower);
-        frontRightDrive.setPower(rightPower);
+        //frontLeftDrive.setPower(leftPower);
+        //frontRightDrive.setPower(rightPower);
+        frontLeftDrive.setPower(0.0);
+        frontRightDrive.setPower(0.0);
     }
 
     private void setLift(double liftPower){
