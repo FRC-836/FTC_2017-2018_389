@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -16,10 +15,24 @@ public class Competition_Teleop extends OpMode
     private DcMotor backRightDrive = null;
     private DcMotor frontLeftDrive = null;
     private DcMotor frontRightDrive = null;
+    private DcMotor liftMotor = null;
+    private Servo servoIntake = null;
+    private Servo jewelArm = null;
 
+    private boolean isModeFast = true;
+
+    private final double DROP_GLYPH_VALUE = 0.10;
+    private final double PICK_UP_GLYPH_VALUE = 0.5;
+
+    private final double JEWEL_ARM_UP = 0.9;
     private final double JEWEL_ARM_DOWN = 0.5;
-    private final double JEWEL_ARM_UP = 0.0;
-    private final double CONTROLLER_THRESHOLD = 0.1;
+
+    private final double LIFT_POWER_UP = 0.5;
+    private final double LIFT_POWER_DOWN = -0.3;
+    private final double LIFT_POWER_IDLE = 0.15;
+
+    private final double JOYSTICK_THRESHOLD = 0.1;
+    private final double SLOW_DRIVE_SCALE_FACTOR = 0.5;
 
     @Override
     public void init() {
@@ -28,10 +41,15 @@ public class Competition_Teleop extends OpMode
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        backLeftDrive  = hardwareMap.get(DcMotor.class, "back_left_drive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
+        liftMotor = hardwareMap.get(DcMotor.class, "lift");
+        //intakeRight = hardwareMap.get(CRServo.class, "intake_right");
+        //intakeLeft = hardwareMap.get(CRServo.class, "intake_left");
+        servoIntake = hardwareMap.get(Servo.class, "intake");
+        jewelArm = hardwareMap.get(Servo.class, "jewel_arm");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -39,11 +57,17 @@ public class Competition_Teleop extends OpMode
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        liftMotor.setDirection(DcMotor.Direction.REVERSE);
+        //intakeRight.setDirection(DcMotor.Direction.FORWARD);
+        //intakeLeft.setDirection(DcMotor.Direction.REVERSE);
+        servoIntake.setDirection(Servo.Direction.FORWARD);
+        jewelArm.setDirection(Servo.Direction.FORWARD);
 
-        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -74,45 +98,61 @@ public class Competition_Teleop extends OpMode
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = controllerThreshold(-gamepad1.left_stick_y);
-        double turn  = controllerThreshold(gamepad1.right_stick_x);
+        double drive = -controllerThreshold(gamepad1.left_stick_y);
+        double turn  =  controllerThreshold(gamepad1.right_stick_x);
         leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
         rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
         // Send calculated power to wheels
-        setDrive(leftPower, rightPower);
-
+        if(isModeFast) {
+            setDrive(leftPower, rightPower);
+        }
+        else {
+            setDrive(leftPower * SLOW_DRIVE_SCALE_FACTOR, rightPower * SLOW_DRIVE_SCALE_FACTOR);
+        }
         // Set lift power
-        if (gamepad1.y) {
-            setLift(0.5);
+        if (gamepad1.left_bumper) {
+            setLift(LIFT_POWER_UP);
         }
-        else if(gamepad1.a) {
-            setLift(-0.5);
-        }
-        else {
-            setLift(0.0);
-        }
-
-        // Set intake power
-        if (gamepad1.b) {
-            setIntake(0.5);
-        }
-        else if (gamepad1.x) {
-            setIntake(-0.5);
+        else if(gamepad1.left_trigger > 0.1f) {
+            setLift(LIFT_POWER_DOWN);
         }
         else {
-            setIntake(0.0);
+            setLift(LIFT_POWER_IDLE);
         }
-        if(gamepad1.start)
-        {
-            setJewelArm(JEWEL_ARM_UP);
-        }
-        else if(gamepad1.back) {
-            setJewelArm(JEWEL_ARM_DOWN); }
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
 
+        // Set intake position
+        if (gamepad1.right_bumper) {
+            pickUpGlyph();
         }
+        else if (gamepad1.right_trigger > 0.1f) {
+            dropGlyph();
+        }
+        else {
+            intakeOff();
+        }
+
+        // Set jewel arm
+        if(gamepad1.y) {
+            raiseJewelArm();
+        }
+        else if(gamepad1.x) {
+            lowerJewelArm();
+        }
+        if(gamepad1.dpad_up) {
+            isModeFast = true;
+        }
+        else if(gamepad1.dpad_down) {
+            isModeFast = false;
+        }
+        if(isModeFast) {
+            telemetry.addLine("Mode is Fast");
+        }
+        else{
+            telemetry.addLine("Mode is Slow");
+        }
+        telemetry.update();
+    }
     /*
      * Code to run ONCE after the driver hits STOP
      */
@@ -123,32 +163,44 @@ public class Competition_Teleop extends OpMode
     private void setDrive(double leftPower, double rightPower){
         backLeftDrive.setPower(leftPower);
         backRightDrive.setPower(rightPower);
-        //frontLeftDrive.setPower(leftPower);
-        //frontRightDrive.setPower(rightPower);
-        frontLeftDrive.setPower(0.0);
-        frontRightDrive.setPower(0.0);
+        frontLeftDrive.setPower(leftPower);
+        frontRightDrive.setPower(rightPower);
+        //long live the balance
     }
 
     private void setLift(double liftPower){
-
+        liftMotor.setPower(liftPower);
     }
 
-    private void setIntake(double intakePower){
-
+    private void setIntake(double intakePosition){
+        servoIntake.setPosition(intakePosition);
     }
+    private void dropGlyph() {
+        setIntake(DROP_GLYPH_VALUE);
+    }
+    private void pickUpGlyph() {
+        setIntake(PICK_UP_GLYPH_VALUE);
+    }
+    private void intakeOff() {
+        //setIntake(0.0);
+    }
+
     private void setJewelArm(double position) {
+        jewelArm.setPosition(position);
+    }
+    private void raiseJewelArm() {
+        setJewelArm(JEWEL_ARM_UP);
+    }
+    private void lowerJewelArm() {
+        setJewelArm(JEWEL_ARM_DOWN);
+    }
 
-    }
-    private double controllerThreshold(double joystickValue)
-    {
-        if(joystickValue >= CONTROLLER_THRESHOLD) {
-            return joystickValue;
-        }
-        else if(-joystickValue >= CONTROLLER_THRESHOLD){
-            return joystickValue;
-    }
-        else {
+    private double controllerThreshold(double number){
+        if (Math.abs(number) <= JOYSTICK_THRESHOLD) {
             return 0.0;
+        }
+        else {
+            return number;
         }
     }
 }
