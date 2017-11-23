@@ -39,6 +39,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
 /**
@@ -74,12 +79,14 @@ public class Competition_Autonomous_A extends LinearOpMode {
     //private CRServo intakeLeft = null;
     private Servo servoIntake = null;
     private ColorSensor colorSensor = null;
-    private DigitalChannel glyphHolder = null;
     private Servo jewelArm = null;
+    private VuforiaLocalizer vuforia;
+    private VuforiaTrackables relicTrackables = null;
+    private VuforiaTrackable relicTemplate = null;
 
     private final double BEEP_EC_PER_FEET = 1950.0;
     private final double BEEP_EC_PER_DEGREES = 92.2 / 4.0;
-    private final double DROP_GLYPH_VALUE = 0.25;
+    private final double DROP_GLYPH_VALUE = 0.1;
     private final double PICK_UP_GLYPH_VALUE = 0.5;
     private final double INTAKE_FULLY_OPEN = 0.0;
     private final double JEWEL_ARM_UP = 0.9;
@@ -96,7 +103,6 @@ public class Competition_Autonomous_A extends LinearOpMode {
         //intakeRight = hardwareMap.get(CRServo.class, "intake_right");
         //intakeLeft = hardwareMap.get(CRServo.class, "intake_left");
         servoIntake = hardwareMap.get(Servo.class, "intake");
-        glyphHolder = hardwareMap.get(DigitalChannel.class, "glyph_holder");
         colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
         jewelArm = hardwareMap.get(Servo.class, "jewel_arm");
 
@@ -111,28 +117,43 @@ public class Competition_Autonomous_A extends LinearOpMode {
         //intakeLeft.setDirection(DcMotor.Direction.REVERSE);
         servoIntake.setDirection(Servo.Direction.FORWARD);
 
+        setupVuMarkIdentification();
+
         startUp();
 
         //Move Jewel arm to where it sees a jewel
-
+        lowerJewelArm();
 
         //Test what color it sees
         switch (getColorSeen()) {
             case RED:
                 moveStraightRightEncoder(0.4);
                 raiseJewelArm();
+                moveStraightRightEncoder(-0.4);
                 break;
             case BLUE:
                 moveStraightRightEncoder(-0.4);
                 raiseJewelArm();
+                moveStraightRightEncoder(0.4);
                 break;
             case NEITHER:
                 raiseJewelArm();
                 break;
         }
 
+        switch (cryptoboxSensor()) {
+            case LEFT:
+                moveStraightRightEncoder(3.525);
+                break;
+            case CENTER:
+                moveStraightRightEncoder(2.9);
+                break;
+            case RIGHT:
+                moveStraightRightEncoder(2.275);
+                break;
+        }
+
         // These two steps move the robot from the red platform to the red goal.
-        moveStraightRightEncoder(2.9);
         turnRightEncoder(90);
         moveStraightTime(0.5, 1000);
         // Drops pre-loaded glyph into the cryptobox
@@ -236,15 +257,32 @@ public class Competition_Autonomous_A extends LinearOpMode {
     }
 
     private void startUp() {
-        raiseJewelArm(); // Locks jewel arm
+        raiseJewelArmMore(); // Locks jewel arm
         setIntake(INTAKE_FULLY_OPEN);
 
         waitForStart();
         runtime.reset();
 
-        pickUpGlyph();
-        raiseJewelArmMore();
-        sleep(1000);
         raiseJewelArm();
+        pickUpGlyph();
+    }
+
+    private RelicRecoveryVuMark cryptoboxSensor() {
+        relicTrackables.activate();
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+        while (vuMark == RelicRecoveryVuMark.UNKNOWN) {
+            vuMark = RelicRecoveryVuMark.from(relicTemplate);
+        }
+        relicTrackables.deactivate();
+        return vuMark;
+    }
+    private void setupVuMarkIdentification(){
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+        parameters.vuforiaLicenseKey = "Ad/QI4f/////AAAAGTjpPxbdZUqSnVc3mldXKV0E3Ubo8UkPrp0l5P0ie1EXwbAiJNburExxvybAM/e5esxGLn3dl5zN73V9qcvBOROjy68/GQ8c0doo8ApEL127pzLSQEP6rZeq589EtDerLpgCqhsXSnU1hzLJ8S0UcgM9MeeUErzvfso6YAjLGZ9JXzLZHjXlX9lapHT64fBax9lZvMw5pmmZQE/j7oXqeamcdgnKyUn+wQN/3Gb+I2Ye7utY/LFJTiXFYesZsmE/eaq2mGnKVmqA4u6hvrSbEx/QudLqhl3nlXrAUPK+tx+5ersWNIB6OnNaRQApdYJb4mnO8qP8MgWhMIdT4Fuqd3WbitRP1NPUzqO+pJ63c36u";
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+        relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
     }
 }

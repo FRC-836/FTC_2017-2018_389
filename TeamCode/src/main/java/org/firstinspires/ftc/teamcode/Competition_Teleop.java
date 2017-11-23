@@ -21,15 +21,15 @@ public class Competition_Teleop extends OpMode
 
     private boolean isModeFast = true;
 
-    private final double DROP_GLYPH_VALUE = 0.10;
+    private final double DROP_GLYPH_VALUE = 0.1;
     private final double PICK_UP_GLYPH_VALUE = 0.5;
 
-    private final double JEWEL_ARM_UP = 0.9;
-    private final double JEWEL_ARM_DOWN = 0.5;
+    private final double JEWEL_ARM_UP = 0.7;
+    private final double JEWEL_ARM_DOWN = 0.3;
 
-    private final double LIFT_POWER_UP = 0.5;
-    private final double LIFT_POWER_DOWN = -0.3;
-    private final double LIFT_POWER_IDLE = 0.15;
+    private final double LIFT_POWER_UP = 0.39;
+    private final double LIFT_POWER_DOWN = -0.19;
+    private final double LIFT_POWER_IDLE = 0.09;
 
     private final double JOYSTICK_THRESHOLD = 0.1;
     private final double SLOW_DRIVE_SCALE_FACTOR = 0.5;
