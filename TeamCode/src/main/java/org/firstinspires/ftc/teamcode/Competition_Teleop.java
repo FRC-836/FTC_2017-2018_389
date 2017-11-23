@@ -25,7 +25,7 @@ public class Competition_Teleop extends OpMode
     private final double PICK_UP_GLYPH_VALUE = 0.5;
 
     private final double JEWEL_ARM_UP = 0.7;
-    private final double JEWEL_ARM_DOWN = 0.3;
+    private final double JEWEL_ARM_DOWN = 0.2;
 
     private final double LIFT_POWER_UP = 0.39;
     private final double LIFT_POWER_DOWN = -0.19;

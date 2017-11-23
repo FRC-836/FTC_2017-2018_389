@@ -89,9 +89,9 @@ public class Competition_Autonomous_A extends LinearOpMode {
     private final double DROP_GLYPH_VALUE = 0.1;
     private final double PICK_UP_GLYPH_VALUE = 0.5;
     private final double INTAKE_FULLY_OPEN = 0.0;
-    private final double JEWEL_ARM_UP = 0.9;
+    private final double JEWEL_ARM_UP = 0.7;
     private final double JEWEL_ARM_FULLY_UP = 1.0;
-    private final double JEWEL_ARM_DOWN = 0.5;
+    private final double JEWEL_ARM_DOWN = 0.2;
 
     @Override
     public void runOpMode() {
@@ -124,14 +124,16 @@ public class Competition_Autonomous_A extends LinearOpMode {
         //Move Jewel arm to where it sees a jewel
         lowerJewelArm();
 
-        //Test what color it sees
+        // getColorSeen reports what color the BACK ball is
         switch (getColorSeen()) {
             case RED:
+                // Moving forward knocks off blue.
                 moveStraightRightEncoder(0.4);
                 raiseJewelArm();
                 moveStraightRightEncoder(-0.4);
                 break;
             case BLUE:
+                // Moving forward knocks off red.
                 moveStraightRightEncoder(-0.4);
                 raiseJewelArm();
                 moveStraightRightEncoder(0.4);
