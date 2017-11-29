@@ -92,6 +92,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
     private final double JEWEL_ARM_UP = 0.7;
     private final double JEWEL_ARM_FULLY_UP = 1.0;
     private final double JEWEL_ARM_DOWN = 0.2;
+    private final double UNCERTAINTY = 0.05;
 
     @Override
     public void runOpMode() {
@@ -124,19 +125,21 @@ public class Competition_Autonomous_A extends LinearOpMode {
         //Move Jewel arm to where it sees a jewel
         lowerJewelArm();
 
+        sleep(1500);
+
         // getColorSeen reports what color the BACK ball is
         switch (getColorSeen()) {
             case RED:
                 // Moving forward knocks off blue.
-                moveStraightRightEncoder(0.4);
+                moveForwardRightEncoder(0.4);
                 raiseJewelArm();
-                moveStraightRightEncoder(-0.4);
+                moveBackwardRightEncoder(0.4);
                 break;
             case BLUE:
                 // Moving forward knocks off red.
-                moveStraightRightEncoder(-0.4);
+                moveBackwardRightEncoder(0.4);
                 raiseJewelArm();
-                moveStraightRightEncoder(0.4);
+                moveForwardRightEncoder(0.4);
                 break;
             case NEITHER:
                 raiseJewelArm();
@@ -145,22 +148,23 @@ public class Competition_Autonomous_A extends LinearOpMode {
 
         switch (cryptoboxSensor()) {
             case LEFT:
-                moveStraightRightEncoder(3.525);
+                moveForwardRightEncoder(3.525);
                 break;
+            case UNKNOWN:
             case CENTER:
-                moveStraightRightEncoder(2.9);
+                moveForwardRightEncoder(2.9);
                 break;
             case RIGHT:
-                moveStraightRightEncoder(2.275);
+                moveForwardRightEncoder(2.275);
                 break;
         }
 
         // These two steps move the robot from the red platform to the red goal.
-        turnRightEncoder(90);
+        turnRightEncoder(90.0);
         moveStraightTime(0.5, 1000);
         // Drops pre-loaded glyph into the cryptobox
         dropGlyph();
-        moveStraightRightEncoder(-2.0);
+        moveBackwardRightEncoder(2.0);
         sleep(1000);
 
     }
@@ -186,16 +190,26 @@ public class Competition_Autonomous_A extends LinearOpMode {
         setDrive(0.0, 0.0);
     }
 
-    /*private void moveStraightBackEncoder(double distanceInFeet) {
+    /**
+    private void moveStraightBackEncoder(double distanceInFeet) {
         int targetPos = backRightDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(-0.5, -0.5);
-        while (backRightDrive.getCurrentPosition() < targetPos) ;
+        while (backRightDrive.getCurrentPosition() < targetPos && opModeIsActive()) ;
         setDrive(0.0, 0.0);
-    }*/
-    private void moveStraightRightEncoder(double distanceInFeet) {
+    }
+    */
+
+    private void moveForwardRightEncoder(double distanceInFeet) {
         int targetPos = backRightDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(0.5, 0.5);
-        while (backRightDrive.getCurrentPosition() < targetPos) ;
+        while (backRightDrive.getCurrentPosition() < targetPos && opModeIsActive()) ;
+        setDrive(0.0, 0.0);
+    }
+
+    private void moveBackwardRightEncoder(double distanceInFeet) {
+        int targetPos = backRightDrive.getCurrentPosition() - (int) (distanceInFeet * BEEP_EC_PER_FEET);
+        setDrive(-0.5, -0.5);
+        while (backRightDrive.getCurrentPosition() > targetPos && opModeIsActive()) ;
         setDrive(0.0, 0.0);
     }
 
@@ -203,7 +217,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
         int origPos = frontLeftDrive.getCurrentPosition();
         int targetPos = origPos - (int) (degreesOfTurn * BEEP_EC_PER_DEGREES);
         setDrive(1.0, -1.0);
-        while (frontLeftDrive.getCurrentPosition() < targetPos) {
+        while (frontLeftDrive.getCurrentPosition() < targetPos && opModeIsActive()) {
             telemetry.addData("absolute data", "%d - %d - %d", origPos, frontLeftDrive.getCurrentPosition(), targetPos);
             telemetry.addData("relative data", "%d - %d - %d", 0, frontLeftDrive.getCurrentPosition() - origPos, targetPos - origPos);
             telemetry.update();
@@ -215,7 +229,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
         int origPos = frontLeftDrive.getCurrentPosition();
         int targetPos = origPos - (int) (degreesOfTurn * BEEP_EC_PER_DEGREES);
         setDrive(-1.0, 1.0);
-        while (frontLeftDrive.getCurrentPosition() > targetPos) {
+        while (frontLeftDrive.getCurrentPosition() > targetPos && opModeIsActive()) {
             telemetry.addData("absolute data", "%d - %d - %d", origPos, frontLeftDrive.getCurrentPosition(), targetPos);
             telemetry.addData("relative data", "%d - %d - %d", 0, frontLeftDrive.getCurrentPosition() - origPos, targetPos - origPos);
             telemetry.update();
@@ -248,10 +262,10 @@ public class Competition_Autonomous_A extends LinearOpMode {
     private ColorViewed getColorSeen() {
         if(colorSensor.blue() == 0){
             return ColorViewed.NEITHER;}
-         else if(((double)colorSensor.red()) / ((double)colorSensor.blue()) > 1.2) {
+         else if(((double)colorSensor.red()) / ((double)colorSensor.blue()) > (1.0 + UNCERTAINTY)) {
             return ColorViewed.RED;
 
-        } else if (((double)colorSensor.red()) / ((double)colorSensor.blue()) < 0.8) {
+        } else if (((double)colorSensor.red()) / ((double)colorSensor.blue()) < (1.0 - UNCERTAINTY)) {
             return ColorViewed.BLUE;
         } else {
             return ColorViewed.NEITHER;
@@ -272,7 +286,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
     private RelicRecoveryVuMark cryptoboxSensor() {
         relicTrackables.activate();
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        while (vuMark == RelicRecoveryVuMark.UNKNOWN) {
+        while (vuMark == RelicRecoveryVuMark.UNKNOWN && opModeIsActive()) {
             vuMark = RelicRecoveryVuMark.from(relicTemplate);
         }
         relicTrackables.deactivate();

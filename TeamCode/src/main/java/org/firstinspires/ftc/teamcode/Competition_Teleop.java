@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name="Competition/Main", group="Competition")
+@TeleOp(name="Arcade Drive", group="Competition")//Competition/Main
 public class Competition_Teleop extends OpMode
 {
     private DcMotor backLeftDrive = null;
@@ -122,10 +122,10 @@ public class Competition_Teleop extends OpMode
         }
 
         // Set intake position
-        if (gamepad1.right_bumper) {
+        if (gamepad1.right_trigger > 0.1f) {
             pickUpGlyph();
         }
-        else if (gamepad1.right_trigger > 0.1f) {
+        else if (gamepad1.right_bumper) {
             dropGlyph();
         }
         else {
@@ -151,6 +151,7 @@ public class Competition_Teleop extends OpMode
         else{
             telemetry.addLine("Mode is Slow");
         }
+        telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
         telemetry.update();
     }
     /*
