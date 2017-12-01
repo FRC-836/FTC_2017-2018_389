@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name="Arcade Drive", group="Competition")//Competition/Main
+@TeleOp(name="Tank Drive", group="Competition")//Competition/Main
 public class Competition_Teleop extends OpMode
 {
     private DcMotor backLeftDrive = null;
@@ -98,10 +98,13 @@ public class Competition_Teleop extends OpMode
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = -controllerThreshold(gamepad1.left_stick_y);
+        leftPower = -controllerThreshold(gamepad1.left_stick_y);
+        rightPower = -controllerThreshold(gamepad1.right_stick_y);
+
+        /*double drive = -controllerThreshold(gamepad1.left_stick_y);
         double turn  =  controllerThreshold(gamepad1.right_stick_x);
         leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-        rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+        rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;*/
 
         // Send calculated power to wheels
         if(isModeFast) {
