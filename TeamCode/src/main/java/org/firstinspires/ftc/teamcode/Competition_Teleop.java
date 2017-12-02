@@ -154,7 +154,7 @@ public class Competition_Teleop extends OpMode
         else{
             telemetry.addLine("Mode is Slow");
         }
-        telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
+        //telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
         telemetry.update();
     }
     /*
