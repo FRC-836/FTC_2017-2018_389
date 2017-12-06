@@ -31,15 +31,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
@@ -62,7 +58,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  */
 
 @Autonomous(name="Red Left", group="Linear Opmode")
-public class Competition_Autonomous_A extends LinearOpMode {
+public class Competition_Autonomous_Blue_Right extends LinearOpMode {
 
     //Vuforia Variables
     public static final String TAG = "Vuforia VuMark Sample";
@@ -93,18 +89,26 @@ public class Competition_Autonomous_A extends LinearOpMode {
     private ColorSensor colorSensor = null;
     private Servo jewelArm = null;
 
+
+    private final double ENCODER_TURN_POWER = 0.7;
+    private final double ENCODER_DRIVE_POWER = 0.5;
+
     private final boolean USE_LEFT_ENCODER = true;
+
     private final double BEEP_EC_PER_FEET = 1282.0; // Encoder counts per Foot
-//    private final double BEEP_EC_PER_DEGREES_90 = 92.2 / 4.0; // Encoder counts per Degree
     private final double BEEP_EC_PER_DEGREES_180 = 21.22;
     private final double BEEP_EC_PER_DEGREES_DEFAULT = BEEP_EC_PER_DEGREES_180;
+
     private final double DROP_GLYPH_VALUE = 0.1; // Servo Position
     private final double PICK_UP_GLYPH_VALUE = 0.5; // Servo Position
     private final double INTAKE_FULLY_OPEN = 0.0; // Servo Position
+
     private final double JEWEL_ARM_UP = 0.7; // Servo Position
     private final double JEWEL_ARM_FULLY_UP = 1.0; // Servo Position
     private final double JEWEL_ARM_DOWN = 0.2; // Servo Position
+
     private final double JEWEL_DRIVE_DISTANCE = 0.4; // feet
+
     private final double UNCERTAINTY = 0.05; // Amount that (Red/Blue) > 1 or vice-versa to determine a color
 
     @Override
@@ -154,24 +158,35 @@ public class Competition_Autonomous_A extends LinearOpMode {
                 // Moving forward knocks off blue.
                 telemetry.addLine("Saw red, driving forward.");
                 telemetry.update();
-                moveForwardEncoder(JEWEL_DRIVE_DISTANCE, 0.5);
+                //moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
+                turnLeft_Encoder(30.0);
                 raiseJewelArm();
+                sleep(1000);
                 telemetry.addLine("Saw red, driving backward.");
                 telemetry.update();
-                moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, 0.5);
+                //moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
+                //turnRight_Encoder(30.0);
                 break;
             case BLUE:
                 // Moving forward knocks off red.
                 telemetry.addLine("Saw blue, driving backward.");
                 telemetry.update();
-                moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, 0.5);
+                //moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
+                turnRight_Encoder(30.0);
                 raiseJewelArm();
+                sleep(1000);
                 telemetry.addLine("Saw blue, driving forward.");
                 telemetry.update();
-                moveForwardEncoder(JEWEL_DRIVE_DISTANCE, 0.5);
+                //moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
+                turnLeft_Encoder(30.0);
+
+                sleep(1000);
+                turnLeft_Encoder(30.0);
                 break;
             case NEITHER:
                 raiseJewelArm();
+                sleep(1000);
+                turnLeft_Encoder(30.0);
                 break;
         }
 
@@ -182,16 +197,19 @@ public class Competition_Autonomous_A extends LinearOpMode {
 
         cryptoboxKey = getPictographKey();
 
+        turnRight_Encoder(25.0);
+        sleep(1000);
+
         switch (cryptoboxKey) {
             case LEFT:
-                moveForwardEncoder(3.525, 0.5);
+                moveForwardEncoder(3.4, ENCODER_DRIVE_POWER);
                 break;
             case UNKNOWN:
             case CENTER:
-                moveForwardEncoder(2.9, 0.5);
+                moveForwardEncoder(2.8, ENCODER_DRIVE_POWER);
                 break;
             case RIGHT:
-                moveForwardEncoder(2.275, 0.5);
+                moveForwardEncoder(2.15, ENCODER_DRIVE_POWER);
                 break;
         }
 
@@ -200,9 +218,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
         moveStraightTime(0.5, 1000);
         // Drops pre-loaded glyph into the cryptobox
         dropGlyph();
-        moveBackwardEncoder(2.0, 0.5);
-        sleep(1000);
-        moveForwardEncoder(0.5, 0.5);
+        moveBackwardEncoder(1.0, ENCODER_DRIVE_POWER);
 
     }
 
@@ -235,6 +251,21 @@ public class Competition_Autonomous_A extends LinearOpMode {
         setDrive(0.0, 0.0);
     }
     */
+
+
+    private void moveForwardEncoder(double distanceInFeet) {
+        if (USE_LEFT_ENCODER)
+            moveForwardLeftEncoder(distanceInFeet, ENCODER_DRIVE_POWER);
+        else
+            moveForwardRightEncoder(distanceInFeet, ENCODER_DRIVE_POWER);
+    }
+
+    private void moveBackwardEncoder(double distanceInFeet) {
+        if (USE_LEFT_ENCODER)
+            moveBackwardLeftEncoder(distanceInFeet, ENCODER_DRIVE_POWER);
+        else
+            moveBackwardRightEncoder(distanceInFeet, ENCODER_DRIVE_POWER);
+    }
 
     private void moveForwardEncoder(double distanceInFeet, double drivePower) {
         if (USE_LEFT_ENCODER)
@@ -337,7 +368,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
     private void turnRight_LeftEncoder(double degreesOfTurn, double ecPerDegree) {
         int origPos = backLeftDrive.getCurrentPosition();
         int targetPos = origPos + (int) (degreesOfTurn * ecPerDegree);
-        setDrive(1.0, -1.0);
+        setDrive(ENCODER_TURN_POWER, -ENCODER_TURN_POWER);
         while (backLeftDrive.getCurrentPosition() < targetPos && opModeIsActive()) {
             telemetry.addData("absolute data", "%d - %d - %d", origPos, backLeftDrive.getCurrentPosition(), targetPos);
             telemetry.addData("relative data", "%d - %d - %d", 0, backLeftDrive.getCurrentPosition() - origPos, targetPos - origPos);
@@ -349,7 +380,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
     private void turnRight_RightEncoder(double degreesOfTurn, double ecPerDegree) {
         int origPos = backRightDrive.getCurrentPosition();
         int targetPos = origPos - (int) (degreesOfTurn * ecPerDegree);
-        setDrive(1.0, -1.0);
+        setDrive(ENCODER_TURN_POWER, -ENCODER_TURN_POWER);
         while (backRightDrive.getCurrentPosition() > targetPos && opModeIsActive()) {
             telemetry.addData("absolute data", "%d - %d - %d", origPos, backRightDrive.getCurrentPosition(), targetPos);
             telemetry.addData("relative data", "%d - %d - %d", 0, backRightDrive.getCurrentPosition() - origPos, targetPos - origPos);
@@ -361,7 +392,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
     private void turnLeft_LeftEncoder(double degreesOfTurn, double ecPerDegree) {
         int origPos = backLeftDrive.getCurrentPosition();
         int targetPos = origPos - (int) (degreesOfTurn * ecPerDegree);
-        setDrive(-1.0, 1.0);
+        setDrive(-ENCODER_TURN_POWER, ENCODER_TURN_POWER);
         while (backLeftDrive.getCurrentPosition() > targetPos && opModeIsActive()) {
             telemetry.addData("absolute data", "%d - %d - %d", origPos, backLeftDrive.getCurrentPosition(), targetPos);
             telemetry.addData("relative data", "%d - %d - %d", 0, backLeftDrive.getCurrentPosition() - origPos, targetPos - origPos);
@@ -373,7 +404,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
     private void turnLeft_RightEncoder(double degreesOfTurn, double ecPerDegree) {
         int origPos = backRightDrive.getCurrentPosition();
         int targetPos = origPos + (int) (degreesOfTurn * ecPerDegree);
-        setDrive(-1.0, 1.0);
+        setDrive(-ENCODER_TURN_POWER, ENCODER_TURN_POWER);
         while (backRightDrive.getCurrentPosition() < targetPos && opModeIsActive()) {
             telemetry.addData("absolute data", "%d - %d - %d", origPos, backRightDrive.getCurrentPosition(), targetPos);
             telemetry.addData("relative data", "%d - %d - %d", 0, backRightDrive.getCurrentPosition() - origPos, targetPos - origPos);
@@ -405,6 +436,7 @@ public class Competition_Autonomous_A extends LinearOpMode {
     }
 
     private ColorViewed getColorSeen() {
+
         if(colorSensor.blue() == 0){
             return ColorViewed.NEITHER;}
          else if(((double)colorSensor.red()) / ((double)colorSensor.blue()) > (1.0 + UNCERTAINTY)) {
