@@ -57,7 +57,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Red Left", group="Main")
+@Autonomous(name="Blue Right", group="Main")
 public class Competition_Autonomous_Blue_Right extends LinearOpMode {
 
     //Vuforia Variables
