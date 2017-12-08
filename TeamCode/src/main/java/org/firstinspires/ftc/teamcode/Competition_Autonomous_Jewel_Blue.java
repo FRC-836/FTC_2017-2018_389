@@ -57,19 +57,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Red Right", group="Main")
-public class Competition_Autonomous_Red_Right extends LinearOpMode {
-
-    //Vuforia Variables
-    public static final String TAG = "Vuforia VuMark Sample";
-    OpenGLMatrix lastLocation = null;
-    int cameraMonitorViewId;
-    VuforiaLocalizer.Parameters vParameters;
-    VuforiaTrackables relicTrackables;
-    private RelicRecoveryVuMark cryptoboxKey = null;
-    private VuforiaTrackable relicTemplate = null;
-    VuforiaLocalizer vuforia;
-
+@Autonomous(name="Jewel_Encoder Blue", group="Backup Jewel")
+public class Competition_Autonomous_Jewel_Blue extends LinearOpMode {
     enum ColorViewed {
         RED,
         BLUE,
@@ -141,84 +130,45 @@ public class Competition_Autonomous_Red_Right extends LinearOpMode {
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        setupVuMarkData();
 
         startUp();
-        relicTrackables.activate();
-        telemetry.addLine("Looking for Color");
-        telemetry.update();
-
         //Move Jewel arm to where it sees a jewel
         lowerJewelArm();
         sleep(1500);
 
         // getColorSeen reports what color the BACK ball is
         switch (getColorSeen()) {
-            case RED:
+            case BLUE:
                 // Moving forward knocks off blue.
-                telemetry.addLine("Saw red, driving forward.");
+                telemetry.addLine("Saw blue.");
                 telemetry.update();
                 //moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
                 turnLeft_Encoder(30.0);
                 raiseJewelArm();
                 sleep(1000);
-                telemetry.addLine("Saw red, driving backward.");
+                telemetry.addLine("Saw blue.");
                 telemetry.update();
                 //moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
                 //turnRight_Encoder(30.0);
                 break;
-            case BLUE:
+            case RED:
                 // Moving forward knocks off red.
-                telemetry.addLine("Saw blue, driving backward.");
+                telemetry.addLine("Saw red.");
                 telemetry.update();
                 //moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
                 turnRight_Encoder(30.0);
                 raiseJewelArm();
                 sleep(1000);
-                telemetry.addLine("Saw blue, driving forward.");
+                telemetry.addLine("Saw red.");
                 telemetry.update();
                 //moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
-                turnLeft_Encoder(30.0);
-
-                sleep(1000);
-                turnLeft_Encoder(30.0);
                 break;
             case NEITHER:
                 raiseJewelArm();
                 sleep(1000);
-                turnLeft_Encoder(30.0);
                 break;
         }
 
-        telemetry.addLine("Done with Jewel. Looking for Pictograph");
-        telemetry.update();
-
-        sleep(2000);
-
-        cryptoboxKey = getPictographKey();
-
-        turnRight_Encoder(25.0);
-        sleep(1000);
-
-        moveForwardEncoder(2.0);
-
-        switch (cryptoboxKey) {
-            case LEFT:
-                turnLeft_Encoder(45.0);
-                break;
-            case UNKNOWN:
-            case CENTER:
-                turnLeft_Encoder(30.0);
-                break;
-            case RIGHT:
-                turnLeft_Encoder(20.0);
-                break;
-        }
-
-        moveStraightTime(0.5, 1000);
-        // Drops pre-loaded glyph into the cryptobox
-        dropGlyph();
-        moveBackwardEncoder(1.0, ENCODER_DRIVE_POWER);
 
     }
 
@@ -244,13 +194,13 @@ public class Competition_Autonomous_Red_Right extends LinearOpMode {
     }
 
     /**
-    private void moveStraightBackEncoder(double distanceInFeet) {
-        int targetPos = backRightDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
-        setDrive(-0.5, -0.5);
-        while (backRightDrive.getCurrentPosition() < targetPos && opModeIsActive()) ;
-        setDrive(0.0, 0.0);
-    }
-    */
+     * private void moveStraightBackEncoder(double distanceInFeet) {
+     * int targetPos = backRightDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
+     * setDrive(-0.5, -0.5);
+     * while (backRightDrive.getCurrentPosition() < targetPos && opModeIsActive()) ;
+     * setDrive(0.0, 0.0);
+     * }
+     */
 
 
     private void moveForwardEncoder(double distanceInFeet) {
@@ -284,11 +234,10 @@ public class Competition_Autonomous_Red_Right extends LinearOpMode {
     private void moveForwardRightEncoder(double distanceInFeet, double drivePower) {
         int targetPos = backRightDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(drivePower, drivePower);
-        while (backRightDrive.getCurrentPosition() < targetPos && opModeIsActive())
-        {
+        while (backRightDrive.getCurrentPosition() < targetPos && opModeIsActive()) {
             telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backRightDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
+            telemetry.addData("Current Position", "%d", backRightDrive.getCurrentPosition());
+            telemetry.addData("Goal", "%d", targetPos);
             telemetry.update();
         }
         setDrive(0.0, 0.0);
@@ -297,11 +246,10 @@ public class Competition_Autonomous_Red_Right extends LinearOpMode {
     private void moveBackwardRightEncoder(double distanceInFeet, double drivePower) {
         int targetPos = backRightDrive.getCurrentPosition() - (int) (distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(-drivePower, -drivePower);
-        while (backRightDrive.getCurrentPosition() > targetPos && opModeIsActive())
-        {
+        while (backRightDrive.getCurrentPosition() > targetPos && opModeIsActive()) {
             telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backRightDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
+            telemetry.addData("Current Position", "%d", backRightDrive.getCurrentPosition());
+            telemetry.addData("Goal", "%d", targetPos);
             telemetry.update();
         }
         setDrive(0.0, 0.0);
@@ -310,11 +258,10 @@ public class Competition_Autonomous_Red_Right extends LinearOpMode {
     private void moveForwardLeftEncoder(double distanceInFeet, double drivePower) {
         int targetPos = backLeftDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(drivePower, drivePower);
-        while (backLeftDrive.getCurrentPosition() < targetPos && opModeIsActive())
-        {
+        while (backLeftDrive.getCurrentPosition() < targetPos && opModeIsActive()) {
             telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backLeftDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
+            telemetry.addData("Current Position", "%d", backLeftDrive.getCurrentPosition());
+            telemetry.addData("Goal", "%d", targetPos);
             telemetry.update();
         }
         setDrive(0.0, 0.0);
@@ -323,42 +270,37 @@ public class Competition_Autonomous_Red_Right extends LinearOpMode {
     private void moveBackwardLeftEncoder(double distanceInFeet, double drivePower) {
         int targetPos = backLeftDrive.getCurrentPosition() - (int) (distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(-drivePower, -drivePower);
-        while (backLeftDrive.getCurrentPosition() > targetPos && opModeIsActive())
-        {
+        while (backLeftDrive.getCurrentPosition() > targetPos && opModeIsActive()) {
             telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backLeftDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
+            telemetry.addData("Current Position", "%d", backLeftDrive.getCurrentPosition());
+            telemetry.addData("Goal", "%d", targetPos);
             telemetry.update();
         }
         setDrive(0.0, 0.0);
     }
 
-    private void turnRight_Encoder (double degreesOfTurn)
-    {
+    private void turnRight_Encoder(double degreesOfTurn) {
         if (USE_LEFT_ENCODER)
             turnRight_LeftEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
         else
             turnRight_RightEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
     }
 
-    private void turnLeft_Encoder (double degreesOfTurn)
-    {
+    private void turnLeft_Encoder(double degreesOfTurn) {
         if (USE_LEFT_ENCODER)
             turnLeft_LeftEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
         else
             turnLeft_RightEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
     }
 
-    private void turnRight_Encoder (double degreesOfTurn, double ecPerDegree)
-    {
+    private void turnRight_Encoder(double degreesOfTurn, double ecPerDegree) {
         if (USE_LEFT_ENCODER)
             turnRight_LeftEncoder(degreesOfTurn, ecPerDegree);
         else
             turnRight_RightEncoder(degreesOfTurn, ecPerDegree);
     }
 
-    private void turnLeft_Encoder (double degreesOfTurn, double ecPerDegree)
-    {
+    private void turnLeft_Encoder(double degreesOfTurn, double ecPerDegree) {
         if (USE_LEFT_ENCODER)
             turnLeft_LeftEncoder(degreesOfTurn, ecPerDegree);
         else
@@ -428,21 +370,23 @@ public class Competition_Autonomous_Red_Right extends LinearOpMode {
     private void raiseJewelArm() {
         jewelArm.setPosition(JEWEL_ARM_UP);
     }
+
     private void raiseJewelArmMore() {
         jewelArm.setPosition(JEWEL_ARM_FULLY_UP);
     }
+
     private void lowerJewelArm() {
         jewelArm.setPosition(JEWEL_ARM_DOWN);
     }
 
     private ColorViewed getColorSeen() {
 
-        if(colorSensor.blue() == 0){
-            return ColorViewed.NEITHER;}
-         else if(((double)colorSensor.red()) / ((double)colorSensor.blue()) > (1.0 + UNCERTAINTY)) {
+        if (colorSensor.blue() == 0) {
+            return ColorViewed.NEITHER;
+        } else if (((double) colorSensor.red()) / ((double) colorSensor.blue()) > (1.0 + UNCERTAINTY)) {
             return ColorViewed.RED;
 
-        } else if (((double)colorSensor.red()) / ((double)colorSensor.blue()) < (1.0 - UNCERTAINTY)) {
+        } else if (((double) colorSensor.red()) / ((double) colorSensor.blue()) < (1.0 - UNCERTAINTY)) {
             return ColorViewed.BLUE;
         } else {
             return ColorViewed.NEITHER;
@@ -458,24 +402,5 @@ public class Competition_Autonomous_Red_Right extends LinearOpMode {
 
         raiseJewelArm();
         pickUpGlyph();
-    }
-
-    private RelicRecoveryVuMark getPictographKey() {
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        while (vuMark == RelicRecoveryVuMark.UNKNOWN && opModeIsActive()) {
-            vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        }
-        return vuMark;
-    }
-    private void setupVuMarkData(){
-        cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        vParameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-        vParameters.vuforiaLicenseKey = "Ad/QI4f/////AAAAGTjpPxbdZUqSnVc3mldXKV0E3Ubo8UkPrp0l5P0ie1EXwbAiJNburExxvybAM/e5esxGLn3dl5zN73V9qcvBOROjy68/GQ8c0doo8ApEL127pzLSQEP6rZeq589EtDerLpgCqhsXSnU1hzLJ8S0UcgM9MeeUErzvfso6YAjLGZ9JXzLZHjXlX9lapHT64fBax9lZvMw5pmmZQE/j7oXqeamcdgnKyUn+wQN/3Gb+I2Ye7utY/LFJTiXFYesZsmE/eaq2mGnKVmqA4u6hvrSbEx/QudLqhl3nlXrAUPK+tx+5ersWNIB6OnNaRQApdYJb4mnO8qP8MgWhMIdT4Fuqd3WbitRP1NPUzqO+pJ63c36u";
-
-        vParameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(vParameters);
-        relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        relicTemplate = relicTrackables.get(0);
     }
 }

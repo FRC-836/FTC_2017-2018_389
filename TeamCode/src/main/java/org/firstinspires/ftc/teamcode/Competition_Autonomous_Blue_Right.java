@@ -57,7 +57,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Red Left", group="Linear Opmode")
+@Autonomous(name="Red Left", group="Main")
 public class Competition_Autonomous_Blue_Right extends LinearOpMode {
 
     //Vuforia Variables
@@ -154,30 +154,30 @@ public class Competition_Autonomous_Blue_Right extends LinearOpMode {
 
         // getColorSeen reports what color the BACK ball is
         switch (getColorSeen()) {
-            case RED:
+            case BLUE:
                 // Moving forward knocks off blue.
-                telemetry.addLine("Saw red, driving forward.");
+                telemetry.addLine("Saw blue, driving forward.");
                 telemetry.update();
                 //moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
                 turnLeft_Encoder(30.0);
                 raiseJewelArm();
                 sleep(1000);
-                telemetry.addLine("Saw red, driving backward.");
+                telemetry.addLine("Saw blue, driving backward.");
                 telemetry.update();
                 //moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
                 //turnRight_Encoder(30.0);
                 break;
-            case BLUE:
+            case RED:
                 // Moving forward knocks off red.
-                telemetry.addLine("Saw blue, driving backward.");
+                telemetry.addLine("Saw red, driving backward.");
                 telemetry.update();
                 //moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
                 turnRight_Encoder(30.0);
                 raiseJewelArm();
                 sleep(1000);
-                telemetry.addLine("Saw blue, driving forward.");
+                telemetry.addLine("Saw red, driving forward.");
                 telemetry.update();
-                //moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
+                //moveBackwardEncoder();
                 turnLeft_Encoder(30.0);
 
                 sleep(1000);
@@ -202,14 +202,14 @@ public class Competition_Autonomous_Blue_Right extends LinearOpMode {
 
         switch (cryptoboxKey) {
             case LEFT:
-                moveForwardEncoder(3.4, ENCODER_DRIVE_POWER);
+                moveBackwardEncoder(2.15, ENCODER_DRIVE_POWER);
                 break;
             case UNKNOWN:
             case CENTER:
-                moveForwardEncoder(2.8, ENCODER_DRIVE_POWER);
+                moveBackwardEncoder(2.8, ENCODER_DRIVE_POWER);
                 break;
             case RIGHT:
-                moveForwardEncoder(2.15, ENCODER_DRIVE_POWER);
+                moveBackwardEncoder(3.4, ENCODER_DRIVE_POWER);
                 break;
         }
 
