@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="Backup Drive - Blue Turn", group="Backup Drive")
+@Autonomous(name="LAST RESORT Blue Left Turn", group="Backup Drive")
 public class Competition_Autonomous_Drive_And_Drop_Blue extends Autonomous_Parent {
 
     @Override

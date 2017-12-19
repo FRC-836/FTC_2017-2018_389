@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="Jewel_Timed Red", group="Backup Jewel")
-public class Competition_Autonomous_Jewel_No_Encoder_Red extends Autonomous_Parent {
+@Autonomous(name="Jewel_Timed Red Left and Right", group="Backup Jewel")
+public class Competition_Autonomous_Only_Jewel_No_Encoder_Red extends Autonomous_Parent {
 
     @Override
     public void startRobot() {

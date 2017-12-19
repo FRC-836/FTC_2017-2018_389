@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-@Autonomous(name="Blue Left", group="Main")
+@Autonomous(name="Competition Blue Left", group="Main")
 public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
 
     @Override
