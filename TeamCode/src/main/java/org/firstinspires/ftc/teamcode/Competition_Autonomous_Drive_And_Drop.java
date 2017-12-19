@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-@Autonomous(name="LAST RESORT Blue Right Red Right", group="Backup Drive")
+@Autonomous(name="LAST RESORT Blue Left Red Right", group="Backup Drive")
 public class Competition_Autonomous_Drive_And_Drop extends Autonomous_Parent {
 
     @Override
