@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name="Jewel_Encoder Blue", group="Backup Jewel")
-public class Competition_Autonomous_Jewel_Blue extends Autonomous_Parent {
+public class Competition_Autonomous_Only_Jewel_Blue extends Autonomous_Parent {
 
     @Override
     public void startRobot() {
