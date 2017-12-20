@@ -39,7 +39,7 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
                 telemetry.addLine("Saw red, driving forward.");
                 telemetry.update();
                 //moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
-                turnLeft_Encoder(30.0);
+                turnLeft_Encoder(20.0);
                 raiseJewelArm();
                 sleep(1000);
                 telemetry.addLine("Saw red, driving backward.");
@@ -52,21 +52,21 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
                 telemetry.addLine("Saw blue, driving backward.");
                 telemetry.update();
                 //moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
-                turnRight_Encoder(30.0);
+                turnRight_Encoder(20.0);
                 raiseJewelArm();
                 sleep(1000);
                 telemetry.addLine("Saw blue, driving forward.");
                 telemetry.update();
                 //moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
-                turnLeft_Encoder(30.0);
+                turnLeft_Encoder(20.0);
 
                 sleep(1000);
-                turnLeft_Encoder(30.0);
+                turnLeft_Encoder(20.0);
                 break;
             case NEITHER:
                 raiseJewelArm();
                 sleep(1000);
-                turnLeft_Encoder(30.0);
+                turnLeft_Encoder(20.0);
                 break;
         }
 
@@ -77,19 +77,19 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
 
         cryptoboxKey = getPictographKey();
 
-        turnRight_Encoder(25.0);
+        turnRight_Encoder(15.0);
         sleep(1000);
 
         switch (cryptoboxKey) {
             case LEFT:
-                moveForwardEncoder(3.4, ENCODER_DRIVE_POWER);
+                moveForwardEncoder(3.2, ENCODER_DRIVE_POWER);
                 break;
             case UNKNOWN:
             case CENTER:
-                moveForwardEncoder(2.8, ENCODER_DRIVE_POWER);
+                moveForwardEncoder(2.6, ENCODER_DRIVE_POWER);
                 break;
             case RIGHT:
-                moveForwardEncoder(2.15, ENCODER_DRIVE_POWER);
+                moveForwardEncoder(2.0, ENCODER_DRIVE_POWER);
                 break;
         }
 

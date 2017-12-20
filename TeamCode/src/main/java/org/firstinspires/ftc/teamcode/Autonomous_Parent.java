@@ -29,7 +29,7 @@ public class Autonomous_Parent extends Robot_Parent {
     private ColorSensor colorSensor = null;
 
 
-    protected final double ENCODER_TURN_POWER = 0.7;
+    protected final double ENCODER_TURN_POWER = 0.6;
     protected final double ENCODER_DRIVE_POWER = 0.5;
 
     private final boolean USE_LEFT_ENCODER = true;
