@@ -98,6 +98,7 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
         moveStraightTime(0.5, 1000);
         // Drops pre-loaded glyph into the cryptobox
         dropGlyph();
+        sleep(500);
         moveBackwardEncoder(1.0, ENCODER_DRIVE_POWER);
     }
 }
