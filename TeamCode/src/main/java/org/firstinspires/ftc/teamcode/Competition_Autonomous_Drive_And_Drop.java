@@ -20,7 +20,6 @@ public class Competition_Autonomous_Drive_And_Drop extends Autonomous_Parent {
     @Override
     public void startRobot() {
         moveStraightTime(0.5,3500);
-        dropGlyph();
-        moveStraightTime(-0.35, 500);
+        scoreGlyph(false);
     }
 }
