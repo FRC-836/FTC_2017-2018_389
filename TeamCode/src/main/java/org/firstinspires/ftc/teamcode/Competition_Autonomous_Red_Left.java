@@ -22,7 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
 
     @Override
-    public void startRobot() {
+    public void runAutonomous() {
         relicTrackables.activate();
 
         telemetry.addLine("Looking for Color");

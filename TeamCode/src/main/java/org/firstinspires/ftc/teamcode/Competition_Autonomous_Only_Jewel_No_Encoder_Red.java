@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Competition_Autonomous_Only_Jewel_No_Encoder_Red extends Autonomous_Parent {
 
     @Override
-    public void startRobot() {
+    public void runAutonomous() {
         //Move Jewel arm to where it sees a jewel
         lowerJewelArm();
         sleep(1500);

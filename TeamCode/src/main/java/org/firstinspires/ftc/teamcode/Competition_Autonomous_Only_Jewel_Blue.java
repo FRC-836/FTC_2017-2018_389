@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 public class Competition_Autonomous_Only_Jewel_Blue extends Autonomous_Parent {
 
     @Override
-    public void startRobot() {
+    public void runAutonomous() {
         //Move Jewel arm to where it sees a jewel
         lowerJewelArm();
         sleep(1500);

@@ -55,6 +55,14 @@ public class Autonomous_Parent extends Robot_Parent {
 
     @Override
     public void startRobot() {
+        runAutonomous();
+        telemetry.clear();
+        telemetry.addData("Total runtime", "%6.3f seconds", runtime.seconds());
+        telemetry.update();
+        while (opModeIsActive());
+    }
+
+    public void runAutonomous() {
 
     }
 

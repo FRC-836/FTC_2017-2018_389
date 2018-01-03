@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 public class Competition_Autonomous_Drive_And_Drop extends Autonomous_Parent {
 
     @Override
-    public void startRobot() {
+    public void runAutonomous() {
         moveStraightTime(0.5,3500);
         scoreGlyph(false);
     }
