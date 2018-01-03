@@ -33,6 +33,7 @@ public class Autonomous_Parent extends Robot_Parent {
     protected final double ENCODER_DRIVE_POWER = 0.5;
 
     private final boolean USE_LEFT_ENCODER = true;
+    protected final boolean RUN_TEST_CODE = false;
 
     private final double BEEP_EC_PER_FEET = 1282.0; // Encoder counts per Foot
     private final double BEEP_EC_PER_DEGREES_180 = 21.22;
@@ -237,12 +238,10 @@ public class Autonomous_Parent extends Robot_Parent {
     }
 
     protected ColorViewed getColorSeen() {
-
         if(colorSensor.blue() == 0){
             return ColorViewed.NEITHER;}
-         else if(((double)colorSensor.red()) / ((double)colorSensor.blue()) > (1.0 + COLOR_UNCERTAINTY)) {
+        else if(((double)colorSensor.red()) / ((double)colorSensor.blue()) > (1.0 + COLOR_UNCERTAINTY)) {
             return ColorViewed.RED;
-
         } else if (((double)colorSensor.red()) / ((double)colorSensor.blue()) < (1.0 - COLOR_UNCERTAINTY)) {
             return ColorViewed.BLUE;
         } else {
@@ -285,5 +284,30 @@ public class Autonomous_Parent extends Robot_Parent {
             moveBackwardEncoder(1.0, ENCODER_DRIVE_POWER);
         else
             moveStraightTime(-0.35, 500);
+    }
+    protected void scoreOneMoreGlyph(){
+        // Steps for Scoring the 2nd Glyph:
+        // 1. Turn 180 Degrees
+
+        // 2. Move forward 2 feet
+
+        // 3. Pick up glyph
+
+        // 4. Move backward 1 3/4 feet
+
+        // 5. Turn 180 Degrees
+
+        // 6. Lift a little bit so glyph doesn't drag
+
+        // 7. Drive forward time based
+
+        // 8. Drop glyph
+        // 9. Sleep
+        // 10. Move backward
+
+        // 11. Lower lift
+
+        // 12.(Optional)Drive forward to park
+
     }
 }
