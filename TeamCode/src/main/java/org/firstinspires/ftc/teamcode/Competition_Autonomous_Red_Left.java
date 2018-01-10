@@ -34,6 +34,7 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
 
         timedLiftUp(SLIGHT_LIFT_TIME);
 
+
         // getColorSeen reports what color the BACK ball is
         switch (getColorSeen()) {
             case RED:

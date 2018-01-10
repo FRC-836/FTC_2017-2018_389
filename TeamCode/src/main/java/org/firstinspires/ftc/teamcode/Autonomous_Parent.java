@@ -47,7 +47,7 @@ public class Autonomous_Parent extends Robot_Parent {
 
     private final double COLOR_UNCERTAINTY = 0.05; // Amount that (Red/Blue) > 1 or vice-versa to determine a color
 
-    protected final long SLIGHT_LIFT_TIME = 500;
+    protected final long SLIGHT_LIFT_TIME = 100;
 
     @Override
     public void initializeRobot() {
@@ -322,5 +322,7 @@ public class Autonomous_Parent extends Robot_Parent {
         setLift(LIFT_POWER_DOWN);
         sleep(milliseconds);
         setLift(0.0);
+
+
     }
 }
