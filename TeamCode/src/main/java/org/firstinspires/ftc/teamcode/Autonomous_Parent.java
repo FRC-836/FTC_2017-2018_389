@@ -47,6 +47,8 @@ public class Autonomous_Parent extends Robot_Parent {
 
     private final double COLOR_UNCERTAINTY = 0.05; // Amount that (Red/Blue) > 1 or vice-versa to determine a color
 
+    protected final long SLIGHT_LIFT_TIME = 500;
+
     @Override
     public void initializeRobot() {
         colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
@@ -288,26 +290,37 @@ public class Autonomous_Parent extends Robot_Parent {
     protected void scoreOneMoreGlyph(){
         // Steps for Scoring the 2nd Glyph:
         // 1. Turn 180 Degrees
-
+        turnLeft_Encoder(180.0);
         // 2. Move forward 2 feet
-
+        moveForwardEncoder(2.0);
         // 3. Pick up glyph
-
+        pickUpGlyph();
         // 4. Move backward 1 3/4 feet
-
+        moveBackwardEncoder(1.75);
         // 5. Turn 180 Degrees
-
+        turnLeft_Encoder(180.0);
         // 6. Lift a little bit so glyph doesn't drag
-
+        timedLiftUp(SLIGHT_LIFT_TIME);
         // 7. Drive forward time based
-
+        moveStraightTime(0.5, 1000);
         // 8. Drop glyph
         // 9. Sleep
         // 10. Move backward
-
+        scoreGlyph(true);
         // 11. Lower lift
-
+        timedLiftDown(SLIGHT_LIFT_TIME);
         // 12.(Optional)Drive forward to park
 
+    }
+
+    protected void timedLiftUp(long milliseconds){
+        setLift(LIFT_POWER_UP);
+        sleep(milliseconds);
+        setLift(LIFT_POWER_IDLE);
+    }
+    protected void timedLiftDown(long milliseconds){
+        setLift(LIFT_POWER_DOWN);
+        sleep(milliseconds);
+        setLift(0.0);
     }
 }

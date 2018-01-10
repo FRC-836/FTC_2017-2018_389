@@ -32,6 +32,8 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
         lowerJewelArm();
         sleep(1500);
 
+        timedLiftUp(SLIGHT_LIFT_TIME);
+
         // getColorSeen reports what color the BACK ball is
         switch (getColorSeen()) {
             case RED:
@@ -101,6 +103,9 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
 
         if (!RUN_TEST_CODE)
             return;
+
         //Test code goes beyond this point
+        scoreOneMoreGlyph();
+
     }
 }

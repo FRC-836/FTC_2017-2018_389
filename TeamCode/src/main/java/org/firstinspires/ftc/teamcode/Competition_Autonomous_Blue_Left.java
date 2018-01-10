@@ -27,6 +27,8 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
         lowerJewelArm();
         sleep(1500);
 
+        timedLiftUp(SLIGHT_LIFT_TIME);
+
         // getColorSeen reports what color the BACK ball is
         switch (getColorSeen()) {
             case BLUE:
