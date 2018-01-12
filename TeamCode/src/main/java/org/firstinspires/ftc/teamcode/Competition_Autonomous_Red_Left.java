@@ -38,27 +38,27 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
         // getColorSeen reports what color the BACK ball is
         switch (getColorSeen()) {
             case RED:
-                // Moving forward knocks off blue.
-                telemetry.addLine("Saw red, driving forward.");
+                // Turning Left knocks off blue.
+                telemetry.addLine("Saw red, turning left.");
                 telemetry.update();
                 //moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
                 turnLeft_Encoder(20.0);
                 raiseJewelArm();
                 sleep(1000);
-                telemetry.addLine("Saw red, driving backward.");
+                telemetry.addLine("Saw red, done turning.");
                 telemetry.update();
                 //moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
                 //turnRight_Encoder(30.0);
                 break;
             case BLUE:
-                // Moving forward knocks off red.
-                telemetry.addLine("Saw blue, driving backward.");
+                // Turning Left knocks off red.
+                telemetry.addLine("Saw blue, turning right.");
                 telemetry.update();
                 //moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
                 turnRight_Encoder(20.0);
                 raiseJewelArm();
                 sleep(1000);
-                telemetry.addLine("Saw blue, driving forward.");
+                telemetry.addLine("Saw blue, turning left.");
                 telemetry.update();
                 //moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
                 turnLeft_Encoder(20.0);
@@ -67,6 +67,9 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
                 turnLeft_Encoder(20.0);
                 break;
             case NEITHER:
+                // Just raise the arm
+                telemetry.addLine("Unsure which color, lifting arm.");
+                telemetry.update();
                 raiseJewelArm();
                 sleep(1000);
                 turnLeft_Encoder(20.0);
@@ -85,20 +88,21 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
 
         switch (cryptoboxKey) {
             case LEFT:
-                moveForwardEncoder(3.2, ENCODER_DRIVE_POWER);
+                moveForwardEncoder(3.45, ENCODER_DRIVE_POWER);
                 break;
             case UNKNOWN:
             case CENTER:
-                moveForwardEncoder(2.6, ENCODER_DRIVE_POWER);
+                moveForwardEncoder(2.85, ENCODER_DRIVE_POWER);
                 break;
             case RIGHT:
-                moveForwardEncoder(2.0, ENCODER_DRIVE_POWER);
+                moveForwardEncoder(2.25, ENCODER_DRIVE_POWER);
                 break;
         }
 
         // These two steps move the robot from the red platform to the red goal.
         turnRight_Encoder(90.0);
         moveStraightTime(0.5, 1000);
+
         // Drops pre-loaded glyph into the cryptobox
         scoreGlyph(true);
 
@@ -107,6 +111,5 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
 
         //Test code goes beyond this point
         scoreOneMoreGlyph();
-
     }
 }

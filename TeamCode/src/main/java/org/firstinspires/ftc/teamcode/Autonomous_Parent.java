@@ -47,7 +47,7 @@ public class Autonomous_Parent extends Robot_Parent {
 
     private final double COLOR_UNCERTAINTY = 0.05; // Amount that (Red/Blue) > 1 or vice-versa to determine a color
 
-    protected final long SLIGHT_LIFT_TIME = 100;
+    protected final long SLIGHT_LIFT_TIME = 75;
 
     @Override
     public void initializeRobot() {
@@ -241,7 +241,8 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected ColorViewed getColorSeen() {
         if(colorSensor.blue() == 0){
-            return ColorViewed.NEITHER;}
+            return ColorViewed.NEITHER;
+        }
         else if(((double)colorSensor.red()) / ((double)colorSensor.blue()) > (1.0 + COLOR_UNCERTAINTY)) {
             return ColorViewed.RED;
         } else if (((double)colorSensor.red()) / ((double)colorSensor.blue()) < (1.0 - COLOR_UNCERTAINTY)) {
@@ -283,7 +284,7 @@ public class Autonomous_Parent extends Robot_Parent {
         dropGlyph();
         sleep(500);
         if(encoderUsed)
-            moveBackwardEncoder(1.0, ENCODER_DRIVE_POWER);
+            moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER);
         else
             moveStraightTime(-0.35, 500);
     }
