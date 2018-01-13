@@ -43,7 +43,7 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
 
         cryptoboxKey = getPictographKey();
 
-        turnRight_Encoder(15.0);
+        //turnRight_Encoder(15.0);
         sleep(1000);
 
         switch (cryptoboxKey) {

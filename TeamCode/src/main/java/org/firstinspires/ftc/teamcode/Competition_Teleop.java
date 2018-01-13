@@ -28,13 +28,13 @@ public class Competition_Teleop extends Teleop_Parent
         leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
         rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;*/
 
-        // Send calculated power to wheels
-        if(isModeFast) {
-            setDrive(leftPower, rightPower);
+        if (!isModeFast)
+        {
+            leftPower *= SLOW_DRIVE_SCALE_FACTOR;
+            rightPower *= SLOW_DRIVE_SCALE_FACTOR;
         }
-        else {
-            setDrive(leftPower * SLOW_DRIVE_SCALE_FACTOR, rightPower * SLOW_DRIVE_SCALE_FACTOR);
-        }
+        setDrive(leftPower, rightPower);
+
         // Set lift power
         if (gamepad1.left_bumper) {
             setLift(LIFT_POWER_UP);
@@ -76,6 +76,7 @@ public class Competition_Teleop extends Teleop_Parent
         else{
             telemetry.addLine("Mode is Slow");
         }
+        telemetry.addData("Left, Right power","%4.2f, %4.2f", leftPower, rightPower);
         //telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
         telemetry.update();
     }

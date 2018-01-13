@@ -22,7 +22,6 @@ public class Competition_Autonomous_Only_Jewel_Blue extends Autonomous_Parent {
         //Move Jewel arm to where it sees a jewel
         lowerJewelArm();
         sleep(1500);
-    knockOffJewel(true);
-
+        knockOffJewel(true);
     }
 }

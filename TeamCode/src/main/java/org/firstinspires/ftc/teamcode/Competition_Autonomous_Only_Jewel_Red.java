@@ -16,6 +16,5 @@ public class Competition_Autonomous_Only_Jewel_Red extends Autonomous_Parent {
         lowerJewelArm();
         sleep(1500);
         knockOffJewel(false);
-
     }
 }

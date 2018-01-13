@@ -38,7 +38,7 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
 
         cryptoboxKey = getPictographKey();
 
-        turnRight_Encoder(25.0);
+        //turnRight_Encoder(25.0);
         sleep(1000);
 
         moveBackwardEncoder(2.0);
