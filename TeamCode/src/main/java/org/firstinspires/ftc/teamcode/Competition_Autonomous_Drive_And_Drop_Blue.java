@@ -14,7 +14,7 @@ public class Competition_Autonomous_Drive_And_Drop_Blue extends Autonomous_Paren
         sleep(1000);
         setDrive(0.0, 0.0);
         sleep(1000);
-        moveStraightTime(0.7, 2000);
+        moveStraightTime(0.7, 1000);
         scoreGlyph(false);
     }
 }

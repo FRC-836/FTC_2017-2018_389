@@ -26,24 +26,27 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
         cryptoboxKey = getPictographKey();
 
         //turnRight_Encoder(25.0);
-        sleep(1000);
+        sleep(STEADY_STATE_SLEEP_TIME);
 
         moveForwardEncoder(2.0);
+        sleep(STEADY_STATE_SLEEP_TIME);
 
         switch (cryptoboxKey) {
             case LEFT:
-                turnLeft_Encoder(45.0);
+                turnLeft_Encoder(60.0);
                 break;
             case UNKNOWN:
             case CENTER:
-                turnLeft_Encoder(30.0);
+                turnLeft_Encoder(45.0);
                 break;
             case RIGHT:
-                turnLeft_Encoder(20.0);
+                turnLeft_Encoder(35.0);
                 break;
         }
+        sleep(STEADY_STATE_SLEEP_TIME);
 
         moveStraightTime(0.5, 1000);
+        sleep(STEADY_STATE_SLEEP_TIME);
         // Drops pre-loaded glyph into the cryptobox
         scoreGlyph(true);
     }

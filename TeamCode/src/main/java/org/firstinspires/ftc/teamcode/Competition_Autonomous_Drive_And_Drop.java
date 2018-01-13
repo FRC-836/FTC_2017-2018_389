@@ -8,7 +8,7 @@ public class Competition_Autonomous_Drive_And_Drop extends Autonomous_Parent {
     @Override
     public void runAutonomous() {
         timedLiftUp(SLIGHT_LIFT_TIME);
-        moveStraightTime(0.5,3500);
+        moveStraightTime(0.5,2000);
         scoreGlyph(false);
     }
 }

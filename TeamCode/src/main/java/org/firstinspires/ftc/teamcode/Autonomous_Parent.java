@@ -28,6 +28,7 @@ public class Autonomous_Parent extends Robot_Parent {
     private ElapsedTime runtime = new ElapsedTime();
     private ColorSensor colorSensor = null;
 
+    protected final long STEADY_STATE_SLEEP_TIME = 500;
 
     protected final double ENCODER_TURN_POWER = 0.6;
     protected final double ENCODER_DRIVE_POWER = 0.5;
@@ -303,6 +304,7 @@ public class Autonomous_Parent extends Robot_Parent {
         turnLeft_Encoder(180.0);
         // 6. Lift a little bit so glyph doesn't drag
         timedLiftUp(SLIGHT_LIFT_TIME);
+        sleep(100);
         // 7. Drive forward time based
         moveStraightTime(0.5, 1000);
         // 8. Drop glyph
