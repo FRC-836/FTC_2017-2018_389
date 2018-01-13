@@ -34,47 +34,7 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
 
         timedLiftUp(SLIGHT_LIFT_TIME);
 
-
-        // getColorSeen reports what color the BACK ball is
-        switch (getColorSeen()) {
-            case RED:
-                // Turning Left knocks off blue.
-                telemetry.addLine("Saw red, turning left.");
-                telemetry.update();
-                //moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
-                turnLeft_Encoder(20.0);
-                raiseJewelArm();
-                sleep(1000);
-                telemetry.addLine("Saw red, done turning.");
-                telemetry.update();
-                //moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
-                //turnRight_Encoder(30.0);
-                break;
-            case BLUE:
-                // Turning Left knocks off red.
-                telemetry.addLine("Saw blue, turning right.");
-                telemetry.update();
-                //moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
-                turnRight_Encoder(20.0);
-                raiseJewelArm();
-                sleep(1000);
-                telemetry.addLine("Saw blue, turning left.");
-                telemetry.update();
-                //moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
-                turnLeft_Encoder(20.0);
-
-                sleep(1000);
-                turnLeft_Encoder(20.0);
-                break;
-            case NEITHER:
-                // Just raise the arm
-                telemetry.addLine("Unsure which color, lifting arm.");
-                telemetry.update();
-                raiseJewelArm();
-                sleep(1000);
-                turnLeft_Encoder(20.0);
-                break;
-        }
+        knockOffJewel(false);
 
         telemetry.addLine("Done with Jewel. Looking for Pictograph");
         telemetry.update();

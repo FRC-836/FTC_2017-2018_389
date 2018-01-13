@@ -43,7 +43,7 @@ public class Autonomous_Parent extends Robot_Parent {
 
     private final double JEWEL_ARM_FULLY_UP = 1.0; // Servo Position
 
-    private final double JEWEL_DRIVE_DISTANCE = 0.4; // feet
+    protected final double JEWEL_DRIVE_DISTANCE = 0.4; // feet
 
     private final double COLOR_UNCERTAINTY = 0.05; // Amount that (Red/Blue) > 1 or vice-versa to determine a color
 
@@ -323,7 +323,62 @@ public class Autonomous_Parent extends Robot_Parent {
         setLift(LIFT_POWER_DOWN);
         sleep(milliseconds);
         setLift(0.0);
+    }
+    protected void knockOffJewel(boolean isBlueTeam){
+        switch (getColorSeen()) {
+            case RED:
+                // Moving Forward knocks off blue.
+                telemetry.addLine("Saw red.");
+                telemetry.update();
 
+                if(isBlueTeam)
+                    moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
+                else
+                    moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
 
+                //turnLeft_Encoder(20.0);
+                raiseJewelArm();
+                sleep(1000);
+                if(isBlueTeam) {
+                    moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
+                } else {
+                    moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
+                }
+                //turnRight_Encoder(30.0);
+                telemetry.addLine("Saw red, done moving.");
+                telemetry.update();
+                break;
+            case BLUE:
+                // Turning Left knocks off red.
+                telemetry.addLine("Saw blue.");
+                telemetry.update();
+                if(isBlueTeam) {
+                    moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
+                } else {
+                    moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
+                }
+                //turnRight_Encoder(20.0);
+                raiseJewelArm();
+                sleep(1000);
+                if(isBlueTeam) {
+                    moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
+                } else {
+                    moveForwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
+                }
+                //turnLeft_Encoder(20.0);
+                sleep(1000);
+                //turnLeft_Encoder(20.0);
+                telemetry.addLine("Saw blue, done moving.");
+                telemetry.update();
+                break;
+            case NEITHER:
+                // Just raise the arm
+                telemetry.addLine("Unsure which color, lifting arm.");
+                telemetry.update();
+                raiseJewelArm();
+                sleep(1000);
+                //turnLeft_Encoder(20.0);
+                break;
+        }
     }
 }
