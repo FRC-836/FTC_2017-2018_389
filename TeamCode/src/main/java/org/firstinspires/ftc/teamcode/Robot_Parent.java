@@ -12,6 +12,7 @@ public class Robot_Parent extends LinearOpMode
     protected DcMotor frontRightDrive = null;
     protected DcMotor liftMotor = null;
     protected Servo servoIntake = null;
+    protected Servo secondServoIntake = null;
     protected Servo jewelArm = null;
 
     private final double DROP_GLYPH_VALUE = 0.1;
@@ -20,9 +21,11 @@ public class Robot_Parent extends LinearOpMode
     private final double JEWEL_ARM_UP = 0.7;
     private final double JEWEL_ARM_DOWN = 0.2;
 
-    protected final double LIFT_POWER_UP = 0.39;
-    protected final double LIFT_POWER_DOWN = -0.19;
-    protected final double LIFT_POWER_IDLE = 0.09;
+    protected final double LIFT_POWER_UP = 0.50;
+    protected final double LIFT_POWER_DOWN = -0.10;
+    protected final double LIFT_POWER_IDLE = 0.18;//Original arm: 0.09
+
+    private final double SECOND_SERVO_OFFSET = 0.0;
 
     @Override
     public void runOpMode() {
@@ -39,6 +42,7 @@ public class Robot_Parent extends LinearOpMode
         //intakeRight = hardwareMap.get(CRServo.class, "intake_right");
         //intakeLeft = hardwareMap.get(CRServo.class, "intake_left");
         servoIntake = hardwareMap.get(Servo.class, "intake");
+        secondServoIntake = hardwareMap.get(Servo.class, "intake2");
         jewelArm = hardwareMap.get(Servo.class, "jewel_arm");
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -51,6 +55,7 @@ public class Robot_Parent extends LinearOpMode
         //intakeRight.setDirection(DcMotor.Direction.FORWARD);
         //intakeLeft.setDirection(DcMotor.Direction.REVERSE);
         servoIntake.setDirection(Servo.Direction.FORWARD);
+        secondServoIntake.setDirection(Servo.Direction.FORWARD);
         jewelArm.setDirection(Servo.Direction.FORWARD);
 
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -91,6 +96,7 @@ public class Robot_Parent extends LinearOpMode
 
     protected void setIntake(double intakePosition){
         servoIntake.setPosition(intakePosition);
+        secondServoIntake.setPosition(intakePosition + SECOND_SERVO_OFFSET);
     }
     protected void dropGlyph() {
         setIntake(DROP_GLYPH_VALUE);
