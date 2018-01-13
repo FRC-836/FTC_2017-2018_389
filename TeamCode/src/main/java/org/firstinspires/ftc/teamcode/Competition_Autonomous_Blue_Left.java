@@ -16,7 +16,6 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
         sleep(1500);
 
         timedLiftUp(SLIGHT_LIFT_TIME);
-
         knockOffJewel(true);
 
         telemetry.addLine("Done with Jewel. Looking for Pictograph");
