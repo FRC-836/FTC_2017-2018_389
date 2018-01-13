@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
 public class Teleop_Parent extends Robot_Parent
 {
     protected boolean isModeFast = true;
