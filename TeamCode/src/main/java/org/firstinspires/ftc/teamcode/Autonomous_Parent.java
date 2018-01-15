@@ -50,6 +50,7 @@ public class Autonomous_Parent extends Robot_Parent {
     private final double COLOR_UNCERTAINTY = 0.05; // Amount that (Red/Blue) > 1 or vice-versa to determine a color
 
     protected final long SLIGHT_LIFT_TIME = 150;
+    protected final long SECOND_ROW_LIFT_TIME = 900;
 
     @Override
     public void initializeRobot() {
@@ -298,13 +299,14 @@ public class Autonomous_Parent extends Robot_Parent {
         moveForwardEncoder(2.0);
         // 3. Pick up glyph
         pickUpGlyph();
+        timedLiftUp(SLIGHT_LIFT_TIME);
+        sleep(100);
         // 4. Move backward 1 3/4 feet
         moveBackwardEncoder(1.75);
         // 5. Turn 180 Degrees
         turnLeft_Encoder(180.0);
         // 6. Lift a little bit so glyph doesn't drag
-        timedLiftUp(SLIGHT_LIFT_TIME);
-        sleep(100);
+        timedLiftUp(SECOND_ROW_LIFT_TIME);
         // 7. Drive forward time based
         moveStraightTime(0.5, 1000);
         // 8. Drop glyph
