@@ -18,6 +18,7 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
         timedLiftUp(SLIGHT_LIFT_TIME);
         knockOffJewel(true);
 
+        moveForwardEncoder(JEWEL_DRIVE_DISTANCE);
         telemetry.addLine("Done with Jewel. Looking for Pictograph");
         telemetry.update();
 
@@ -25,6 +26,7 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
 
         cryptoboxKey = getPictographKey();
 
+        moveBackwardEncoder(JEWEL_DRIVE_DISTANCE);
         //turnRight_Encoder(25.0);
         sleep(STEADY_STATE_SLEEP_TIME);
 
@@ -32,18 +34,18 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
         sleep(STEADY_STATE_SLEEP_TIME);
         turnLeft_Encoder(90.0);
         sleep(STEADY_STATE_SLEEP_TIME);
-        moveBackwardEncoder(0.8);
+        moveForwardEncoder(1.0);
         sleep(STEADY_STATE_SLEEP_TIME);
         switch (cryptoboxKey) {
             case LEFT:
-                turnLeft_Encoder(35.0);
+                turnLeft_Encoder(145.0);
                 break;
             case UNKNOWN:
             case CENTER:
-                turnLeft_Encoder(30.0);
+                turnLeft_Encoder(130.0);
                 break;
             case RIGHT:
-                turnLeft_Encoder(20.0);
+                turnLeft_Encoder(125.0);
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);

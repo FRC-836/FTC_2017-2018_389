@@ -34,7 +34,7 @@ public class Autonomous_Parent extends Robot_Parent {
     protected final double ENCODER_DRIVE_POWER = 0.5;
 
     private final boolean USE_LEFT_ENCODER = true;
-    protected final boolean RUN_TEST_CODE = false;
+    protected final boolean RUN_TEST_CODE = true;
 
     private final double BEEP_EC_PER_FEET = 1282.0; // Encoder counts per Foot
     private final double BEEP_EC_PER_DEGREES_180 = 21.22;
@@ -44,12 +44,12 @@ public class Autonomous_Parent extends Robot_Parent {
 
     private final double JEWEL_ARM_FULLY_UP = 1.0; // Servo Position
 
-    protected final double JEWEL_DRIVE_DISTANCE = 0.15; // feet
+    protected final double JEWEL_DRIVE_DISTANCE = 0.19; // feet
     protected final double JEWEL_DRIVE_POWER = 0.15;
 
     private final double COLOR_UNCERTAINTY = 0.05; // Amount that (Red/Blue) > 1 or vice-versa to determine a color
 
-    protected final long SLIGHT_LIFT_TIME = 75;
+    protected final long SLIGHT_LIFT_TIME = 150;
 
     @Override
     public void initializeRobot() {
