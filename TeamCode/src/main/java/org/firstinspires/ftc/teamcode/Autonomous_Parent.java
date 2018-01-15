@@ -44,13 +44,15 @@ public class Autonomous_Parent extends Robot_Parent {
 
     private final double JEWEL_ARM_FULLY_UP = 1.0; // Servo Position
 
-    protected final double JEWEL_DRIVE_DISTANCE = 0.19; // feet
-    protected final double JEWEL_DRIVE_POWER = 0.15;
+    protected final double JEWEL_DRIVE_DISTANCE = 0.21; // feet
+    protected final double JEWEL_DRIVE_POWER = 0.10;
 
     private final double COLOR_UNCERTAINTY = 0.05; // Amount that (Red/Blue) > 1 or vice-versa to determine a color
 
     protected final long SLIGHT_LIFT_TIME = 150;
-    protected final long SECOND_ROW_LIFT_TIME = 900;
+    protected final long SECOND_ROW_LIFT_TIME = 500;
+    private  final long TIME_FOR_JEWEL = 500;
+    private final long PAUSE_BETWEEN_TEST_CODE = 500;
 
     @Override
     public void initializeRobot() {
@@ -295,20 +297,27 @@ public class Autonomous_Parent extends Robot_Parent {
         // Steps for Scoring the 2nd Glyph:
         // 1. Turn 180 Degrees
         turnLeft_Encoder(180.0);
+        sleep(PAUSE_BETWEEN_TEST_CODE);
         // 2. Move forward 2 feet
         moveForwardEncoder(2.0);
+        sleep(PAUSE_BETWEEN_TEST_CODE);
         // 3. Pick up glyph
         pickUpGlyph();
+        sleep(PAUSE_BETWEEN_TEST_CODE);
         timedLiftUp(SLIGHT_LIFT_TIME);
         sleep(100);
         // 4. Move backward 1 3/4 feet
-        moveBackwardEncoder(1.75);
+        moveBackwardEncoder(1.2);
+        sleep(PAUSE_BETWEEN_TEST_CODE);
         // 5. Turn 180 Degrees
-        turnLeft_Encoder(180.0);
+        turnRight_Encoder(180.0);
+        sleep(PAUSE_BETWEEN_TEST_CODE);
         // 6. Lift a little bit so glyph doesn't drag
         timedLiftUp(SECOND_ROW_LIFT_TIME);
+        sleep(PAUSE_BETWEEN_TEST_CODE);
         // 7. Drive forward time based
         moveStraightTime(0.5, 1000);
+        sleep(PAUSE_BETWEEN_TEST_CODE);
         // 8. Drop glyph
         // 9. Sleep
         // 10. Move backward
@@ -340,7 +349,7 @@ public class Autonomous_Parent extends Robot_Parent {
                     moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 else
                     moveForwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
-
+                sleep(TIME_FOR_JEWEL);
                 //turnLeft_Encoder(20.0);
                 raiseJewelArm();
                 sleep(1000);
@@ -349,6 +358,7 @@ public class Autonomous_Parent extends Robot_Parent {
                 } else {
                     moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 }
+                sleep(TIME_FOR_JEWEL);
                 //turnRight_Encoder(30.0);
                 telemetry.addLine("Saw red, done moving.");
                 telemetry.update();
@@ -362,6 +372,7 @@ public class Autonomous_Parent extends Robot_Parent {
                 } else {
                     moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 }
+                sleep(TIME_FOR_JEWEL);
                 //turnRight_Encoder(20.0);
                 raiseJewelArm();
                 sleep(1000);
@@ -370,6 +381,7 @@ public class Autonomous_Parent extends Robot_Parent {
                 } else {
                     moveForwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 }
+                sleep(TIME_FOR_JEWEL);
                 //turnLeft_Encoder(20.0);
                 sleep(1000);
                 //turnLeft_Encoder(20.0);
