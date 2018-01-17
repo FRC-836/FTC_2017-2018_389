@@ -62,6 +62,7 @@ public class Competition_Teleop extends Teleop_Parent
             telemetry.addLine("Mode is Slow");
         }
         while (gamepad1.a)  {
+            setLift(LIFT_POWER_IDLE);
             dropGlyph();
             setDrive(-0.3,-0.4);
 
