@@ -323,6 +323,7 @@ public class Autonomous_Parent extends Robot_Parent {
         // 10. Move backward
         scoreGlyph(true);
         // 11. Lower lift
+        sleep(PAUSE_BETWEEN_TEST_CODE);
         timedLiftDown(SLIGHT_LIFT_TIME);
         // 12.(Optional)Drive forward to park
 

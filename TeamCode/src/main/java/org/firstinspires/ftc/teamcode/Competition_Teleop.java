@@ -49,14 +49,6 @@ public class Competition_Teleop extends Teleop_Parent
         else {
             intakeOff();
         }
-
-        // Set jewel arm
-        if(gamepad1.y) {
-            raiseJewelArm();
-        }
-        else if(gamepad1.x) {
-            lowerJewelArm();
-        }
         if(gamepad1.dpad_up) {
             isModeFast = true;
         }
@@ -66,8 +58,13 @@ public class Competition_Teleop extends Teleop_Parent
         if(isModeFast) {
             telemetry.addLine("Mode is Fast");
         }
-        else{
+        else {
             telemetry.addLine("Mode is Slow");
+        }
+        while (gamepad1.a)  {
+            dropGlyph();
+            setDrive(-0.3,-0.4);
+
         }
         telemetry.addData("Left, Right power","%4.2f, %4.2f", leftPower, rightPower);
         //telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
