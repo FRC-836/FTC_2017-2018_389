@@ -65,7 +65,7 @@ public class Autonomous_Parent extends Robot_Parent {
     public void startRobot() {
         runAutonomous();
         telemetry.clear();
-        telemetry.addData("Total runtime", "%6.3f seconds", runtime.seconds());
+        telemetry.addData("Total runtime", "%6.3f seconds", runtime.seconds());//allows calculation of total runtime after the program ends to show on the phone.
         telemetry.update();
         while (opModeIsActive());
     }
@@ -80,14 +80,14 @@ public class Autonomous_Parent extends Robot_Parent {
         setDrive(0.0, 0.0);
     }
 
-    protected void moveForwardEncoder(double distanceInFeet) {
+    protected void moveForwardEncoder(double distanceInFeet) {// move forward encoder based which allows you to drive using distance based.
         if (USE_LEFT_ENCODER)
-            moveForwardLeftEncoder(distanceInFeet, ENCODER_DRIVE_POWER);
+            moveForwardLeftEncoder(distanceInFeet, ENCODER_DRIVE_POWER);//
         else
-            moveForwardRightEncoder(distanceInFeet, ENCODER_DRIVE_POWER);
+            moveForwardRightEncoder(distanceInFeet, ENCODER_DRIVE_POWER);//
     }
 
-    protected void moveBackwardEncoder(double distanceInFeet) {
+    protected void moveBackwardEncoder(double distanceInFeet) {// move backward  encoder based which allows you to drive using distance based.
         if (USE_LEFT_ENCODER)
             moveBackwardLeftEncoder(distanceInFeet, ENCODER_DRIVE_POWER);
         else
@@ -160,7 +160,7 @@ public class Autonomous_Parent extends Robot_Parent {
         setDrive(0.0, 0.0);
     }
 
-    protected void turnRight_Encoder (double degreesOfTurn)
+    protected void turnRight_Encoder (double degreesOfTurn)//Allows us to to turn right encoder based which also allows us to turn distance based
     {
         if (USE_LEFT_ENCODER)
             turnRight_LeftEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
@@ -168,7 +168,7 @@ public class Autonomous_Parent extends Robot_Parent {
             turnRight_RightEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
     }
 
-    protected void turnLeft_Encoder (double degreesOfTurn)
+    protected void turnLeft_Encoder (double degreesOfTurn)//Allows us to to turn left encoder based which also allows us to turn distance based
     {
         if (USE_LEFT_ENCODER)
             turnLeft_LeftEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
@@ -240,9 +240,9 @@ public class Autonomous_Parent extends Robot_Parent {
         setDrive(0.0, 0.0);
     }
 
-    private void raiseJewelArmMore() {
+    private void raiseJewelArmMore() {// Allows us to raise our arm back closer to its starting position
         jewelArm.setPosition(JEWEL_ARM_FULLY_UP);
-    }
+    }// Allows us to raise our arm back closer to its starting position
 
     protected ColorViewed getColorSeen() {
         if(colorSensor.blue() == 0){
@@ -275,7 +275,7 @@ public class Autonomous_Parent extends Robot_Parent {
         }
         return vuMark;
     }
-    protected void setupVuMarkData(){
+    protected void setupVuMarkData(){// Enables the VuMark data which allows to use the phone to scan the pictograph
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         vParameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         vParameters.vuforiaLicenseKey = "Ad/QI4f/////AAAAGTjpPxbdZUqSnVc3mldXKV0E3Ubo8UkPrp0l5P0ie1EXwbAiJNburExxvybAM/e5esxGLn3dl5zN73V9qcvBOROjy68/GQ8c0doo8ApEL127pzLSQEP6rZeq589EtDerLpgCqhsXSnU1hzLJ8S0UcgM9MeeUErzvfso6YAjLGZ9JXzLZHjXlX9lapHT64fBax9lZvMw5pmmZQE/j7oXqeamcdgnKyUn+wQN/3Gb+I2Ye7utY/LFJTiXFYesZsmE/eaq2mGnKVmqA4u6hvrSbEx/QudLqhl3nlXrAUPK+tx+5ersWNIB6OnNaRQApdYJb4mnO8qP8MgWhMIdT4Fuqd3WbitRP1NPUzqO+pJ63c36u";
