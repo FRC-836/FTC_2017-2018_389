@@ -30,14 +30,14 @@ public class Competition_Autonomous_Blue_Right extends Autonomous_Parent {
 
         switch (cryptoboxKey) {
             case LEFT:
-                moveBackwardEncoder(2.15, ENCODER_DRIVE_POWER);
+                moveBackwardEncoder(1.6, ENCODER_DRIVE_POWER);// was originally 2.15
                 break;
             case UNKNOWN:
             case CENTER:
-                moveBackwardEncoder(2.8, ENCODER_DRIVE_POWER);
+                moveBackwardEncoder(2.15, ENCODER_DRIVE_POWER);//was originally 2.8
                 break;
             case RIGHT:
-                moveBackwardEncoder(3.4, ENCODER_DRIVE_POWER);
+                moveBackwardEncoder(2.8, ENCODER_DRIVE_POWER);//was originally 3.4
                 break;
         }
 

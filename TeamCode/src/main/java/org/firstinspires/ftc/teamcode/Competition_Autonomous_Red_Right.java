@@ -33,11 +33,11 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
 
         switch (cryptoboxKey) {
             case LEFT:
-                turnLeft_Encoder(60.0);
+                turnLeft_Encoder(75.0);//was originally 60
                 break;
             case UNKNOWN:
             case CENTER:
-                turnLeft_Encoder(45.0);
+                turnLeft_Encoder(60.0);//was originally 45.0
                 break;
             case RIGHT:
                 turnLeft_Encoder(35.0);

@@ -63,7 +63,7 @@ public class Competition_Teleop extends Teleop_Parent
         }
         while (gamepad1.a)  {
             setLift(LIFT_POWER_IDLE);
-            dropGlyph();
+            setIntake(SLIGHT_INTAKE_POWER);
             setDrive(-0.3,-0.4);
 
         }
