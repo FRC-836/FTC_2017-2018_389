@@ -33,7 +33,7 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
 
         switch (cryptoboxKey) {
             case LEFT:
-                turnLeft_Encoder(75.0);//was originally 60
+                turnLeft_Encoder(70.0);//was originally 60
                 break;
             case UNKNOWN:
             case CENTER:
@@ -49,5 +49,10 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
         sleep(STEADY_STATE_SLEEP_TIME);
         // Drops pre-loaded glyph into the cryptobox
         scoreGlyph(true);
+        if (!RUN_TEST_CODE)
+            return;
+
+        //Test code goes beyond this point
+        scoreOneMoreGlyph();
     }
 }

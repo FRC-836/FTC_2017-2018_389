@@ -34,7 +34,7 @@ public class Autonomous_Parent extends Robot_Parent {
     protected final double ENCODER_DRIVE_POWER = 0.5;
 
     private final boolean USE_LEFT_ENCODER = true;
-    protected final boolean RUN_TEST_CODE = true;
+    protected final boolean RUN_TEST_CODE = false;
 
     private final double BEEP_EC_PER_FEET = 1282.0; // Encoder counts per Foot
     private final double BEEP_EC_PER_DEGREES_180 = 21.22;
