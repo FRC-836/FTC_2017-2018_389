@@ -43,7 +43,7 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
                 turnLeft_Encoder(150.0);
                 break;
             case RIGHT:
-                turnLeft_Encoder(125.0);
+                turnLeft_Encoder(100.0);
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);
