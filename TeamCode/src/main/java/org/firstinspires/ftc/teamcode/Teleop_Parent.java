@@ -19,6 +19,8 @@ public class Teleop_Parent extends Robot_Parent
         {
             cycle();
         }
+        setJewelArm(JEWEL_ARM_FULLY_UP);
+        sleep(250);
     }
 
     public void cycle() {

@@ -21,6 +21,7 @@ public class Robot_Parent extends LinearOpMode
 
     private final double JEWEL_ARM_UP = 0.7;
     private final double JEWEL_ARM_DOWN = 0.2;
+    protected final double JEWEL_ARM_FULLY_UP = 1.0; // Servo Position
 
     protected final double LIFT_POWER_UP = 0.50;
     protected final double LIFT_POWER_DOWN = -0.10;

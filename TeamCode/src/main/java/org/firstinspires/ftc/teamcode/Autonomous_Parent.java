@@ -42,8 +42,6 @@ public class Autonomous_Parent extends Robot_Parent {
 
     private final double INTAKE_FULLY_OPEN = 0.0; // Servo Position
 
-    private final double JEWEL_ARM_FULLY_UP = 1.0; // Servo Position
-
     protected final double JEWEL_DRIVE_DISTANCE = 0.21; // feet
     protected final double JEWEL_DRIVE_POWER = 0.10;
 
