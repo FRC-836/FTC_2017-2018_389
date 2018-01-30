@@ -268,7 +268,9 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected RelicRecoveryVuMark getPictographKey() {
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        while (vuMark == RelicRecoveryVuMark.UNKNOWN && opModeIsActive()) {
+        ElapsedTime pictographTime = new ElapsedTime();
+        pictographTime.reset();
+        while ((vuMark == RelicRecoveryVuMark.UNKNOWN) && opModeIsActive() && (pictographTime.seconds() <= 5.0)) {
             vuMark = RelicRecoveryVuMark.from(relicTemplate);
         }
         return vuMark;
