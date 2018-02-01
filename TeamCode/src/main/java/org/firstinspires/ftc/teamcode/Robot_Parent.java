@@ -17,7 +17,8 @@ public class Robot_Parent extends LinearOpMode
 
     private final double DROP_GLYPH_VALUE = 0.1;
     private final double PICK_UP_GLYPH_VALUE = 0.5;
-    protected final double SLIGHT_INTAKE_POWER= 0.35;
+    private final double PICK_UP_GLYPH_VALUE_2 = 0.65;
+    protected final double SLIGHT_INTAKE_VALUE = 0.275;
 
     private final double JEWEL_ARM_UP = 0.7;
     private final double JEWEL_ARM_DOWN = 0.2;
@@ -96,15 +97,15 @@ public class Robot_Parent extends LinearOpMode
         liftMotor.setPower(liftPower);
     }
 
-    protected void setIntake(double intakePosition){
+    protected void setIntake(double intakePosition, double intake2Position){
         servoIntake.setPosition(intakePosition);
-        secondServoIntake.setPosition(intakePosition + SECOND_SERVO_OFFSET);
+        secondServoIntake.setPosition(intake2Position + SECOND_SERVO_OFFSET);
     }
     protected void dropGlyph() {
-        setIntake(DROP_GLYPH_VALUE);
+        setIntake(DROP_GLYPH_VALUE, DROP_GLYPH_VALUE);
     }
     protected void pickUpGlyph() {
-        setIntake(PICK_UP_GLYPH_VALUE);
+        setIntake(PICK_UP_GLYPH_VALUE, PICK_UP_GLYPH_VALUE_2);
     }
     protected void intakeOff() {
         //setIntake(0.0);

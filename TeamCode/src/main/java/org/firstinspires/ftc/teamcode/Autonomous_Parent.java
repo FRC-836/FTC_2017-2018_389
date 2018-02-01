@@ -257,7 +257,7 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected void startUp() {
         raiseJewelArmMore(); // Locks jewel arm
-        setIntake(INTAKE_FULLY_OPEN);
+        setIntake(INTAKE_FULLY_OPEN, INTAKE_FULLY_OPEN);
 
         waitForStart();
         runtime.reset();

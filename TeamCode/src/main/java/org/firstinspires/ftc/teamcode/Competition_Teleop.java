@@ -61,11 +61,18 @@ public class Competition_Teleop extends Teleop_Parent
         else {
             telemetry.addLine("Mode is Slow");
         }
-        while (gamepad1.a)  {
+        if (gamepad1.a)  {
+            double BACK_POWER = -0.15;
+            long TIME_ON = 100;
+            long TIME_OFF = 100;
             setLift(LIFT_POWER_IDLE);
-            setIntake(SLIGHT_INTAKE_POWER);
-            setDrive(-0.3,-0.4);
-
+            setIntake(SLIGHT_INTAKE_VALUE, SLIGHT_INTAKE_VALUE);
+            while (gamepad1.a) {
+                setDrive(BACK_POWER, BACK_POWER);
+                sleep(TIME_ON);
+                setDrive(0.0, BACK_POWER);
+                sleep(TIME_OFF);
+            }
         }
         telemetry.addData("Left, Right power","%4.2f, %4.2f", leftPower, rightPower);
         //telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
