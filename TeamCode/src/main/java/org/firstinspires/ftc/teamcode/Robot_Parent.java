@@ -17,7 +17,7 @@ public class Robot_Parent extends LinearOpMode
 
     private final double DROP_GLYPH_VALUE = 0.1;
     private final double PICK_UP_GLYPH_VALUE = 0.5;
-    private final double PICK_UP_GLYPH_VALUE_2 = 0.65;
+    protected final double PICK_UP_GLYPH_VALUE_2 = 0.65;
     protected final double SLIGHT_INTAKE_VALUE = 0.275;
 
     private final double JEWEL_ARM_UP = 0.7;

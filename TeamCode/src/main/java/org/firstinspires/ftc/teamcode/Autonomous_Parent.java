@@ -31,7 +31,7 @@ public class Autonomous_Parent extends Robot_Parent {
     protected final long STEADY_STATE_SLEEP_TIME = 500;
 
     protected final double ENCODER_TURN_POWER = 0.6;
-    protected final double ENCODER_DRIVE_POWER = 0.5;
+    protected final double ENCODER_DRIVE_POWER = 0.5;//was 0.5
 
     private final boolean USE_LEFT_ENCODER = true;
     protected final boolean RUN_TEST_CODE = false;
@@ -40,7 +40,8 @@ public class Autonomous_Parent extends Robot_Parent {
     private final double BEEP_EC_PER_DEGREES_180 = 21.22;
     private final double BEEP_EC_PER_DEGREES_DEFAULT = BEEP_EC_PER_DEGREES_180;
 
-    private final double INTAKE_FULLY_OPEN = 0.0; // Servo Position
+    private final double INTAKE_1_START_POS = 0.0; // Servo Position
+    private final double INTAKE_2_START_POS = PICK_UP_GLYPH_VALUE_2 + 0.20; // Servo Position
 
     protected final double JEWEL_DRIVE_DISTANCE = 0.21; // feet
     protected final double JEWEL_DRIVE_POWER = 0.10;
@@ -77,7 +78,6 @@ public class Autonomous_Parent extends Robot_Parent {
         sleep(timeInMilliseconds);
         setDrive(0.0, 0.0);
     }
-
     protected void moveForwardEncoder(double distanceInFeet) {// move forward encoder based which allows you to drive using distance based.
         if (USE_LEFT_ENCODER)
             moveForwardLeftEncoder(distanceInFeet, ENCODER_DRIVE_POWER);//
@@ -257,7 +257,7 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected void startUp() {
         raiseJewelArmMore(); // Locks jewel arm
-        setIntake(INTAKE_FULLY_OPEN, INTAKE_FULLY_OPEN);
+        setIntake(INTAKE_1_START_POS, INTAKE_2_START_POS);
 
         waitForStart();
         runtime.reset();
