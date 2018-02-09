@@ -30,13 +30,13 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected final long STEADY_STATE_SLEEP_TIME = 500;
 
-    protected final double ENCODER_TURN_POWER = 0.6;
-    protected final double ENCODER_DRIVE_POWER = 0.5;//was 0.5
+    protected final double ENCODER_TURN_POWER = 0.4;//was 6
+    protected final double ENCODER_DRIVE_POWER = 0.38;//was 0.5
 
     private final boolean USE_LEFT_ENCODER = true;
     protected final boolean RUN_TEST_CODE = false;
 
-    private final double BEEP_EC_PER_FEET = 1282.0; // Encoder counts per Foot
+    private final double BEEP_EC_PER_FEET = 1304.8; // Encoder counts per Foot
     private final double BEEP_EC_PER_DEGREES_180 = 21.22;
     private final double BEEP_EC_PER_DEGREES_DEFAULT = BEEP_EC_PER_DEGREES_180;
 
@@ -97,7 +97,7 @@ public class Autonomous_Parent extends Robot_Parent {
             moveForwardLeftEncoder(distanceInFeet, drivePower);
         else
             moveForwardRightEncoder(distanceInFeet, drivePower);
-    }
+      }
 
     protected void moveBackwardEncoder(double distanceInFeet, double drivePower) {
         if (USE_LEFT_ENCODER)
