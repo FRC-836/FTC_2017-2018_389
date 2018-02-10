@@ -495,6 +495,8 @@ public class Autonomous_Parent extends Robot_Parent {
 
     private void setupIMU()
     {
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
