@@ -30,14 +30,14 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected final long STEADY_STATE_SLEEP_TIME = 500;
 
-    protected final double ENCODER_TURN_POWER = 0.4;//was 6
-    protected final double ENCODER_DRIVE_POWER = 0.38;//was 0.5
+    protected final double ENCODER_TURN_POWER = 0.19;//was 6
+    protected final double ENCODER_DRIVE_POWER = 0.2;//was 0.5
 
     private final boolean USE_LEFT_ENCODER = true;
     protected final boolean RUN_TEST_CODE = false;
 
     private final double BEEP_EC_PER_FEET = 1304.8; // Encoder counts per Foot
-    private final double BEEP_EC_PER_DEGREES_180 = 21.22;
+    private final double BEEP_EC_PER_DEGREES_180 = 15.8;
     private final double BEEP_EC_PER_DEGREES_DEFAULT = BEEP_EC_PER_DEGREES_180;
 
     private final double INTAKE_1_START_POS = 0.0; // Servo Position

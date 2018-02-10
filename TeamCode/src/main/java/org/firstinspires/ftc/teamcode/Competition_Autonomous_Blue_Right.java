@@ -27,22 +27,26 @@ public class Competition_Autonomous_Blue_Right extends Autonomous_Parent {
 
         //turnRight_Encoder(25.0);
         sleep(1000);
-
+        moveBackwardEncoder(2.0);
+        sleep(STEADY_STATE_SLEEP_TIME);
+        turnRight_Encoder(30.0);
+        sleep(STEADY_STATE_SLEEP_TIME);
+        moveBackwardEncoder(1.0);
+        sleep(STEADY_STATE_SLEEP_TIME);
         switch (cryptoboxKey) {
             case LEFT:
-                moveBackwardEncoder(1.6, ENCODER_DRIVE_POWER);// was originally 2.15
+                turnRight_Encoder(19.0);// was originally 2.15
                 break;
             case UNKNOWN:
             case CENTER:
-                moveBackwardEncoder(2.50, ENCODER_DRIVE_POWER);//was originally 2.8
+                turnRight_Encoder(28.0);//was originally 2.8
                 break;
             case RIGHT:
-                moveBackwardEncoder(3.0, ENCODER_DRIVE_POWER);//was originally 3.4
+                turnRight_Encoder(45.0);//was originally 3.4
                 break;
         }
 
         // These two steps move the robot from the red platform to the red goal.
-        turnRight_Encoder(90.0);
         moveStraightTime(0.5, 1000);
 
         // Drops pre-loaded glyph into the cryptobox

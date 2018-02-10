@@ -75,7 +75,8 @@ public class Competition_Teleop extends Teleop_Parent
             }
         }
         telemetry.addData("Left, Right power","%4.2f, %4.2f", leftPower, rightPower);
-        //telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
+        telemetry.addData("Left Encoder", backLeftDrive.getCurrentPosition());
+        telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
         telemetry.update();
     }
 }
