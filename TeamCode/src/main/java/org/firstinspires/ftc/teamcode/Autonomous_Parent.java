@@ -29,7 +29,7 @@ public class Autonomous_Parent extends Robot_Parent {
 
     private final boolean USE_COMPASS_TURN = true;
 
-    private final double COMPASS_TURN_POWER = 0.5;
+    private final double COMPASS_TURN_POWER = 0.19;
     // COMPASS_PAUSE_TIME - When using compassTurn, it waits COMPASS_PAUSE_TIME milliseconds before
     // using the compass to ensure the robot has begun moving.
     private final long COMPASS_PAUSE_TIME = 200;

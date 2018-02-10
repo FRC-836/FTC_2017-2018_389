@@ -18,11 +18,13 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
         timedLiftUp(SLIGHT_LIFT_TIME);
         knockOffJewel(true);
 
-        telemetry.addLine("Done with Jewel. Looking for Pictograph");
+        telemetry.addLine("Done with Jewel. About to look for Pictograph");
         telemetry.update();
 
         sleep(2000);
 
+        telemetry.addLine("Looking for Pictograph");
+        telemetry.update();
         cryptoboxKey = getPictographKey();
 
         //turnRight(25.0);

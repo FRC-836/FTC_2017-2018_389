@@ -18,11 +18,13 @@ public class Competition_Autonomous_Blue_Right extends Autonomous_Parent {
         timedLiftUp(SLIGHT_LIFT_TIME);
         knockOffJewel(true);
 
-        telemetry.addLine("Done with Jewel. Looking for Pictograph");
+        telemetry.addLine("Done with Jewel. About to look for Pictograph");
         telemetry.update();
 
         sleep(2000);
 
+        telemetry.addLine("Looking for Pictograph");
+        telemetry.update();
         cryptoboxKey = getPictographKey();
 
         //turnRight(25.0);
@@ -45,7 +47,7 @@ public class Competition_Autonomous_Blue_Right extends Autonomous_Parent {
                 turnRight(45.0);//was originally 3.4
                 break;
         }
-
+        sleep(STEADY_STATE_SLEEP_TIME);
         // These two steps move the robot from the red platform to the red goal.
         moveStraightTime(0.5, 1000);
 
