@@ -25,24 +25,27 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
 
         cryptoboxKey = getPictographKey();
 
-        //turnRight_Encoder(15.0);
         sleep(1000);
-
+        moveForwardEncoder(2.0);
+        sleep(STEADY_STATE_SLEEP_TIME);
+        turnLeft(30.0);
+        sleep(STEADY_STATE_SLEEP_TIME);
+        moveForwardEncoder(1.0);
+        sleep(STEADY_STATE_SLEEP_TIME);
         switch (cryptoboxKey) {
             case LEFT:
-                moveForwardEncoder(3.45, ENCODER_DRIVE_POWER);
+                turnRight(79.0);// was originally 2.15
                 break;
             case UNKNOWN:
             case CENTER:
-                moveForwardEncoder(2.85, ENCODER_DRIVE_POWER);
+                turnRight(88.0);//was originally 2.8
                 break;
             case RIGHT:
-                moveForwardEncoder(2.25, ENCODER_DRIVE_POWER);
+                turnRight(105.0);//was originally 3.4
                 break;
         }
 
         // These two steps move the robot from the red platform to the red goal.
-        turnRight_Encoder(90.0);
         moveStraightTime(0.5, 1000);
 
         // Drops pre-loaded glyph into the cryptobox

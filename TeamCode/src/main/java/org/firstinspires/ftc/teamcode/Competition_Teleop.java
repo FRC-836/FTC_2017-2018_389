@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="Tank Drive", group="Competition")//Competition/Main
 public class Competition_Teleop extends Teleop_Parent
 {
+    private boolean isPusherExtended = false;
+    private boolean isPusherEnabled = true;
     @Override
     public void cycle() {
         // Setup a variable for each drive wheel to save power level for telemetry
@@ -73,6 +75,21 @@ public class Competition_Teleop extends Teleop_Parent
                 setDrive(0.0, BACK_POWER);
                 sleep(TIME_OFF);
             }
+        }
+        if (gamepad1.y) {
+            if (isPusherEnabled) {
+                isPusherEnabled = false;
+                if (isPusherExtended) {
+                    retractPusher();
+                    isPusherExtended = false;
+                } else {
+                    extendPusher();
+                    isPusherExtended = true;
+                }
+            }
+        }
+        else{
+            isPusherEnabled = true;
         }
         telemetry.addData("Left, Right power","%4.2f, %4.2f", leftPower, rightPower);
         telemetry.addData("Left Encoder", backLeftDrive.getCurrentPosition());

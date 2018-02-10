@@ -4,8 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class Robot_Parent extends LinearOpMode
-{
+public class Robot_Parent extends LinearOpMode {
     protected DcMotor backLeftDrive = null;
     protected DcMotor backRightDrive = null;
     protected DcMotor frontLeftDrive = null;
@@ -14,6 +13,7 @@ public class Robot_Parent extends LinearOpMode
     protected Servo servoIntake = null;
     protected Servo secondServoIntake = null;
     protected Servo jewelArm = null;
+    protected Servo pusher = null;
 
     private final double DROP_GLYPH_VALUE = 0.1;
     private final double PICK_UP_GLYPH_VALUE = 0.5;
@@ -29,6 +29,8 @@ public class Robot_Parent extends LinearOpMode
     protected final double LIFT_POWER_IDLE = 0.12;//Original arm: 0.09, double arm originally 0.18-too high
 
     private final double SECOND_SERVO_OFFSET = 0.0;
+    protected final double EXTENDED_PUSHER_ARM = 0.2;
+    protected final double RETRACTED_PUSHER_ARM = 0.0;
 
     @Override
     public void runOpMode() {
@@ -47,6 +49,7 @@ public class Robot_Parent extends LinearOpMode
         servoIntake = hardwareMap.get(Servo.class, "intake");
         secondServoIntake = hardwareMap.get(Servo.class, "intake2");
         jewelArm = hardwareMap.get(Servo.class, "jewel_arm");
+        pusher = hardwareMap.get(Servo.class, "pusher");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -60,6 +63,7 @@ public class Robot_Parent extends LinearOpMode
         servoIntake.setDirection(Servo.Direction.FORWARD);
         secondServoIntake.setDirection(Servo.Direction.FORWARD);
         jewelArm.setDirection(Servo.Direction.FORWARD);
+        pusher.setDirection(Servo.Direction.FORWARD);
 
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -85,7 +89,7 @@ public class Robot_Parent extends LinearOpMode
 
     }
 
-    protected void setDrive(double leftPower, double rightPower){
+    protected void setDrive(double leftPower, double rightPower) {
         backLeftDrive.setPower(leftPower);
         backRightDrive.setPower(rightPower);
         frontLeftDrive.setPower(leftPower);
@@ -93,20 +97,23 @@ public class Robot_Parent extends LinearOpMode
         //long live the balance
     }
 
-    protected void setLift(double liftPower){
+    protected void setLift(double liftPower) {
         liftMotor.setPower(liftPower);
     }
 
-    protected void setIntake(double intakePosition, double intake2Position){
+    protected void setIntake(double intakePosition, double intake2Position) {
         servoIntake.setPosition(intakePosition);
         secondServoIntake.setPosition(intake2Position + SECOND_SERVO_OFFSET);
     }
+
     protected void dropGlyph() {
         setIntake(DROP_GLYPH_VALUE, DROP_GLYPH_VALUE);
     }
+
     protected void pickUpGlyph() {
         setIntake(PICK_UP_GLYPH_VALUE, PICK_UP_GLYPH_VALUE_2);
     }
+
     protected void intakeOff() {
         //setIntake(0.0);
     }
@@ -114,10 +121,16 @@ public class Robot_Parent extends LinearOpMode
     protected void setJewelArm(double position) {
         jewelArm.setPosition(position);
     }
+
     protected void raiseJewelArm() {
         setJewelArm(JEWEL_ARM_UP);
     }
+
     protected void lowerJewelArm() {
         setJewelArm(JEWEL_ARM_DOWN);
     }
+
+    protected void setPusher(double pusherPosition){pusher.setPosition(pusherPosition);}
+    protected void retractPusher(){setPusher(RETRACTED_PUSHER_ARM);}
+    protected void extendPusher (){setPusher(EXTENDED_PUSHER_ARM);}
 }

@@ -25,25 +25,25 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
 
         cryptoboxKey = getPictographKey();
 
-        //turnRight_Encoder(25.0);
+        //turnRight(25.0);
         sleep(STEADY_STATE_SLEEP_TIME);
 
         moveBackwardEncoder(2.0);
         sleep(STEADY_STATE_SLEEP_TIME);
-        turnLeft_Encoder(60.0);
+        turnLeft(60.0);
         sleep(STEADY_STATE_SLEEP_TIME);
         moveForwardEncoder(2.0);
         sleep(STEADY_STATE_SLEEP_TIME);
         switch (cryptoboxKey) {
             case LEFT:
-                turnLeft_Encoder(175.0);
+                turnLeft(175.0);
                 break;
             case UNKNOWN:
             case CENTER:
-                turnLeft_Encoder(150.0);
+                turnLeft(150.0);
                 break;
             case RIGHT:
-                turnLeft_Encoder(100.0);
+                turnLeft(100.0);
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);

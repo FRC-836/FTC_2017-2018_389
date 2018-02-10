@@ -26,7 +26,7 @@ public class Competition_Autonomous_Only_Jewel_No_Encoder_Blue extends Autonomou
                 telemetry.addLine("Saw blue.");
                 telemetry.update();
                 //moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, ENCODER_DRIVE_POWER);
-                //turnRight_Encoder(30.0);
+                //turnRight(30.0);
                 break;
             case RED:
                 // Moving forward knocks off red.

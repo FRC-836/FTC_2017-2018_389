@@ -1,12 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
 
 public class Autonomous_Parent extends Robot_Parent {
 
@@ -17,6 +24,17 @@ public class Autonomous_Parent extends Robot_Parent {
     protected RelicRecoveryVuMark cryptoboxKey = null;
     private VuforiaTrackable relicTemplate = null;
     private VuforiaLocalizer vuforia;
+
+    BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+    private final boolean USE_COMPASS_TURN = true;
+
+    private final double COMPASS_TURN_POWER = 0.5;
+    // COMPASS_PAUSE_TIME - When using compassTurn, it waits COMPASS_PAUSE_TIME milliseconds before
+    // using the compass to ensure the robot has begun moving.
+    private final long COMPASS_PAUSE_TIME = 200;
+    BNO055IMU imu;
+    Orientation angles;
 
     enum ColorViewed {
         RED,
@@ -57,6 +75,7 @@ public class Autonomous_Parent extends Robot_Parent {
     public void initializeRobot() {
         colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
         setupVuMarkData();
+        setupIMU();
         startUp();
     }
 
@@ -158,36 +177,55 @@ public class Autonomous_Parent extends Robot_Parent {
         setDrive(0.0, 0.0);
     }
 
-    protected void turnRight_Encoder (double degreesOfTurn)//Allows us to to turn right encoder based which also allows us to turn distance based
+    protected void turnRight(double degreesOfTurn)//Allows us to to turn right encoder based which also allows us to turn distance based
     {
-        if (USE_LEFT_ENCODER)
-            turnRight_LeftEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
-        else
-            turnRight_RightEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
+        if (USE_COMPASS_TURN) {
+            compassTurn(degreesOfTurn);
+        }
+        else {
+            if (USE_LEFT_ENCODER)
+                turnRight_LeftEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
+            else
+                turnRight_RightEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
+        }
     }
 
-    protected void turnLeft_Encoder (double degreesOfTurn)//Allows us to to turn left encoder based which also allows us to turn distance based
+    protected void turnLeft(double degreesOfTurn)//Allows us to to turn left encoder based which also allows us to turn distance based
     {
-        if (USE_LEFT_ENCODER)
-            turnLeft_LeftEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
-        else
-            turnLeft_RightEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
+        if (USE_COMPASS_TURN) {
+            compassTurn(-degreesOfTurn);
+        }
+        else {
+            if (USE_LEFT_ENCODER)
+                turnLeft_LeftEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
+            else
+                turnLeft_RightEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
+        }
     }
 
-    protected void turnRight_Encoder (double degreesOfTurn, double ecPerDegree)
+    protected void turnRight(double degreesOfTurn, double ecPerDegree)
     {
-        if (USE_LEFT_ENCODER)
-            turnRight_LeftEncoder(degreesOfTurn, ecPerDegree);
-        else
-            turnRight_RightEncoder(degreesOfTurn, ecPerDegree);
+        if (USE_COMPASS_TURN) {
+            compassTurn(degreesOfTurn);
+        }
+        else {
+            if (USE_LEFT_ENCODER)
+                turnRight_LeftEncoder(degreesOfTurn, ecPerDegree);
+            else
+                turnRight_RightEncoder(degreesOfTurn, ecPerDegree);
+        }
     }
 
-    protected void turnLeft_Encoder (double degreesOfTurn, double ecPerDegree)
-    {
-        if (USE_LEFT_ENCODER)
-            turnLeft_LeftEncoder(degreesOfTurn, ecPerDegree);
-        else
-            turnLeft_RightEncoder(degreesOfTurn, ecPerDegree);
+    protected void turnLeft(double degreesOfTurn, double ecPerDegree) {
+        if (USE_COMPASS_TURN) {
+            compassTurn(-degreesOfTurn);
+        }
+        else {
+            if (USE_LEFT_ENCODER)
+                turnLeft_LeftEncoder(degreesOfTurn, ecPerDegree);
+            else
+                turnLeft_RightEncoder(degreesOfTurn, ecPerDegree);
+        }
     }
 
     private void turnRight_LeftEncoder(double degreesOfTurn, double ecPerDegree) {
@@ -296,7 +334,7 @@ public class Autonomous_Parent extends Robot_Parent {
     protected void scoreOneMoreGlyph(){
         // Steps for Scoring the 2nd Glyph:
         // 1. Turn 180 Degrees
-        turnLeft_Encoder(180.0);
+        turnLeft(180.0);
         sleep(PAUSE_BETWEEN_TEST_CODE);
         // 2. Move forward 2 feet
         moveForwardEncoder(2.0);
@@ -310,7 +348,7 @@ public class Autonomous_Parent extends Robot_Parent {
         moveBackwardEncoder(1.2);
         sleep(PAUSE_BETWEEN_TEST_CODE);
         // 5. Turn 180 Degrees
-        turnRight_Encoder(180.0);
+        turnRight(180.0);
         sleep(PAUSE_BETWEEN_TEST_CODE);
         // 6. Lift a little bit so glyph doesn't drag
         timedLiftUp(SECOND_ROW_LIFT_TIME);
@@ -351,7 +389,7 @@ public class Autonomous_Parent extends Robot_Parent {
                 else
                     moveForwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 sleep(TIME_FOR_JEWEL);
-                //turnLeft_Encoder(20.0);
+                //turnLeft(20.0);
                 raiseJewelArm();
                 sleep(1000);
                 if(isBlueTeam) {
@@ -360,7 +398,7 @@ public class Autonomous_Parent extends Robot_Parent {
                     moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 }
                 sleep(TIME_FOR_JEWEL);
-                //turnRight_Encoder(30.0);
+                //turnRight(30.0);
                 telemetry.addLine("Saw red, done moving.");
                 telemetry.update();
                 break;
@@ -374,7 +412,7 @@ public class Autonomous_Parent extends Robot_Parent {
                     moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 }
                 sleep(TIME_FOR_JEWEL);
-                //turnRight_Encoder(20.0);
+                //turnRight(20.0);
                 raiseJewelArm();
                 sleep(1000);
                 if(isBlueTeam) {
@@ -383,9 +421,9 @@ public class Autonomous_Parent extends Robot_Parent {
                     moveForwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 }
                 sleep(TIME_FOR_JEWEL);
-                //turnLeft_Encoder(20.0);
+                //turnLeft(20.0);
                 sleep(1000);
-                //turnLeft_Encoder(20.0);
+                //turnLeft(20.0);
                 telemetry.addLine("Saw blue, done moving.");
                 telemetry.update();
                 break;
@@ -395,8 +433,74 @@ public class Autonomous_Parent extends Robot_Parent {
                 telemetry.update();
                 raiseJewelArm();
                 sleep(1000);
-                //turnLeft_Encoder(20.0);
+                //turnLeft(20.0);
                 break;
         }
+    }
+
+    // compassTurn, setupIMU, and getCurrentDegrees from team 12888
+    private float getCurrentDegrees()
+    {
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        return AngleUnit.DEGREES.normalize(AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+    }
+
+    protected void compassTurn(double degrees) {
+        float startPos = getCurrentDegrees();
+        float goalAngle;
+        if (degrees < 0.0)
+        {
+            degrees += 10.0;
+            goalAngle = startPos - ((float) degrees);
+            // Turning left
+            setDrive(-COMPASS_TURN_POWER, COMPASS_TURN_POWER);
+            if (goalAngle > 175.0) {
+                goalAngle -= 360.0;
+                sleep(COMPASS_PAUSE_TIME);
+                while (getCurrentDegrees() >= startPos && opModeIsActive())
+                {
+                    telemetry.addData("Angle1","%.2f",getCurrentDegrees());
+                    telemetry.update();
+                }
+            }
+            while (getCurrentDegrees() < goalAngle && opModeIsActive())
+            {
+                telemetry.addData("Angle1","%.2f",getCurrentDegrees());
+                telemetry.update();
+            }
+        }
+        else
+        {
+            degrees -= 10.0;
+            goalAngle = startPos - ((float) degrees);
+            // Turning right
+            setDrive(COMPASS_TURN_POWER, -COMPASS_TURN_POWER);
+            if (goalAngle < -175.0) {
+                goalAngle += 360.0;
+                sleep(COMPASS_PAUSE_TIME);
+                while (getCurrentDegrees() <= startPos && opModeIsActive())
+                {
+                    telemetry.addData("Angle1","%.2f",getCurrentDegrees());
+                    telemetry.update();
+                }
+            }
+            while (getCurrentDegrees() > goalAngle && opModeIsActive())
+            {
+                telemetry.addData("Angle1","%.2f",getCurrentDegrees());
+                telemetry.update();
+            }
+        }
+        setDrive(0.0, 0.0);
+    }
+
+    private void setupIMU()
+    {
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled      = true;
+        parameters.loggingTag          = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        imu.initialize(parameters);
     }
 }
