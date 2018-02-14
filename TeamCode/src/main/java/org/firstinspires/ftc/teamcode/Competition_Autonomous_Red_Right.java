@@ -36,14 +36,14 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
 
         switch (cryptoboxKey) {
             case LEFT:
-                turnLeft(45.0);//was originally 60
+                turnLeft(52.0);//was originally 45, then 57 then 50
                 break;
             case UNKNOWN:
             case CENTER:
-                turnLeft(35.0);//was originally 45.0
+                turnLeft(39.0);//was originally 45.0, then 35 then 40
                 break;
             case RIGHT:
-                turnLeft(15.0);
+                turnLeft(29.0);//was orignally 15, then 27 then 28
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);

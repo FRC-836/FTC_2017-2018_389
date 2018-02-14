@@ -29,7 +29,7 @@ public class Robot_Parent extends LinearOpMode {
     protected final double LIFT_POWER_IDLE = 0.12;//Original arm: 0.09, double arm originally 0.18-too high
 
     private final double SECOND_SERVO_OFFSET = 0.0;
-    protected final double EXTENDED_PUSHER_ARM = 0.2;
+    protected final double EXTENDED_PUSHER_ARM = 0.55;
     protected final double RETRACTED_PUSHER_ARM = 0.0;
 
     @Override

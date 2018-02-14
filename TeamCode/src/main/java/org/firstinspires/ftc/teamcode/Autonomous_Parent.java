@@ -62,6 +62,7 @@ public class Autonomous_Parent extends Robot_Parent {
     private final double INTAKE_2_START_POS = PICK_UP_GLYPH_VALUE_2 + 0.20; // Servo Position
 
     protected final double JEWEL_DRIVE_DISTANCE = 0.21; // feet
+    protected final double SPECIAL_JEWEL_DRIVE_DISTANCE = 0.3;
     protected final double JEWEL_DRIVE_POWER = 0.10;
 
     private final double COLOR_UNCERTAINTY = 0.05; // Amount that (Red/Blue) > 1 or vice-versa to determine a color
@@ -387,7 +388,7 @@ public class Autonomous_Parent extends Robot_Parent {
                 if(isBlueTeam)
                     moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 else
-                    moveForwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
+                    moveForwardEncoder(SPECIAL_JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 sleep(TIME_FOR_JEWEL);
                 //turnLeft(20.0);
                 raiseJewelArm();
@@ -395,7 +396,7 @@ public class Autonomous_Parent extends Robot_Parent {
                 if(isBlueTeam) {
                     moveForwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 } else {
-                    moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
+                    moveBackwardEncoder(SPECIAL_JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 }
                 sleep(TIME_FOR_JEWEL);
                 //turnRight(30.0);
@@ -407,7 +408,7 @@ public class Autonomous_Parent extends Robot_Parent {
                 telemetry.addLine("Saw blue.");
                 telemetry.update();
                 if(isBlueTeam) {
-                    moveForwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
+                    moveForwardEncoder(SPECIAL_JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 } else {
                     moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 }
@@ -416,7 +417,7 @@ public class Autonomous_Parent extends Robot_Parent {
                 raiseJewelArm();
                 sleep(1000);
                 if(isBlueTeam) {
-                    moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
+                    moveBackwardEncoder(SPECIAL_JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 } else {
                     moveForwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 }
