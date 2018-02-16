@@ -47,7 +47,9 @@ public class Autonomous_Parent extends Robot_Parent {
     private ColorSensor colorSensor = null;
 
     protected final long STEADY_STATE_SLEEP_TIME = 500;
-
+    protected final double LIFT_POWER_DOWN = -0.10;
+    protected final double LIFT_POWER_IDLE = 0.12;//Original arm: 0.09, double arm originally 0.18-too high
+    protected final double LIFT_POWER_UP = 0.50;
     protected final double ENCODER_TURN_POWER = 0.19;//was 6
     protected final double ENCODER_DRIVE_POWER = 0.2;//was 0.5
 
