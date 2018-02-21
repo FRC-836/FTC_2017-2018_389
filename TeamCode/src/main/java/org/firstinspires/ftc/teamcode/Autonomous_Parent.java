@@ -25,6 +25,7 @@ public class Autonomous_Parent extends Robot_Parent {
     private VuforiaTrackable relicTemplate = null;
     private VuforiaLocalizer vuforia;
 
+    // IMU Variables
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
     private final boolean USE_COMPASS_TURN = true;
@@ -73,6 +74,10 @@ public class Autonomous_Parent extends Robot_Parent {
     protected final long SECOND_ROW_LIFT_TIME = 500;
     private  final long TIME_FOR_JEWEL = 500;
     private final long PAUSE_BETWEEN_TEST_CODE = 500;
+
+    // Telemtry Actions
+    protected EncoderWatcher backLeftEncoderAction = new EncoderWatcher(telemetry, backLeftDrive, "Back Left Encoder");
+    protected EncoderWatcher backRightEncoderAction = new EncoderWatcher(telemetry, backRightDrive, "Back Right Encoder");
 
     @Override
     public void initializeRobot() {
