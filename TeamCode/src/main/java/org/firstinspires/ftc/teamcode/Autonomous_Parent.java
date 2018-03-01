@@ -76,11 +76,13 @@ public class Autonomous_Parent extends Robot_Parent {
     private final long PAUSE_BETWEEN_TEST_CODE = 500;
 
     // Telemtry Actions
-    protected EncoderWatcher backLeftEncoderAction = new EncoderWatcher(telemetry, backLeftDrive, "Back Left Encoder");
-    protected EncoderWatcher backRightEncoderAction = new EncoderWatcher(telemetry, backRightDrive, "Back Right Encoder");
+    protected EncoderWatcher backLeftEncoderAction;
+    protected EncoderWatcher backRightEncoderAction;
 
     @Override
     public void initializeRobot() {
+        backLeftEncoderAction = new EncoderWatcher(telemetry, backLeftDrive, "Back Left Encoder");
+        backRightEncoderAction = new EncoderWatcher(telemetry, backRightDrive, "Back Right Encoder");
         colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
         setupVuMarkData();
         setupIMU();
