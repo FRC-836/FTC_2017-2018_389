@@ -18,6 +18,5 @@ public class EncoderWatcher implements Runnable {
     @Override
     public void run() {
         telemetry.addData(motorLabel, "%d", motorToWatch.getCurrentPosition());
-        `
     }
 }
