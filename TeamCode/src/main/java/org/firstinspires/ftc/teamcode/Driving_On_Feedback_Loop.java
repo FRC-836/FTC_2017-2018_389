@@ -27,22 +27,40 @@ public class Driving_On_Feedback_Loop extends Autonomous_Parent {
 
     @Override
     public void runAutonomous() {
+        runtime = new ElapsedTime();
         liftArmPID(90.0);
     }
 
     public void liftArmPID(double angles_degrees) {
+        runtime.reset();
         resetArmEncoder();
         boolean pidIsRunning = true;
+        boolean isFirstTime = true;
         setpoint = (int) Math.round(angles_degrees * ENCODER_COUNTS_PER_DEGREE);
         while (pidIsRunning) {
             input = liftMotor.getCurrentPosition();
+            lastError = error;
             error = setpoint - input;
-            pValue = pGain * error;
+            lastTime = time;
+            time = runtime.seconds();
 
-            // TODO: Find iValue and dValue
+            // pValue
+            pValue = pGain * (double) error;
 
+            //iValue
+            iValue += iGain * (double) (lastError + error) * (0.5) * (time - lastTime);
+
+            //dValue
+            dValue = dGain * (double) (error - lastError) / (time - lastTime);
+
+            if (isFirstTime)
+            {
+                iValue = 0.0;
+                dValue = 0.0;
+                isFirstTime = false;
+            }
             output = pValue + iValue + dValue;
-            setDrive(output, output);
+            setLift(output);
         }
     }
 
