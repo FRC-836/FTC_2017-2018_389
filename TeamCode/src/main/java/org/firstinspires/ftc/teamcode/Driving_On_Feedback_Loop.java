@@ -19,16 +19,17 @@ public class Driving_On_Feedback_Loop extends Autonomous_Parent {
     double pValue = 0.0;
     double iValue = 0.0;
     double dValue = 0.0;
-    double pGain = 0.0;
-    double iGain = 0.0;
-    double dGain = 0.0;
+    double pGain = 0.0000000001;
+    double iGain = 0.0000000001;
+    double dGain = 0.0000000001;
 
     double ENCODER_COUNTS_PER_DEGREE = 0.0; // TODO: Find this value (Lift)
+    double MULTIPLIER = 1.05;
 
     @Override
     public void runAutonomous() {
         runtime = new ElapsedTime();
-        liftArmPID(90.0);
+        liftArmPID(0.0);
     }
 
     public void liftArmPID(double angles_degrees) {
@@ -38,6 +39,22 @@ public class Driving_On_Feedback_Loop extends Autonomous_Parent {
         boolean isFirstTime = true;
         setpoint = (int) Math.round(angles_degrees * ENCODER_COUNTS_PER_DEGREE);
         while (pidIsRunning) {
+            if (gamepad1.dpad_up)
+                pGain *= MULTIPLIER;
+            else if (gamepad1.dpad_down)
+                pGain /= MULTIPLIER;
+            if (gamepad1.y)
+                iGain *= MULTIPLIER;
+            else if(gamepad1.a)
+                iGain /= MULTIPLIER;
+            if (gamepad1.right_bumper)
+                dGain *= MULTIPLIER;
+            else if(gamepad1.right_trigger >= 0.5f)
+                dGain /= MULTIPLIER;
+            if (gamepad1.left_bumper)
+                setpoint += 1;
+            else if(gamepad1.left_trigger >= 0.5f)
+                setpoint -= 1;
             input = liftMotor.getCurrentPosition();
             lastError = error;
             error = setpoint - input;
@@ -61,6 +78,11 @@ public class Driving_On_Feedback_Loop extends Autonomous_Parent {
             }
             output = pValue + iValue + dValue;
             setLift(output);
+            telemetry.addData("P","%10.8f", pGain);
+            telemetry.addData("I","%10.8f", iGain);
+            telemetry.addData("D","%10.8f", dGain);
+            telemetry.addData("Set","%d", setpoint);
+            telemetry.addData("Loc","%d", liftMotor.getCurrentPosition());
         }
     }
 
