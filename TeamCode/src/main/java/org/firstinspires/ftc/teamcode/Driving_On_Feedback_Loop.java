@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="Driving_On_Feedback_Loop", group="Test")
-public class Driving_On_Feedback_Loop extends Autonomous_Parent {
+public class Driving_On_Feedback_Loop extends LinearOpMode {
 
     ElapsedTime runtime;
 
@@ -19,17 +21,25 @@ public class Driving_On_Feedback_Loop extends Autonomous_Parent {
     double pValue = 0.0;
     double iValue = 0.0;
     double dValue = 0.0;
-    double pGain = 0.0000000001;
-    double iGain = 0.0000000001;
+    double pGain = 0.0007;
+    double iGain = 0.00015;
     double dGain = 0.0000000001;
 
-    double ENCODER_COUNTS_PER_DEGREE = 0.0; // TODO: Find this value (Lift)
+    double ENCODER_COUNTS_PER_DEGREE = 8.475;
     double MULTIPLIER = 1.05;
 
+    DcMotor liftMotor = null;
+//1017 encoder counts in 120 degrees
     @Override
-    public void runAutonomous() {
+    public void runOpMode() throws InterruptedException {
+        waitForStart();
+        liftMotor = hardwareMap.get(DcMotor.class, "arm");
+        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         runtime = new ElapsedTime();
         liftArmPID(0.0);
+        liftArmPID(90.0);
+        liftArmPID(-90.0);
     }
 
     public void liftArmPID(double angles_degrees) {
@@ -38,7 +48,9 @@ public class Driving_On_Feedback_Loop extends Autonomous_Parent {
         boolean pidIsRunning = true;
         boolean isFirstTime = true;
         setpoint = (int) Math.round(angles_degrees * ENCODER_COUNTS_PER_DEGREE);
-        while (pidIsRunning) {
+        while (pidIsRunning && opModeIsActive()) {
+            if (runtime.seconds() > 10.0)
+                pidIsRunning = false;
             if (gamepad1.dpad_up)
                 pGain *= MULTIPLIER;
             else if (gamepad1.dpad_down)
@@ -77,21 +89,14 @@ public class Driving_On_Feedback_Loop extends Autonomous_Parent {
                 isFirstTime = false;
             }
             output = pValue + iValue + dValue;
-            setLift(output);
+            liftMotor.setPower(output);
             telemetry.addData("P","%10.8f", pGain);
             telemetry.addData("I","%10.8f", iGain);
             telemetry.addData("D","%10.8f", dGain);
             telemetry.addData("Set","%d", setpoint);
             telemetry.addData("Loc","%d", liftMotor.getCurrentPosition());
+            telemetry.update();
         }
-    }
-
-    public void resetDriveEncoders(){
-        backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        sleep(250); // TODO: Remove this sleep if possible
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void resetArmEncoder(){
