@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -47,31 +48,12 @@ public class Autonomous_Parent extends Robot_Parent {
     private ElapsedTime runtime = new ElapsedTime();
     private ColorSensor colorSensor = null;
 
-    protected final long STEADY_STATE_SLEEP_TIME = 500;
-    protected final double LIFT_POWER_DOWN = -0.10;
-    protected final double LIFT_POWER_IDLE = 0.12;//Original arm: 0.09, double arm originally 0.18-too high
-    protected final double LIFT_POWER_UP = 0.50;
-    protected final double ENCODER_TURN_POWER = 0.19;//was 6
-    protected final double ENCODER_DRIVE_POWER = 0.2;//was 0.5
-
-    private final boolean USE_LEFT_ENCODER = true;
-    protected final boolean RUN_TEST_CODE = false;
-
-    private final double BEEP_EC_PER_FEET = 1304.8; // Encoder counts per Foot
-    private final double BEEP_EC_PER_DEGREES_180 = 15.8;
-    private final double BEEP_EC_PER_DEGREES_DEFAULT = BEEP_EC_PER_DEGREES_180;
-
-    private final double INTAKE_1_START_POS = 0.0; // Servo Position
-    private final double INTAKE_2_START_POS = PICK_UP_GLYPH_VALUE_2 + 0.20; // Servo Position
-
     protected final double JEWEL_DRIVE_DISTANCE = 0.21; // feet
     protected final double SPECIAL_JEWEL_DRIVE_DISTANCE = 0.3;
     protected final double JEWEL_DRIVE_POWER = 0.10;
 
     private final double COLOR_UNCERTAINTY = 0.05; // Amount that (Red/Blue) > 1 or vice-versa to determine a color
 
-    protected final long SLIGHT_LIFT_TIME = 150;
-    protected final long SECOND_ROW_LIFT_TIME = 500;
     private  final long TIME_FOR_JEWEL = 500;
     private final long PAUSE_BETWEEN_TEST_CODE = 500;
 
@@ -107,184 +89,6 @@ public class Autonomous_Parent extends Robot_Parent {
         sleep(timeInMilliseconds);
         setDrive(0.0, 0.0);
     }
-    protected void moveForwardEncoder(double distanceInFeet) {// move forward encoder based which allows you to drive using distance based.
-        if (USE_LEFT_ENCODER)
-            moveForwardLeftEncoder(distanceInFeet, ENCODER_DRIVE_POWER);//
-        else
-            moveForwardRightEncoder(distanceInFeet, ENCODER_DRIVE_POWER);//
-    }
-
-    protected void moveBackwardEncoder(double distanceInFeet) {// move backward  encoder based which allows you to drive using distance based.
-        if (USE_LEFT_ENCODER)
-            moveBackwardLeftEncoder(distanceInFeet, ENCODER_DRIVE_POWER);
-        else
-            moveBackwardRightEncoder(distanceInFeet, ENCODER_DRIVE_POWER);
-    }
-
-    protected void moveForwardEncoder(double distanceInFeet, double drivePower) {
-        if (USE_LEFT_ENCODER)
-            moveForwardLeftEncoder(distanceInFeet, drivePower);
-        else
-            moveForwardRightEncoder(distanceInFeet, drivePower);
-      }
-
-    protected void moveBackwardEncoder(double distanceInFeet, double drivePower) {
-        if (USE_LEFT_ENCODER)
-            moveBackwardLeftEncoder(distanceInFeet, drivePower);
-        else
-            moveBackwardRightEncoder(distanceInFeet, drivePower);
-    }
-
-    private void moveForwardRightEncoder(double distanceInFeet, double drivePower) {
-        int targetPos = backRightDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
-        setDrive(drivePower, drivePower);
-        while (backRightDrive.getCurrentPosition() < targetPos && opModeIsActive())
-        {
-            telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backRightDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
-            telemetry.update();
-        }
-        setDrive(0.0, 0.0);
-    }
-
-    private void moveBackwardRightEncoder(double distanceInFeet, double drivePower) {
-        int targetPos = backRightDrive.getCurrentPosition() - (int) (distanceInFeet * BEEP_EC_PER_FEET);
-        setDrive(-drivePower, -drivePower);
-        while (backRightDrive.getCurrentPosition() > targetPos && opModeIsActive())
-        {
-            telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backRightDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
-            telemetry.update();
-        }
-        setDrive(0.0, 0.0);
-    }
-
-    private void moveForwardLeftEncoder(double distanceInFeet, double drivePower) {
-        int targetPos = backLeftDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
-        setDrive(drivePower, drivePower);
-        while (backLeftDrive.getCurrentPosition() < targetPos && opModeIsActive())
-        {
-            telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backLeftDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
-            telemetry.update();
-        }
-        setDrive(0.0, 0.0);
-    }
-
-    private void moveBackwardLeftEncoder(double distanceInFeet, double drivePower) {
-        int targetPos = backLeftDrive.getCurrentPosition() - (int) (distanceInFeet * BEEP_EC_PER_FEET);
-        setDrive(-drivePower, -drivePower);
-        while (backLeftDrive.getCurrentPosition() > targetPos && opModeIsActive())
-        {
-            telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backLeftDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
-            telemetry.update();
-        }
-        setDrive(0.0, 0.0);
-    }
-
-    protected void turnRight(double degreesOfTurn)//Allows us to to turn right encoder based which also allows us to turn distance based
-    {
-        if (USE_COMPASS_TURN) {
-            compassTurn(degreesOfTurn);
-        }
-        else {
-            if (USE_LEFT_ENCODER)
-                turnRight_LeftEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
-            else
-                turnRight_RightEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
-        }
-    }
-
-    protected void turnLeft(double degreesOfTurn)//Allows us to to turn left encoder based which also allows us to turn distance based
-    {
-        if (USE_COMPASS_TURN) {
-            compassTurn(-degreesOfTurn);
-        }
-        else {
-            if (USE_LEFT_ENCODER)
-                turnLeft_LeftEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
-            else
-                turnLeft_RightEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
-        }
-    }
-
-    protected void turnRight(double degreesOfTurn, double ecPerDegree)
-    {
-        if (USE_COMPASS_TURN) {
-            compassTurn(degreesOfTurn);
-        }
-        else {
-            if (USE_LEFT_ENCODER)
-                turnRight_LeftEncoder(degreesOfTurn, ecPerDegree);
-            else
-                turnRight_RightEncoder(degreesOfTurn, ecPerDegree);
-        }
-    }
-
-    protected void turnLeft(double degreesOfTurn, double ecPerDegree) {
-        if (USE_COMPASS_TURN) {
-            compassTurn(-degreesOfTurn);
-        }
-        else {
-            if (USE_LEFT_ENCODER)
-                turnLeft_LeftEncoder(degreesOfTurn, ecPerDegree);
-            else
-                turnLeft_RightEncoder(degreesOfTurn, ecPerDegree);
-        }
-    }
-
-    private void turnRight_LeftEncoder(double degreesOfTurn, double ecPerDegree) {
-        int origPos = backLeftDrive.getCurrentPosition();
-        int targetPos = origPos + (int) (degreesOfTurn * ecPerDegree);
-        setDrive(ENCODER_TURN_POWER, -ENCODER_TURN_POWER);
-        while (backLeftDrive.getCurrentPosition() < targetPos && opModeIsActive()) {
-            telemetry.addData("absolute data", "%d - %d - %d", origPos, backLeftDrive.getCurrentPosition(), targetPos);
-            telemetry.addData("relative data", "%d - %d - %d", 0, backLeftDrive.getCurrentPosition() - origPos, targetPos - origPos);
-            telemetry.update();
-        }
-        setDrive(0.0, 0.0);
-    }
-
-    private void turnRight_RightEncoder(double degreesOfTurn, double ecPerDegree) {
-        int origPos = backRightDrive.getCurrentPosition();
-        int targetPos = origPos - (int) (degreesOfTurn * ecPerDegree);
-        setDrive(ENCODER_TURN_POWER, -ENCODER_TURN_POWER);
-        while (backRightDrive.getCurrentPosition() > targetPos && opModeIsActive()) {
-            telemetry.addData("absolute data", "%d - %d - %d", origPos, backRightDrive.getCurrentPosition(), targetPos);
-            telemetry.addData("relative data", "%d - %d - %d", 0, backRightDrive.getCurrentPosition() - origPos, targetPos - origPos);
-            telemetry.update();
-        }
-        setDrive(0.0, 0.0);
-    }
-
-    private void turnLeft_LeftEncoder(double degreesOfTurn, double ecPerDegree) {
-        int origPos = backLeftDrive.getCurrentPosition();
-        int targetPos = origPos - (int) (degreesOfTurn * ecPerDegree);
-        setDrive(-ENCODER_TURN_POWER, ENCODER_TURN_POWER);
-        while (backLeftDrive.getCurrentPosition() > targetPos && opModeIsActive()) {
-            telemetry.addData("absolute data", "%d - %d - %d", origPos, backLeftDrive.getCurrentPosition(), targetPos);
-            telemetry.addData("relative data", "%d - %d - %d", 0, backLeftDrive.getCurrentPosition() - origPos, targetPos - origPos);
-            telemetry.update();
-        }
-        setDrive(0.0, 0.0);
-    }
-
-    private void turnLeft_RightEncoder(double degreesOfTurn, double ecPerDegree) {
-        int origPos = backRightDrive.getCurrentPosition();
-        int targetPos = origPos + (int) (degreesOfTurn * ecPerDegree);
-        setDrive(-ENCODER_TURN_POWER, ENCODER_TURN_POWER);
-        while (backRightDrive.getCurrentPosition() < targetPos && opModeIsActive()) {
-            telemetry.addData("absolute data", "%d - %d - %d", origPos, backRightDrive.getCurrentPosition(), targetPos);
-            telemetry.addData("relative data", "%d - %d - %d", 0, backRightDrive.getCurrentPosition() - origPos, targetPos - origPos);
-            telemetry.update();
-        }
-        setDrive(0.0, 0.0);
-    }
 
     private void raiseJewelArmMore() {// Allows us to raise our arm back closer to its starting position
         jewelArm.setPosition(JEWEL_ARM_FULLY_UP);
@@ -305,13 +109,11 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected void startUp() {
         raiseJewelArmMore(); // Locks jewel arm
-        setIntake(INTAKE_1_START_POS, INTAKE_2_START_POS);
 
         waitForStart();
         runtime.reset();
 
         raiseJewelArm();
-        pickUpGlyph();
     }
 
     protected RelicRecoveryVuMark getPictographKey() {
@@ -333,6 +135,7 @@ public class Autonomous_Parent extends Robot_Parent {
         relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         relicTemplate = relicTrackables.get(0);
     }
+    /*
     protected void scoreGlyph(boolean encoderUsed) {
         dropGlyph();
         sleep(500);
@@ -340,53 +143,7 @@ public class Autonomous_Parent extends Robot_Parent {
             moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER);
         else
             moveStraightTime(-0.35, 500);
-    }
-    protected void scoreOneMoreGlyph(){
-        // Steps for Scoring the 2nd Glyph:
-        // 1. Turn 180 Degrees
-        turnLeft(180.0);
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        // 2. Move forward 2 feet
-        moveForwardEncoder(2.0);
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        // 3. Pick up glyph
-        pickUpGlyph();
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        timedLiftUp(SLIGHT_LIFT_TIME);
-        sleep(100);
-        // 4. Move backward 1 3/4 feet
-        moveBackwardEncoder(1.2);
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        // 5. Turn 180 Degrees
-        turnRight(180.0);
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        // 6. Lift a little bit so glyph doesn't drag
-        timedLiftUp(SECOND_ROW_LIFT_TIME);
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        // 7. Drive forward time based
-        moveStraightTime(0.5, 1000);
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        // 8. Drop glyph
-        // 9. Sleep
-        // 10. Move backward
-        scoreGlyph(true);
-        // 11. Lower lift
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        timedLiftDown(SLIGHT_LIFT_TIME);
-        // 12.(Optional)Drive forward to park
-
-    }
-
-    protected void timedLiftUp(long milliseconds){
-        setLift(LIFT_POWER_UP);
-        sleep(milliseconds);
-        setLift(LIFT_POWER_IDLE);
-    }
-    protected void timedLiftDown(long milliseconds){
-        setLift(LIFT_POWER_DOWN);
-        sleep(milliseconds);
-        setLift(0.0);
-    }
+    }*/
     protected void knockOffJewel(boolean isBlueTeam){
         switch (getColorSeen()) {
             case RED:
@@ -455,54 +212,6 @@ public class Autonomous_Parent extends Robot_Parent {
         return AngleUnit.DEGREES.normalize(AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
     }
 
-    protected void compassTurn(double degrees) {
-        float startPos = getCurrentDegrees();
-        float goalAngle;
-        if (degrees < 0.0)
-        {
-            degrees += 10.0;
-            goalAngle = startPos - ((float) degrees);
-            // Turning left
-            setDrive(-COMPASS_TURN_POWER, COMPASS_TURN_POWER);
-            if (goalAngle > 175.0) {
-                goalAngle -= 360.0;
-                sleep(COMPASS_PAUSE_TIME);
-                while (getCurrentDegrees() >= startPos && opModeIsActive())
-                {
-                    telemetry.addData("Angle1","%.2f",getCurrentDegrees());
-                    telemetry.update();
-                }
-            }
-            while (getCurrentDegrees() < goalAngle && opModeIsActive())
-            {
-                telemetry.addData("Angle1","%.2f",getCurrentDegrees());
-                telemetry.update();
-            }
-        }
-        else
-        {
-            degrees -= 10.0;
-            goalAngle = startPos - ((float) degrees);
-            // Turning right
-            setDrive(COMPASS_TURN_POWER, -COMPASS_TURN_POWER);
-            if (goalAngle < -175.0) {
-                goalAngle += 360.0;
-                sleep(COMPASS_PAUSE_TIME);
-                while (getCurrentDegrees() <= startPos && opModeIsActive())
-                {
-                    telemetry.addData("Angle1","%.2f",getCurrentDegrees());
-                    telemetry.update();
-                }
-            }
-            while (getCurrentDegrees() > goalAngle && opModeIsActive())
-            {
-                telemetry.addData("Angle1","%.2f",getCurrentDegrees());
-                telemetry.update();
-            }
-        }
-        setDrive(0.0, 0.0);
-    }
-
     private void setupIMU()
     {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -514,5 +223,19 @@ public class Autonomous_Parent extends Robot_Parent {
         parameters.loggingTag          = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu.initialize(parameters);
+    }
+
+    protected void resetArmEncoder()
+    {
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    protected void resetDriveEncoders()
+    {
+        backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
