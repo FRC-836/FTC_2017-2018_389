@@ -6,10 +6,10 @@ public class PID_Loop {
 
     ElapsedTime runtime;
 
-    private int setpoint = 0;
-    private int error = 0;
+    private double setpoint = 0;
+    private double error = 0;
     private double time = 0.0;
-    private int lastError = 0;
+    private double lastError = 0;
     private double lastTime = 0.0;
     private double pValue = 0.0;
     private double iValue = 0.0;
@@ -19,22 +19,19 @@ public class PID_Loop {
     private double DGAIN;
     private boolean isFirstTime = true;
 
-    private double CONVERSION_FACTOR;
-
-    public PID_Loop(double pGain, double iGain, double dGain, double conversionFactor) {
+    public PID_Loop(double pGain, double iGain, double dGain) {
         this.runtime = new ElapsedTime();
         this.runtime.reset();
         this.PGAIN = pGain;
         this.IGAIN = iGain;
         this.DGAIN = dGain;
-        this.CONVERSION_FACTOR = conversionFactor;
     }
 
-    public void setGoal(double goal) {
-        this.setpoint = (int) Math.round(goal * CONVERSION_FACTOR);
+    public void setSetpoint(double newSetpoint) {
+        this.setpoint = newSetpoint;
     }
 
-    public double update(int input)
+    public double update(double input)
     {
         lastError = error;
         error = setpoint - input;
@@ -42,13 +39,13 @@ public class PID_Loop {
         time = runtime.seconds();
 
         // pValue
-        pValue = PGAIN * (double) error;
+        pValue = PGAIN * error;
 
         //iValue
-        iValue += IGAIN * (double) (lastError + error) * (0.5) * (time - lastTime);
+        iValue += IGAIN * (lastError + error) * (0.5) * (time - lastTime);
 
         //dValue
-        dValue = DGAIN * (double) (error - lastError) / (time - lastTime);
+        dValue = DGAIN * (error - lastError) / (time - lastTime);
 
         if (isFirstTime)
         {

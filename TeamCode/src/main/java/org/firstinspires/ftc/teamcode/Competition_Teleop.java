@@ -6,10 +6,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class Competition_Teleop extends Teleop_Parent
 {
     boolean isPidRunning = false;
+    EncoderWatcher liftEcWatcher;
 
     @Override
     public void initializeRobot() {
         holdLiftPID.resetPID();
+        liftEcWatcher = new EncoderWatcher(telemetry, liftMotor, "Lift");
+        telemetry.addAction(liftEcWatcher);
     }
 
     @Override
@@ -33,13 +36,13 @@ public class Competition_Teleop extends Teleop_Parent
         else
         {
             if (!isPidRunning) {
-                double currentPosition = ((double) liftMotor.getCurrentPosition()) / liftConversion;
+                double currentPosition = ((double) liftMotor.getCurrentPosition()) / EC_PER_DEGREE_LIFT;
                 holdLiftPID.resetPID(LIFT_POWER_HOLD_GUESS);
-                holdLiftPID.setGoal(currentPosition);
+                holdLiftPID.setSetpoint(currentPosition);
                 isPidRunning = true;
             }
-            int liftPosition = liftMotor.getCurrentPosition();
-            double liftPower = holdLiftPID.update(liftPosition);
+            double newPosition = ((double) liftMotor.getCurrentPosition()) / EC_PER_DEGREE_LIFT;
+            double liftPower = holdLiftPID.update(newPosition);
             setLift(liftPower);
         }
 
@@ -51,10 +54,12 @@ public class Competition_Teleop extends Teleop_Parent
             setIntake(0.0);
 
         if (gamepad1.dpad_right)
-            setSpinner(0.5);
+            setSpinner(0.1);
         else if (gamepad1.dpad_left)
-            setSpinner(-0.5);
+            setSpinner(-0.1);
         else
             setSpinner(0.0);
+
+        telemetry.update();
     }
 }

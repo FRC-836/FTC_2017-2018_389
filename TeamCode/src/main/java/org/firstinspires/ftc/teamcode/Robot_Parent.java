@@ -28,21 +28,20 @@ public class Robot_Parent extends LinearOpMode {
     private final double liftP = 0.001;
     private final double liftI = 0.0003;
     private final double liftD = 0.0;
-    private final double holdLiftP = 0.003;
-    private final double holdLiftI = 0.001;
-    private final double holdLiftD = 0.0; // TODO: Find value that works well
-    protected final double liftConversion = 8.475;
+    private final double holdLiftP = 0.0125;
+    private final double holdLiftI = 0.02;
+    private final double holdLiftD = 0.002;
+    protected final double EC_PER_DEGREE_LIFT = 8.475;
     private final double turnP = 0.0;
     private final double turnI = 0.0;
     private final double turnD = 0.0;
     private final double holdTurnP = 0.0;
     private final double holdTurnI = 0.0;
     private final double holdTurnD = 0.0;
-    protected final double turnConversion = 15.8;
     private final double driveP = 0.0;
     private final double driveI = 0.0;
     private final double driveD = 0.0;
-    protected final double driveConversion = 1304.8;
+    protected final double EC_PER_FT_DRIVE = 1304.8;
 
     private final double JEWEL_ARM_UP = 0.7;
     private final double JEWEL_ARM_DOWN = 0.2;
@@ -50,11 +49,11 @@ public class Robot_Parent extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        drivePID = new PID_Loop(driveP, driveI, driveD, driveConversion);
-        turnPID = new PID_Loop(turnP, turnI, turnD, turnConversion);
-        holdTurnPID = new PID_Loop(holdTurnP, holdTurnI, holdTurnD, turnConversion);
-        liftPID = new PID_Loop(liftP, liftI, liftD, liftConversion);
-        holdLiftPID = new PID_Loop(holdLiftP, holdLiftI, holdLiftD, liftConversion);
+        drivePID = new PID_Loop(driveP, driveI, driveD);
+        turnPID = new PID_Loop(turnP, turnI, turnD);
+        holdTurnPID = new PID_Loop(holdTurnP, holdTurnI, holdTurnD);
+        liftPID = new PID_Loop(liftP, liftI, liftD);
+        holdLiftPID = new PID_Loop(holdLiftP, holdLiftI, holdLiftD);
 
         telemetry.addData("Status", "Initialized");
 
@@ -159,4 +158,5 @@ public class Robot_Parent extends LinearOpMode {
         backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
 }

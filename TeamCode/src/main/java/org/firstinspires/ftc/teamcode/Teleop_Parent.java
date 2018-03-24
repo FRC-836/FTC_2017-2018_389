@@ -9,8 +9,8 @@ public class Teleop_Parent extends Robot_Parent
     protected final double LIFT_POWER_UP = 1.0;
     protected final double LIFT_POWER_DOWN = -0.3;
     protected final double LIFT_POWER_HOLD_GUESS = 0.2;
-    protected final double PICK_UP_GLYPH_POWER = 0.5;
-    protected final double DROP_GLYPH_POWER = -0.5;
+    protected final double PICK_UP_GLYPH_POWER = 1.0;
+    protected final double DROP_GLYPH_POWER = -1.0;
 
     @Override
     public void initializeRobot() {
