@@ -19,12 +19,43 @@ public class Robot_Parent extends LinearOpMode {
     protected CRServo backwardRightIntake = null;
     protected CRServo backwardLeftIntake = null;
 
+    protected PID_Loop liftPID = null;
+    protected PID_Loop holdLiftPID = null;
+    protected PID_Loop drivePID = null;
+    protected PID_Loop turnPID = null;
+    protected PID_Loop holdTurnPID = null;
+
+    private final double liftP = 0.001;
+    private final double liftI = 0.0003;
+    private final double liftD = 0.0;
+    private final double holdLiftP = 0.003;
+    private final double holdLiftI = 0.001;
+    private final double holdLiftD = 0.0; // TODO: Find value that works well
+    protected final double liftConversion = 8.475;
+    private final double turnP = 0.0;
+    private final double turnI = 0.0;
+    private final double turnD = 0.0;
+    private final double holdTurnP = 0.0;
+    private final double holdTurnI = 0.0;
+    private final double holdTurnD = 0.0;
+    protected final double turnConversion = 15.8;
+    private final double driveP = 0.0;
+    private final double driveI = 0.0;
+    private final double driveD = 0.0;
+    protected final double driveConversion = 1304.8;
+
     private final double JEWEL_ARM_UP = 0.7;
     private final double JEWEL_ARM_DOWN = 0.2;
     protected final double JEWEL_ARM_FULLY_UP = 1.0; // Servo Position
 
     @Override
     public void runOpMode() {
+        drivePID = new PID_Loop(driveP, driveI, driveD, driveConversion);
+        turnPID = new PID_Loop(turnP, turnI, turnD, turnConversion);
+        holdTurnPID = new PID_Loop(holdTurnP, holdTurnI, holdTurnD, turnConversion);
+        liftPID = new PID_Loop(liftP, liftI, liftD, liftConversion);
+        holdLiftPID = new PID_Loop(holdLiftP, holdLiftI, holdLiftD, liftConversion);
+
         telemetry.addData("Status", "Initialized");
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -113,5 +144,19 @@ public class Robot_Parent extends LinearOpMode {
         forwardRightIntake.setPower(intakePower);
         backwardRightIntake.setPower(intakePower);
         backwardLeftIntake.setPower(intakePower);
+    }
+
+    protected void resetArmEncoder()
+    {
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    protected void resetDriveEncoders()
+    {
+        backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }

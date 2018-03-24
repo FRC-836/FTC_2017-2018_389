@@ -60,8 +60,12 @@ public class PID_Loop {
     }
 
     public void resetPID() {
+        resetPID(0.0);
+    }
+
+    public void resetPID(double startingIValue) {
         runtime.reset();
         isFirstTime = true;
-        iValue = 0.0;
+        iValue = startingIValue;
     }
 }
