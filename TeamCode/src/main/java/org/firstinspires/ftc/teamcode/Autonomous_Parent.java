@@ -66,6 +66,8 @@ public class Autonomous_Parent extends Robot_Parent {
         backLeftEncoderAction = new EncoderWatcher(telemetry, backLeftDrive, "Back Left Encoder");
         backRightEncoderAction = new EncoderWatcher(telemetry, backRightDrive, "Back Right Encoder");
         colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
+        resetArmEncoder();
+        resetDriveEncoders();
         setupVuMarkData();
         setupIMU();
         startUp();
@@ -143,7 +145,7 @@ public class Autonomous_Parent extends Robot_Parent {
             moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER);
         else
             moveStraightTime(-0.35, 500);
-    }*/
+    }
     protected void knockOffJewel(boolean isBlueTeam){
         switch (getColorSeen()) {
             case RED:
@@ -203,7 +205,7 @@ public class Autonomous_Parent extends Robot_Parent {
                 //turnLeft(20.0);
                 break;
         }
-    }
+    }*/
 
     // compassTurn, setupIMU, and getCurrentDegrees from team 12888
     private float getCurrentDegrees()
