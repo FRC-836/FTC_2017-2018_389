@@ -17,11 +17,19 @@ public class Competition_Teleop extends Teleop_Parent
 
     @Override
     public void cycle() {
-        double leftPower = -gamepad1.left_stick_y;
-        double rightPower = -gamepad1.right_stick_y;
+        // TANK DRIVE
+        //double leftStick = -gamepad1.left_stick_y;
+        //double rightStick = -gamepad1.right_stick_y;
 
-        leftPower = controllerThreshold(leftPower);
-        rightPower = controllerThreshold(rightPower);
+        //double leftPower = controllerThreshold(leftStick);
+        //double rightPower = controllerThreshold(rightStick);
+
+        // ARCADE DRIVE
+        double leftStick = -gamepad1.left_stick_y;
+        double rightStick = gamepad1.right_stick_x;
+
+        double leftPower = controllerThreshold(leftStick + rightStick);
+        double rightPower = controllerThreshold(leftStick - rightStick);
 
         setDrive(leftPower, rightPower);
 
