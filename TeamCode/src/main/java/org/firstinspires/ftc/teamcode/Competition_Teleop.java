@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="Competition Teleop", group="Competition")
 public class Competition_Teleop extends Teleop_Parent
 {
+    private final boolean PID_ENABLED = false;
+
     boolean isPidRunning = false;
     EncoderWatcher liftEcWatcher;
 
@@ -43,14 +45,17 @@ public class Competition_Teleop extends Teleop_Parent
         }
         else
         {
-            if (!isPidRunning) {
-                double currentPosition = ((double) liftMotor.getCurrentPosition()) / EC_PER_DEGREE_LIFT;
-                holdLiftPID.resetPID(LIFT_POWER_HOLD_GUESS);
-                holdLiftPID.setSetpoint(currentPosition);
-                isPidRunning = true;
+            double liftPower = LIFT_POWER_HOLD_GUESS;
+            if (PID_ENABLED) {
+                if (!isPidRunning) {
+                    double currentPosition = ((double) liftMotor.getCurrentPosition()) / EC_PER_DEGREE_LIFT;
+                    holdLiftPID.resetPID(LIFT_POWER_HOLD_GUESS);
+                    holdLiftPID.setSetpoint(currentPosition);
+                    isPidRunning = true;
+                }
+                double newPosition = ((double) liftMotor.getCurrentPosition()) / EC_PER_DEGREE_LIFT;
+                liftPower = holdLiftPID.update(newPosition);
             }
-            double newPosition = ((double) liftMotor.getCurrentPosition()) / EC_PER_DEGREE_LIFT;
-            double liftPower = holdLiftPID.update(newPosition);
             setLift(liftPower);
         }
 
