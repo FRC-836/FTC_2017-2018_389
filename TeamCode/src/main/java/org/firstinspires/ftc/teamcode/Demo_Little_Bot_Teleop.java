@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
  * Created by David Buddenbohn on 3/29/2018.
  */
+@TeleOp(name="Minibot Teleop", group="Demo")
 
 public class Demo_Little_Bot_Teleop extends LinearOpMode {
     private DcMotor leftMotor = null;
@@ -19,8 +21,8 @@ public class Demo_Little_Bot_Teleop extends LinearOpMode {
         leftMotor = hardwareMap.get(DcMotor.class, "l");
         rightMotor = hardwareMap.get(DcMotor.class, "r");
 
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftMotor.setDirection(DcMotor.Direction.FORWARD);
 
         rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -57,6 +59,13 @@ public class Demo_Little_Bot_Teleop extends LinearOpMode {
             {
                 wereButtonsPressed = false;
             }
+            if (isArcadeDrive) {
+                telemetry.addLine("Arcade Drive");
+            }
+            else {
+                telemetry.addLine("Tank Drive");
+            }
+            telemetry.update();
         }
     }
     protected double controllerThreshold(double number) {
@@ -70,5 +79,5 @@ public class Demo_Little_Bot_Teleop extends LinearOpMode {
         leftMotor.setPower(leftPower);
         rightMotor.setPower(rightPower);
     }
-        
+
 }

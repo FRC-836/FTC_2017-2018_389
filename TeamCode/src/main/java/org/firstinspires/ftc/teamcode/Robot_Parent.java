@@ -14,10 +14,18 @@ public class Robot_Parent extends LinearOpMode {
     protected DcMotor liftMotor = null;
     protected Servo jewelArm = null;
     protected DcMotor spinner = null;
+    /*
     protected CRServo forwardRightIntake = null;
     protected CRServo forwardLeftIntake = null;
     protected CRServo backwardRightIntake = null;
     protected CRServo backwardLeftIntake = null;
+    */
+    protected Servo leftIntake = null;
+    protected Servo rightIntake = null;
+    protected final double LEFT_CLOSED = 0.0;
+    protected final double LEFT_OPEN = 1.0;
+    protected final double RIGHT_CLOSED = 0.0;
+    protected final double RIGHT_OPEN = 1.0;
 
     protected PID_Loop liftPID = null;
     protected PID_Loop holdLiftPID = null;
@@ -67,10 +75,14 @@ public class Robot_Parent extends LinearOpMode {
         liftMotor = hardwareMap.get(DcMotor.class, "lift");
         jewelArm = hardwareMap.get(Servo.class, "jewel");
         spinner = hardwareMap.get(DcMotor.class, "spinner");
+        /*
         forwardRightIntake = hardwareMap.get(CRServo.class, "fri");
         forwardLeftIntake =  hardwareMap.get(CRServo.class, "fli");
         backwardLeftIntake = hardwareMap.get(CRServo.class, "bli");
         backwardRightIntake = hardwareMap.get(CRServo.class, "bri");
+        */
+        leftIntake = hardwareMap.get(Servo.class, "fli");
+        rightIntake = hardwareMap.get(Servo.class, "fri");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -81,10 +93,14 @@ public class Robot_Parent extends LinearOpMode {
         liftMotor.setDirection(DcMotor.Direction.REVERSE);
         jewelArm.setDirection(Servo.Direction.FORWARD);
         spinner.setDirection(DcMotor.Direction.REVERSE);
+        /*
         forwardRightIntake.setDirection(CRServo.Direction.FORWARD);
         backwardLeftIntake.setDirection(CRServo.Direction.FORWARD);
         backwardRightIntake.setDirection(CRServo.Direction.REVERSE);
         forwardLeftIntake.setDirection(CRServo.Direction.REVERSE);
+        */
+        leftIntake.setDirection(Servo.Direction.FORWARD);
+        rightIntake.setDirection(Servo.Direction.REVERSE);
 
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -139,10 +155,24 @@ public class Robot_Parent extends LinearOpMode {
     }
 
     protected void setIntake(double intakePower){
+        /*
         forwardLeftIntake.setPower(intakePower);
         forwardRightIntake.setPower(intakePower);
         backwardRightIntake.setPower(intakePower);
         backwardLeftIntake.setPower(intakePower);
+        */
+    }
+
+    protected void closeIntake()
+    {
+        leftIntake.setPosition(LEFT_CLOSED);
+        rightIntake.setPosition(RIGHT_CLOSED);
+    }
+
+    protected void openIntake()
+    {
+        leftIntake.setPosition(LEFT_OPEN);
+        rightIntake.setPosition(RIGHT_OPEN);
     }
 
     protected void resetArmEncoder()
