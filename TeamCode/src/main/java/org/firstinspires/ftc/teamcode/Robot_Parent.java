@@ -22,10 +22,10 @@ public class Robot_Parent extends LinearOpMode {
     */
     protected Servo leftIntake = null;
     protected Servo rightIntake = null;
-    protected final double LEFT_CLOSED = 0.0;
+    protected final double LEFT_CLOSED = 0.5;
     protected final double LEFT_OPEN = 1.0;
     protected final double RIGHT_CLOSED = 0.0;
-    protected final double RIGHT_OPEN = 1.0;
+    protected final double RIGHT_OPEN = 0.5;
 
     protected PID_Loop liftPID = null;
     protected PID_Loop holdLiftPID = null;

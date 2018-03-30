@@ -59,19 +59,19 @@ public class Competition_Teleop extends Teleop_Parent
             setLift(liftPower);
         }
 
+        if (gamepad1.right_bumper)
+            closeIntake();
+        else if (gamepad1.right_trigger > 0.1f)
+            openIntake();
+
         /*
         if (gamepad1.right_bumper)
             setIntake(PICK_UP_GLYPH_POWER);
         else if (gamepad1.right_trigger > 0.1f)
             setIntake(DROP_GLYPH_POWER);
         else
-            setIntake(0.0);
-        */
 
-        if (gamepad1.right_bumper)
-            closeIntake();
-        else if (gamepad1.right_trigger > 0.1f)
-            openIntake();
+            setIntake(0.0);
 
         if (gamepad1.dpad_right)
             setSpinner(0.1);
@@ -79,6 +79,7 @@ public class Competition_Teleop extends Teleop_Parent
             setSpinner(-0.1);
         else
             setSpinner(0.0);
+        */
 
         telemetry.update();
     }
