@@ -5,8 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="Competition Teleop", group="Competition")
 public class Competition_Teleop extends Teleop_Parent
 {
-    private final boolean PID_ENABLED = false;
+    private final boolean PID_ENABLED = true;
 
+    private boolean isLocked = false;
     boolean isPidRunning = false;
     EncoderWatcher liftEcWatcher;
 
@@ -20,32 +21,36 @@ public class Competition_Teleop extends Teleop_Parent
     @Override
     public void cycle() {
         // TANK DRIVE
-        //double leftStick = -gamepad1.left_stick_y;
-        //double rightStick = -gamepad1.right_stick_y;
+        double leftStick = -gamepad1.left_stick_y;
+        double rightStick = -gamepad1.right_stick_y;
 
-        //double leftPower = controllerThreshold(leftStick);
-        //double rightPower = controllerThreshold(rightStick);
+        double leftPower = controllerThreshold(leftStick);
+        double rightPower = controllerThreshold(rightStick);
 
         // ARCADE DRIVE
-        double leftStick = -gamepad1.left_stick_y;
+        /*double leftStick = -gamepad1.left_stick_y;
         double rightStick = gamepad1.right_stick_x;
 
         double leftPower = controllerThreshold(leftStick + rightStick);
         double rightPower = controllerThreshold(leftStick - rightStick);
-
+        */
         setDrive(leftPower, rightPower);
 
         if (gamepad1.left_bumper) {
             setLift(LIFT_POWER_UP);
             isPidRunning = false;
+            isLocked = true;
         }
         else if(gamepad1.left_trigger > 0.1f) {
             setLift(LIFT_POWER_DOWN);
             isPidRunning = false;
+            isLocked = false;
         }
         else
         {
             double liftPower = LIFT_POWER_HOLD_GUESS;
+            if (!isLocked)
+                liftPower = 0.0;
             if (PID_ENABLED) {
                 if (!isPidRunning) {
                     double currentPosition = ((double) liftMotor.getCurrentPosition()) / EC_PER_DEGREE_LIFT;
@@ -64,7 +69,7 @@ public class Competition_Teleop extends Teleop_Parent
         else if (gamepad1.right_trigger > 0.1f)
             openIntake();
 
-        /*
+
         if (gamepad1.right_bumper)
             setIntake(PICK_UP_GLYPH_POWER);
         else if (gamepad1.right_trigger > 0.1f)
@@ -79,7 +84,6 @@ public class Competition_Teleop extends Teleop_Parent
             setSpinner(-0.1);
         else
             setSpinner(0.0);
-        */
 
         telemetry.update();
     }

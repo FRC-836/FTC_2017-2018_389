@@ -33,22 +33,28 @@ public class Robot_Parent extends LinearOpMode {
     protected PID_Loop turnPID = null;
     protected PID_Loop holdTurnPID = null;
 
-    private final double liftP = 0.001;
-    private final double liftI = 0.0003;
-    private final double liftD = 0.0;
-    private final double holdLiftP = 0.0125;
-    private final double holdLiftI = 0.02;
-    private final double holdLiftD = 0.002;
+
+    protected double setpoint = 0;
+    protected double error = 0;
+    protected double time = 0.0;
+    protected double lastError = 0;
+    protected double lastTime = 0.0;
+    protected final double liftP = 0.001;
+    protected final double liftI = 0.0003;
+    protected final double liftD = 0.0;
+    protected final double holdLiftP = 0.0125;
+    protected final double holdLiftI = 0.02;
+    protected final double holdLiftD = 0.002;
     protected final double EC_PER_DEGREE_LIFT = 8.475;
-    private final double turnP = 0.0;
-    private final double turnI = 0.0;
-    private final double turnD = 0.0;
-    private final double holdTurnP = 0.0;
-    private final double holdTurnI = 0.0;
-    private final double holdTurnD = 0.0;
-    private final double driveP = 0.0;
-    private final double driveI = 0.0;
-    private final double driveD = 0.0;
+    protected final double turnP = 0.0;
+    protected final double turnI = 0.0;
+    protected final double turnD = 0.0;
+    protected final double holdTurnP = 0.0;
+    protected final double holdTurnI = 0.0;
+    protected final double holdTurnD = 0.0;
+    protected final double driveP = 0.0;
+    protected final double driveI = 0.0;
+    protected final double driveD = 0.0;
     protected final double EC_PER_FT_DRIVE = 1304.8;
 
     private final double JEWEL_ARM_UP = 0.7;
@@ -81,8 +87,9 @@ public class Robot_Parent extends LinearOpMode {
         backwardLeftIntake = hardwareMap.get(CRServo.class, "bli");
         backwardRightIntake = hardwareMap.get(CRServo.class, "bri");
         */
-        leftIntake = hardwareMap.get(Servo.class, "fli");
-        rightIntake = hardwareMap.get(Servo.class, "fri");
+        // The intakes are switched in their current position.
+        leftIntake = hardwareMap.get(Servo.class, "fri");
+        rightIntake = hardwareMap.get(Servo.class, "fli");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -99,8 +106,8 @@ public class Robot_Parent extends LinearOpMode {
         backwardRightIntake.setDirection(CRServo.Direction.REVERSE);
         forwardLeftIntake.setDirection(CRServo.Direction.REVERSE);
         */
-        leftIntake.setDirection(Servo.Direction.FORWARD);
-        rightIntake.setDirection(Servo.Direction.REVERSE);
+        leftIntake.setDirection(Servo.Direction.REVERSE);
+        rightIntake.setDirection(Servo.Direction.FORWARD);
 
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -187,6 +194,35 @@ public class Robot_Parent extends LinearOpMode {
         backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+    public double update(double input)
+    {
+        lastError = error;
+        error = setpoint - input;
+        lastTime = time;
+        time = runtime.seconds();
+
+        // pValue
+        pValue = PGAIN * error;
+
+        //iValue
+        iValue += IGAIN * (lastError + error) * (0.5) * (time - lastTime);
+
+        //dValue
+        dValue = DGAIN * (error - lastError) / (time - lastTime);
+
+        if (isFirstTime)
+        {
+            iValue = 0.0;
+            dValue = 0.0;
+            isFirstTime = false;
+        }
+        return pValue + iValue + dValue;
+    }
+    public void resetPID(double startingIValue) {
+        runtime.reset();
+        isFirstTime = true;
+        iValue = startingIValue;
     }
 
 }

@@ -48,6 +48,8 @@ public class Autonomous_Parent extends Robot_Parent {
     private ElapsedTime runtime = new ElapsedTime();
     private ColorSensor colorSensor = null;
 
+    protected final double TURN_STARTING_I_VALUE = 0.0;
+    protected final double DRIVE_STARTING_I_VALUE = 0.0;
     protected final double JEWEL_DRIVE_DISTANCE = 0.21; // feet
     protected final double SPECIAL_JEWEL_DRIVE_DISTANCE = 0.3;
     protected final double JEWEL_DRIVE_POWER = 0.10;
@@ -226,4 +228,15 @@ public class Autonomous_Parent extends Robot_Parent {
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu.initialize(parameters);
     }
+
+    private void drivePID(boolean isForward, double distance) {
+        drivePID.resetPID(DRIVE_STARTING_I_VALUE);
+        
+        update();
+    }
+
+    private void turnPID(boolean isRight, double distance) {
+        turnPID.resetPID(TURN_STARTING_I_VALUE);
+    }
+
 }

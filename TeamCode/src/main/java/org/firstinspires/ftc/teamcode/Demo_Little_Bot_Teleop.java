@@ -30,11 +30,11 @@ public class Demo_Little_Bot_Teleop extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
             if(isArcadeDrive) {
-                double leftStick = -gamepad1.left_stick_y;
+                double leftStick = -0.75*gamepad1.left_stick_y;
                 double rightStick = gamepad1.right_stick_x;
 
-                double leftPower = controllerThreshold(leftStick + rightStick);
-                double rightPower = controllerThreshold(leftStick - rightStick);
+                double leftPower = (controllerThreshold(leftStick + rightStick));
+                double rightPower = (controllerThreshold(leftStick - rightStick));
 
                 setDrive(leftPower, rightPower);
             }
@@ -43,8 +43,8 @@ public class Demo_Little_Bot_Teleop extends LinearOpMode {
                 double leftStick = -gamepad1.left_stick_y;
                 double rightStick = -gamepad1.right_stick_y;
 
-                double leftPower = controllerThreshold(leftStick);
-                double rightPower = controllerThreshold(rightStick);
+                double leftPower = 0.75*(controllerThreshold(leftStick));
+                double rightPower = 0.75*(controllerThreshold(rightStick));
 
                 setDrive(leftPower, rightPower);
             }
