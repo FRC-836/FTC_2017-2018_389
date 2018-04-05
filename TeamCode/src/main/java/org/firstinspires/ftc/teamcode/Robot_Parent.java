@@ -13,7 +13,7 @@ public class Robot_Parent extends LinearOpMode {
     protected Servo servoIntake = null;
     protected Servo secondServoIntake = null;
     protected Servo jewelArm = null;
-    protected Servo pusher = null;
+    protected DcMotor spinner = null;
 
     private final double DROP_GLYPH_VALUE = 0.1;
     private final double PICK_UP_GLYPH_VALUE = 0.5;
@@ -45,7 +45,7 @@ public class Robot_Parent extends LinearOpMode {
         servoIntake = hardwareMap.get(Servo.class, "intake");
         secondServoIntake = hardwareMap.get(Servo.class, "intake2");
         jewelArm = hardwareMap.get(Servo.class, "jewel_arm");
-        pusher = hardwareMap.get(Servo.class, "pusher");
+        spinner = hardwareMap.get(DcMotor.class, "spinner");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -59,7 +59,7 @@ public class Robot_Parent extends LinearOpMode {
         servoIntake.setDirection(Servo.Direction.FORWARD);
         secondServoIntake.setDirection(Servo.Direction.FORWARD);
         jewelArm.setDirection(Servo.Direction.FORWARD);
-        pusher.setDirection(Servo.Direction.FORWARD);
+        spinner.setDirection(DcMotor.Direction.FORWARD);
 
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -126,7 +126,7 @@ public class Robot_Parent extends LinearOpMode {
         setJewelArm(JEWEL_ARM_DOWN);
     }
 
-    protected void setPusher(double pusherPosition){pusher.setPosition(pusherPosition);}
+    protected void setPusher(double spinnerPosition){spinner.setPower(spinnerPosition);}
     protected void retractPusher(){setPusher(RETRACTED_PUSHER_ARM);}
     protected void extendPusher (){setPusher(EXTENDED_PUSHER_ARM);}
 }

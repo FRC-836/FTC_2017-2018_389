@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="Tank Drive", group="Competition")//Competition/Main
 public class Competition_Teleop extends Teleop_Parent
 {
-    private boolean isPusherExtended = false;
     private boolean isPusherEnabled = true;
     @Override
     public void cycle() {
