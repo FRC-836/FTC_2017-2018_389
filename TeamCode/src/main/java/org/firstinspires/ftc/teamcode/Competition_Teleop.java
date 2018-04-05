@@ -2,89 +2,98 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Competition Teleop", group="Competition")
+@TeleOp(name="Tank Drive", group="Competition")//Competition/Main
 public class Competition_Teleop extends Teleop_Parent
 {
-    private final boolean PID_ENABLED = true;
-
-    private boolean isLocked = false;
-    boolean isPidRunning = false;
-    EncoderWatcher liftEcWatcher;
-
-    @Override
-    public void initializeRobot() {
-        holdLiftPID.resetPID();
-        liftEcWatcher = new EncoderWatcher(telemetry, liftMotor, "Lift");
-        telemetry.addAction(liftEcWatcher);
-    }
-
+    private boolean isPusherExtended = false;
+    private boolean isPusherEnabled = true;
     @Override
     public void cycle() {
-        // TANK DRIVE
-        double leftStick = -gamepad1.left_stick_y;
-        double rightStick = -gamepad1.right_stick_y;
+        // Setup a variable for each drive wheel to save power level for telemetry
+        double leftPower;
+        double rightPower;
 
-        double leftPower = controllerThreshold(leftStick);
-        double rightPower = controllerThreshold(rightStick);
+        // POV Mode uses left stick to go forward, and right stick to turn.
+        // - This uses basic math to combine motions and is easier to drive straight.
+        leftPower = -controllerThreshold(gamepad1.left_stick_y);
+        rightPower = -controllerThreshold(gamepad1.right_stick_y);
 
-        // ARCADE DRIVE
-        /*double leftStick = -gamepad1.left_stick_y;
-        double rightStick = gamepad1.right_stick_x;
+        /*double drive = -controllerThreshold(gamepad1.left_stick_y);
+        double turn  =  controllerThreshold(gamepad1.right_stick_x);
+        leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+        rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;*/
 
-        double leftPower = controllerThreshold(leftStick + rightStick);
-        double rightPower = controllerThreshold(leftStick - rightStick);
-        */
+        if (!isModeFast)
+        {
+            leftPower *= SLOW_DRIVE_SCALE_FACTOR;
+            rightPower *= SLOW_DRIVE_SCALE_FACTOR;
+        }
         setDrive(leftPower, rightPower);
 
+        // Set lift power
         if (gamepad1.left_bumper) {
             setLift(LIFT_POWER_UP);
-            isPidRunning = false;
-            isLocked = true;
         }
         else if(gamepad1.left_trigger > 0.1f) {
             setLift(LIFT_POWER_DOWN);
-            isPidRunning = false;
-            isLocked = false;
         }
-        else
-        {
-            double liftPower = LIFT_POWER_HOLD_GUESS;
-            if (!isLocked)
-                liftPower = 0.0;
-            if (PID_ENABLED) {
-                if (!isPidRunning) {
-                    double currentPosition = ((double) liftMotor.getCurrentPosition()) / EC_PER_DEGREE_LIFT;
-                    holdLiftPID.resetPID(LIFT_POWER_HOLD_GUESS);
-                    holdLiftPID.setSetpoint(currentPosition);
-                    isPidRunning = true;
-                }
-                double newPosition = ((double) liftMotor.getCurrentPosition()) / EC_PER_DEGREE_LIFT;
-                liftPower = holdLiftPID.update(newPosition);
+        else {
+            setLift(LIFT_POWER_IDLE);
+        }
+
+        // Set intake position
+        if (gamepad1.right_trigger > 0.1f) {
+            pickUpGlyph();
+        }
+        else if (gamepad1.right_bumper) {
+            dropGlyph();
+        }
+        else {
+            intakeOff();
+        }
+        if(gamepad1.dpad_up) {
+            isModeFast = true;
+        }
+        else if(gamepad1.dpad_down) {
+            isModeFast = false;
+        }
+        if(isModeFast) {
+            telemetry.addLine("Mode is Fast");
+        }
+        else {
+            telemetry.addLine("Mode is Slow");
+        }
+        if (gamepad1.a)  {
+            double BACK_POWER = -0.15;
+            long TIME_ON = 100;
+            long TIME_OFF = 100;
+            setLift(LIFT_POWER_IDLE);
+            setIntake(SLIGHT_INTAKE_VALUE, SLIGHT_INTAKE_VALUE);
+            while (gamepad1.a) {
+                setDrive(BACK_POWER, BACK_POWER);
+                sleep(TIME_ON);
+                setDrive(0.0, BACK_POWER);
+                sleep(TIME_OFF);
             }
-            setLift(liftPower);
         }
-
-        if (gamepad1.right_bumper)
-            closeIntake();
-        else if (gamepad1.right_trigger > 0.1f)
-            openIntake();
-
-
-        if (gamepad1.right_bumper)
-            setIntake(PICK_UP_GLYPH_POWER);
-        else if (gamepad1.right_trigger > 0.1f)
-            setIntake(DROP_GLYPH_POWER);
-        else
-
-            setIntake(0.0);
-
-        if (gamepad1.dpad_right)
-            setSpinner(0.1);
-        else if (gamepad1.dpad_left)
-            setSpinner(-0.1);
-        else
-            setSpinner(0.0);
-
+        if (gamepad1.y) {
+            if (isPusherEnabled) {
+                isPusherEnabled = false;
+                if (isPusherExtended) {
+                    retractPusher();
+                    isPusherExtended = false;
+                } else {
+                    extendPusher();
+                    isPusherExtended = true;
+                }
+            }
+        }
+        else{
+            isPusherEnabled = true;
+        }
+        telemetry.addData("Left, Right power","%4.2f, %4.2f", leftPower, rightPower);
+        telemetry.addData("Left Encoder", backLeftDrive.getCurrentPosition());
+        telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
         telemetry.update();
     }
 }
