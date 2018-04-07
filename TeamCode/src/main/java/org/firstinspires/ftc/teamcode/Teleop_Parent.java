@@ -7,8 +7,8 @@ public class Teleop_Parent extends Robot_Parent
     private final double JOYSTICK_THRESHOLD = 0.1;
     protected final double SLOW_DRIVE_SCALE_FACTOR = 0.5;
     protected final double LIFT_POWER_DOWN = -0.10;
-    protected final double LIFT_POWER_IDLE = 0.16;//Original arm: 0.09, double arm originally 0.18-too high
-    protected final double LIFT_POWER_UP = 0.50;
+    protected final double LIFT_POWER_IDLE = 0.20;//Original arm: 0.09, double arm originally 0.18-too high
+    protected final double LIFT_POWER_UP = 0.5;
 
     @Override
     public void initializeRobot() {

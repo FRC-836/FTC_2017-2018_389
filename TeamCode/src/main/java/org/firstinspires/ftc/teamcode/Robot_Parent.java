@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import java.io.BufferedReader;
@@ -19,9 +20,9 @@ public class Robot_Parent extends LinearOpMode {
     protected Servo jewelArm = null;
     protected DcMotor spinner = null;
 
-    private final double I0_OPEN = 0.5;
+    private final double I0_OPEN = 0.3;
     private final double I0_CLOSE = 0.1;
-    private final double I1_OPEN = 0.5;
+    private final double I1_OPEN = 0.8;
     private final double I1_CLOSE = 0.1;
     private final double I2_OPEN = 0.5;
     private final double I2_CLOSE = 0.1;
@@ -34,7 +35,7 @@ public class Robot_Parent extends LinearOpMode {
     protected final double JEWEL_ARM_FULLY_UP = 1.0; // Servo Position
 
     private final double SPINNER_MAX_POWER = 0.3;
-    private final int SPUN_LOCATION = 720;
+    protected final int SPUN_LOCATION = 720;
 
     private boolean isSpinnerRotated = false;
     private final boolean SWITCH_INTAKES = false;
@@ -69,11 +70,11 @@ public class Robot_Parent extends LinearOpMode {
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        liftMotor.setDirection(DcMotor.Direction.FORWARD);
+        liftMotor.setDirection(DcMotor.Direction.REVERSE);
         intake0.setDirection(Servo.Direction.FORWARD);
         intake1.setDirection(Servo.Direction.REVERSE);
-        intake2.setDirection(Servo.Direction.REVERSE);
-        intake3.setDirection(Servo.Direction.FORWARD);
+        intake2.setDirection(Servo.Direction.FORWARD);
+        intake3.setDirection(Servo.Direction.REVERSE);
         jewelArm.setDirection(Servo.Direction.FORWARD);
         spinner.setDirection(DcMotor.Direction.FORWARD);
 
@@ -85,14 +86,10 @@ public class Robot_Parent extends LinearOpMode {
         spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         spinner.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        spinner.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        spinner.setPower(SPINNER_MAX_POWER);
-        spinner.setTargetPosition(0);
+        spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor.setPower(1.0);
-        liftMotor.setTargetPosition(0);
+        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -120,6 +117,7 @@ public class Robot_Parent extends LinearOpMode {
     }
 
     protected void setLift(double liftPower) {
+        /*
         if (isSpinning) {
             if (liftMotor.getCurrentPosition() > LIFT_SPIN_LOCATION) {
                 if (liftMotor.getTargetPosition() < LIFT_SPIN_LOCATION)
@@ -128,7 +126,8 @@ public class Robot_Parent extends LinearOpMode {
             }
         } else {
             liftMotor.setPower(liftPower);
-        }
+        }*/
+        liftMotor.setPower(liftPower);
     }
 
     protected void setIntake(double i0Pos, double i1Pos, double i2Pos, double i3Pos) {
@@ -214,7 +213,7 @@ public class Robot_Parent extends LinearOpMode {
     protected void lowerJewelArm() {
         setJewelArm(JEWEL_ARM_DOWN);
     }
-
+    /*
     protected void spin() {
         if (liftMotor.getCurrentPosition() < LIFT_SPIN_LOCATION) {
             isSpinning = true;
@@ -242,5 +241,5 @@ public class Robot_Parent extends LinearOpMode {
         }
         isSpinnerRotated = !isSpinnerRotated;
         isSpinning = false;
-    }
+    }*/
 }
