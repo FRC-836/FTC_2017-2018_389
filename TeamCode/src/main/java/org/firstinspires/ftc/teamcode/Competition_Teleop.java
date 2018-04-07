@@ -75,21 +75,7 @@ public class Competition_Teleop extends Teleop_Parent
                 sleep(TIME_OFF);
             }
         }
-        if (gamepad1.y) {
-            if (isPusherEnabled) {
-                isPusherEnabled = false;
-                if (isPusherExtended) {
-                    retractPusher();
-                    isPusherExtended = false;
-                } else {
-                    extendPusher();
-                    isPusherExtended = true;
-                }
-            }
-        }
-        else{
-            isPusherEnabled = true;
-        }
+
         telemetry.addData("Left, Right power","%4.2f, %4.2f", leftPower, rightPower);
         telemetry.addData("Left Encoder", backLeftDrive.getCurrentPosition());
         telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
