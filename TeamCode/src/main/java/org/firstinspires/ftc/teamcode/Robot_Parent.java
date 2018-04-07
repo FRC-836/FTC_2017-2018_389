@@ -4,29 +4,45 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import java.io.BufferedReader;
+
 public class Robot_Parent extends LinearOpMode {
     protected DcMotor backLeftDrive = null;
     protected DcMotor backRightDrive = null;
     protected DcMotor frontLeftDrive = null;
     protected DcMotor frontRightDrive = null;
     protected DcMotor liftMotor = null;
-    protected Servo servoIntake = null;
-    protected Servo secondServoIntake = null;
+    protected Servo intake0 = null;
+    protected Servo intake1 = null;
+    protected Servo intake2 = null;
+    protected Servo intake3 = null;
     protected Servo jewelArm = null;
     protected DcMotor spinner = null;
 
-    private final double DROP_GLYPH_VALUE = 0.1;
-    private final double PICK_UP_GLYPH_VALUE = 0.5;
-    protected final double PICK_UP_GLYPH_VALUE_2 = 0.65;
-    protected final double SLIGHT_INTAKE_VALUE = 0.275;
+    private final double I0_OPEN = 0.5;
+    private final double I0_CLOSE = 0.1;
+    private final double I1_OPEN = 0.5;
+    private final double I1_CLOSE = 0.1;
+    private final double I2_OPEN = 0.5;
+    private final double I2_CLOSE = 0.1;
+    private final double I3_OPEN = 0.5;
+    private final double I3_CLOSE = 0.1;
+    private final double SLIGHT_INTAKE_OPEN = 0.1;
 
     private final double JEWEL_ARM_UP = 0.7;
     private final double JEWEL_ARM_DOWN = 0.2;
     protected final double JEWEL_ARM_FULLY_UP = 1.0; // Servo Position
 
-    private final double SECOND_SERVO_OFFSET = 0.0;
-    protected final double EXTENDED_PUSHER_ARM = 0.55;
-    protected final double RETRACTED_PUSHER_ARM = 0.0;
+    private final double SPINNER_MAX_POWER = 0.3;
+    private final int SPUN_LOCATION = 720;
+
+    private boolean isSpinnerRotated = false;
+    private final boolean SWITCH_INTAKES = false;
+    private boolean topOpen = true;
+    private boolean bottomOpen = true;
+
+    private boolean isSpinning = false;
+    private final int LIFT_SPIN_LOCATION = 1000;
 
     @Override
     public void runOpMode() {
@@ -40,10 +56,10 @@ public class Robot_Parent extends LinearOpMode {
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
         liftMotor = hardwareMap.get(DcMotor.class, "lift");
-        //intakeRight = hardwareMap.get(CRServo.class, "intake_right");
-        //intakeLeft = hardwareMap.get(CRServo.class, "intake_left");
-        servoIntake = hardwareMap.get(Servo.class, "intake");
-        secondServoIntake = hardwareMap.get(Servo.class, "intake2");
+        intake0 = hardwareMap.get(Servo.class, "i0");
+        intake1 = hardwareMap.get(Servo.class, "i1");
+        intake2 = hardwareMap.get(Servo.class, "i2");
+        intake3 = hardwareMap.get(Servo.class, "i3");
         jewelArm = hardwareMap.get(Servo.class, "jewel_arm");
         spinner = hardwareMap.get(DcMotor.class, "spinner");
 
@@ -54,10 +70,10 @@ public class Robot_Parent extends LinearOpMode {
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
-        //intakeRight.setDirection(DcMotor.Direction.FORWARD);
-        //intakeLeft.setDirection(DcMotor.Direction.REVERSE);
-        servoIntake.setDirection(Servo.Direction.FORWARD);
-        secondServoIntake.setDirection(Servo.Direction.FORWARD);
+        intake0.setDirection(Servo.Direction.FORWARD);
+        intake1.setDirection(Servo.Direction.REVERSE);
+        intake2.setDirection(Servo.Direction.REVERSE);
+        intake3.setDirection(Servo.Direction.FORWARD);
         jewelArm.setDirection(Servo.Direction.FORWARD);
         spinner.setDirection(DcMotor.Direction.FORWARD);
 
@@ -66,6 +82,17 @@ public class Robot_Parent extends LinearOpMode {
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        spinner.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        spinner.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        spinner.setPower(SPINNER_MAX_POWER);
+        spinner.setTargetPosition(0);
+
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftMotor.setPower(1.0);
+        liftMotor.setTargetPosition(0);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -90,24 +117,86 @@ public class Robot_Parent extends LinearOpMode {
         backRightDrive.setPower(rightPower);
         frontLeftDrive.setPower(leftPower);
         frontRightDrive.setPower(rightPower);
-        //long live the balance
     }
 
     protected void setLift(double liftPower) {
-        liftMotor.setPower(liftPower);
+        if (isSpinning) {
+            if (liftMotor.getCurrentPosition() > LIFT_SPIN_LOCATION) {
+                if (liftMotor.getTargetPosition() < LIFT_SPIN_LOCATION)
+                    liftMotor.setTargetPosition(LIFT_SPIN_LOCATION);
+                finishSpin();
+            }
+        } else {
+            liftMotor.setPower(liftPower);
+        }
     }
 
-    protected void setIntake(double intakePosition, double intake2Position) {
-        servoIntake.setPosition(intakePosition);
-        secondServoIntake.setPosition(intake2Position + SECOND_SERVO_OFFSET);
+    protected void setIntake(double i0Pos, double i1Pos, double i2Pos, double i3Pos) {
+        intake0.setPosition(i0Pos);
+        intake1.setPosition(i1Pos);
+        intake2.setPosition(i2Pos);
+        intake3.setPosition(i3Pos);
     }
 
-    protected void dropGlyph() {
-        setIntake(DROP_GLYPH_VALUE, DROP_GLYPH_VALUE);
+    protected void openBothIntakes() {
+        setIntake(I0_OPEN, I1_OPEN, I2_OPEN, I3_OPEN);
     }
 
-    protected void pickUpGlyph() {
-        setIntake(PICK_UP_GLYPH_VALUE, PICK_UP_GLYPH_VALUE_2);
+    protected void closeBothIntakes() {
+        setIntake(I0_CLOSE, I1_CLOSE, I2_CLOSE, I3_CLOSE);
+    }
+
+    protected void releaseBothIntakes() {
+        setIntake(I0_CLOSE + SLIGHT_INTAKE_OPEN, I1_CLOSE + SLIGHT_INTAKE_OPEN,
+                I2_CLOSE + SLIGHT_INTAKE_OPEN, I3_CLOSE + SLIGHT_INTAKE_OPEN);
+    }
+
+    protected void openBottomIntake() {
+        if (isSpinnerRotated ^ SWITCH_INTAKES) {
+            setIntake(I0_OPEN, I1_OPEN, intake2.getPosition(), intake3.getPosition());
+        } else {
+            setIntake(intake0.getPosition(), intake1.getPosition(), I2_OPEN, I3_OPEN);
+        }
+    }
+
+    protected void closeBottomIntake() {
+        if (isSpinnerRotated ^ SWITCH_INTAKES) {
+            setIntake(I0_CLOSE, I1_CLOSE, intake2.getPosition(), intake3.getPosition());
+        } else {
+            setIntake(intake0.getPosition(), intake1.getPosition(), I2_CLOSE, I3_CLOSE);
+        }
+    }
+
+    protected void releaseBottomIntake() {
+        if (isSpinnerRotated ^ SWITCH_INTAKES) {
+            setIntake(I0_CLOSE + SLIGHT_INTAKE_OPEN, I1_CLOSE + SLIGHT_INTAKE_OPEN, intake2.getPosition(), intake3.getPosition());
+        } else {
+            setIntake(intake0.getPosition(), intake1.getPosition(), I2_CLOSE + SLIGHT_INTAKE_OPEN, I3_CLOSE + SLIGHT_INTAKE_OPEN);
+        }
+    }
+
+    protected void openTopIntake() {
+        if (!isSpinnerRotated ^ SWITCH_INTAKES) {
+            setIntake(I0_OPEN, I1_OPEN, intake2.getPosition(), intake3.getPosition());
+        } else {
+            setIntake(intake0.getPosition(), intake1.getPosition(), I2_OPEN, I3_OPEN);
+        }
+    }
+
+    protected void closeTopIntake() {
+        if (!isSpinnerRotated ^ SWITCH_INTAKES) {
+            setIntake(I0_CLOSE, I1_CLOSE, intake2.getPosition(), intake3.getPosition());
+        } else {
+            setIntake(intake0.getPosition(), intake1.getPosition(), I2_CLOSE, I3_CLOSE);
+        }
+    }
+
+    protected void releaseTopIntake() {
+        if (!isSpinnerRotated ^ SWITCH_INTAKES) {
+            setIntake(I0_CLOSE + SLIGHT_INTAKE_OPEN, I1_CLOSE + SLIGHT_INTAKE_OPEN, intake2.getPosition(), intake3.getPosition());
+        } else {
+            setIntake(intake0.getPosition(), intake1.getPosition(), I2_CLOSE + SLIGHT_INTAKE_OPEN, I3_CLOSE + SLIGHT_INTAKE_OPEN);
+        }
     }
 
     protected void intakeOff() {
@@ -126,7 +215,32 @@ public class Robot_Parent extends LinearOpMode {
         setJewelArm(JEWEL_ARM_DOWN);
     }
 
-    protected void setPusher(double spinnerPosition){spinner.setPower(spinnerPosition);}
-    protected void retractPusher(){setPusher(RETRACTED_PUSHER_ARM);}
-    protected void extendPusher (){setPusher(EXTENDED_PUSHER_ARM);}
+    protected void spin() {
+        if (liftMotor.getCurrentPosition() < LIFT_SPIN_LOCATION) {
+            isSpinning = true;
+            liftMotor.setTargetPosition(LIFT_SPIN_LOCATION);
+        } else {
+            if (liftMotor.getTargetPosition() < LIFT_SPIN_LOCATION)
+                liftMotor.setTargetPosition(LIFT_SPIN_LOCATION);
+            finishSpin();
+        }
+    }
+
+    private void finishSpin() {
+        if (isSpinnerRotated) {
+            spinner.setTargetPosition(0);
+        } else {
+            spinner.setTargetPosition(SPUN_LOCATION);
+        }
+        if (topOpen)
+        {
+            topOpen = bottomOpen;
+            bottomOpen = true;
+        } else {
+            topOpen = bottomOpen;
+            bottomOpen = false;
+        }
+        isSpinnerRotated = !isSpinnerRotated;
+        isSpinning = false;
+    }
 }

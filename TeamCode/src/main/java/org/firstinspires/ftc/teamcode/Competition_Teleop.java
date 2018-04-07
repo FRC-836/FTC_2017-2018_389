@@ -5,15 +5,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="Tank Drive", group="Competition")//Competition/Main
 public class Competition_Teleop extends Teleop_Parent
 {
-    private boolean isPusherEnabled = true;
     @Override
     public void cycle() {
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftPower;
         double rightPower;
 
-        // POV Mode uses left stick to go forward, and right stick to turn.
-        // - This uses basic math to combine motions and is easier to drive straight.
         leftPower = -controllerThreshold(gamepad1.left_stick_y);
         rightPower = -controllerThreshold(gamepad1.right_stick_y);
 
@@ -42,10 +39,10 @@ public class Competition_Teleop extends Teleop_Parent
 
         // Set intake position
         if (gamepad1.right_trigger > 0.1f) {
-            pickUpGlyph();
+            closeBothIntakes();
         }
         else if (gamepad1.right_bumper) {
-            dropGlyph();
+            openBothIntakes();
         }
         else {
             intakeOff();
@@ -62,18 +59,17 @@ public class Competition_Teleop extends Teleop_Parent
         else {
             telemetry.addLine("Mode is Slow");
         }
-        if (gamepad1.a)  {
-            double BACK_POWER = -0.15;
-            long TIME_ON = 100;
-            long TIME_OFF = 100;
-            setLift(LIFT_POWER_IDLE);
-            setIntake(SLIGHT_INTAKE_VALUE, SLIGHT_INTAKE_VALUE);
-            while (gamepad1.a) {
-                setDrive(BACK_POWER, BACK_POWER);
-                sleep(TIME_ON);
-                setDrive(0.0, BACK_POWER);
-                sleep(TIME_OFF);
-            }
+        if (gamepad1.y) {
+            spin();
+        }
+        if (gamepad1.b)
+        {
+            openTopIntake();
+            spin();
+        }
+        if (gamepad1.a)
+        {
+            releaseBothIntakes();
         }
 
         telemetry.addData("Left, Right power","%4.2f, %4.2f", leftPower, rightPower);

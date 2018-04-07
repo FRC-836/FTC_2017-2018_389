@@ -9,6 +9,7 @@ public class Teleop_Parent extends Robot_Parent
     protected final double LIFT_POWER_DOWN = -0.10;
     protected final double LIFT_POWER_IDLE = 0.16;//Original arm: 0.09, double arm originally 0.18-too high
     protected final double LIFT_POWER_UP = 0.50;
+
     @Override
     public void initializeRobot() {
 

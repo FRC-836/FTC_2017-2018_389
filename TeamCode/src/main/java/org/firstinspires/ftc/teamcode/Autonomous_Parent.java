@@ -60,8 +60,10 @@ public class Autonomous_Parent extends Robot_Parent {
     private final double BEEP_EC_PER_DEGREES_180 = 15.8;
     private final double BEEP_EC_PER_DEGREES_DEFAULT = BEEP_EC_PER_DEGREES_180;
 
-    private final double INTAKE_1_START_POS = 0.0; // Servo Position
-    private final double INTAKE_2_START_POS = PICK_UP_GLYPH_VALUE_2 + 0.20; // Servo Position
+    private final double I0_START = 0.0;
+    private final double I1_START = 0.0;
+    private final double I2_START = 0.0;
+    private final double I3_START = 0.0;
 
     protected final double JEWEL_DRIVE_DISTANCE = 0.21; // feet
     protected final double SPECIAL_JEWEL_DRIVE_DISTANCE = 0.3;
@@ -298,13 +300,13 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected void startUp() {
         raiseJewelArmMore(); // Locks jewel arm
-        setIntake(INTAKE_1_START_POS, INTAKE_2_START_POS);
+        setIntake(I0_START, I1_START, I2_START, I3_START);
 
         waitForStart();
         runtime.reset();
 
         raiseJewelArm();
-        pickUpGlyph();
+        closeBothIntakes();
     }
 
     protected RelicRecoveryVuMark getPictographKey() {
@@ -327,7 +329,7 @@ public class Autonomous_Parent extends Robot_Parent {
         relicTemplate = relicTrackables.get(0);
     }
     protected void scoreGlyph(boolean encoderUsed) {
-        dropGlyph();
+        openBothIntakes();
         sleep(500);
         if(encoderUsed)
             moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER);
@@ -343,7 +345,7 @@ public class Autonomous_Parent extends Robot_Parent {
         moveForwardEncoder(2.0);
         sleep(PAUSE_BETWEEN_TEST_CODE);
         // 3. Pick up glyph
-        pickUpGlyph();
+        closeBothIntakes();
         sleep(PAUSE_BETWEEN_TEST_CODE);
         timedLiftUp(SLIGHT_LIFT_TIME);
         sleep(100);
