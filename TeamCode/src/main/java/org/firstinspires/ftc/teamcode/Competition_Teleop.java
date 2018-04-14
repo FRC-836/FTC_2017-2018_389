@@ -117,7 +117,9 @@ public class Competition_Teleop extends Teleop_Parent
         telemetry.addData("Left, Right power","%4.2f, %4.2f", leftPower, rightPower);
         telemetry.addData("Left Encoder", backLeftDrive.getCurrentPosition());
         telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
-        telemetry.addData("Spinner", spinner.getCurrentPosition());
+        telemetry.addData("cw limit switch", cwLimitSwitch.getState());
+        telemetry.addData("ccw limit switch", ccwLimitSwitch.getState());
+        telemetry.addData("Spinner", spinner.getPower());
         telemetry.update();
     }
 
