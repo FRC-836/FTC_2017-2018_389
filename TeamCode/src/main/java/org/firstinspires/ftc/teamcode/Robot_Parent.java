@@ -4,10 +4,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import java.io.BufferedReader;
 
 public class Robot_Parent extends LinearOpMode {
     protected DcMotor backLeftDrive = null;
@@ -21,6 +19,9 @@ public class Robot_Parent extends LinearOpMode {
     protected Servo intake3 = null;
     protected Servo jewelArm = null;
     protected DcMotor spinner = null;
+    protected DigitalChannel cwLimitSwitch = null;
+    protected DigitalChannel ccwLimitSwitch = null;
+
 
     private final double I0_OPEN = 0.3;
     private final double I0_CLOSE = 0.1;
@@ -39,14 +40,15 @@ public class Robot_Parent extends LinearOpMode {
 
     private final double SPINNER_MAX_POWER = 0.3;
     protected final int SPUN_LOCATION = 720;
+    protected boolean isClockwise = true;
 
-    private boolean isSpinnerRotated = false;
-    private final boolean SWITCH_INTAKES = false;
+    private final boolean SWITCH_INTAKES = true;
     private boolean topOpen = true;
     private boolean bottomOpen = true;
 
-    private boolean isSpinning = false;
     private final int LIFT_SPIN_LOCATION = 1000;
+    protected final double SPINNER_FAST_POWER = 0.35;
+    protected final double SPINNER_SLOW_POWER = 0.05;
 
     @Override
     public void runOpMode() {
@@ -66,6 +68,8 @@ public class Robot_Parent extends LinearOpMode {
         intake3 = hardwareMap.get(Servo.class, "i3");
         jewelArm = hardwareMap.get(Servo.class, "jewel_arm");
         spinner = hardwareMap.get(DcMotor.class, "spinner");
+        cwLimitSwitch = hardwareMap.get(DigitalChannel.class, "cw");
+        ccwLimitSwitch = hardwareMap.get(DigitalChannel.class, "ccw");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -154,7 +158,7 @@ public class Robot_Parent extends LinearOpMode {
     }
 
     protected void openBottomIntake() {
-        if (isSpinnerRotated ^ SWITCH_INTAKES) {
+        if (isClockwise ^ SWITCH_INTAKES) {
             setIntake(I0_OPEN, I1_OPEN, intake2.getPosition(), intake3.getPosition());
         } else {
             setIntake(intake0.getPosition(), intake1.getPosition(), I2_OPEN, I3_OPEN);
@@ -162,7 +166,7 @@ public class Robot_Parent extends LinearOpMode {
     }
 
     protected void closeBottomIntake() {
-        if (isSpinnerRotated ^ SWITCH_INTAKES) {
+        if (isClockwise ^ SWITCH_INTAKES) {
             setIntake(I0_CLOSE, I1_CLOSE, intake2.getPosition(), intake3.getPosition());
         } else {
             setIntake(intake0.getPosition(), intake1.getPosition(), I2_CLOSE, I3_CLOSE);
@@ -170,7 +174,7 @@ public class Robot_Parent extends LinearOpMode {
     }
 
     protected void releaseBottomIntake() {
-        if (isSpinnerRotated ^ SWITCH_INTAKES) {
+        if (isClockwise ^ SWITCH_INTAKES) {
             setIntake(I0_CLOSE + SLIGHT_INTAKE_OPEN, I1_CLOSE + SLIGHT_INTAKE_OPEN, intake2.getPosition(), intake3.getPosition());
         } else {
             setIntake(intake0.getPosition(), intake1.getPosition(), I2_CLOSE + SLIGHT_INTAKE_OPEN, I3_CLOSE + SLIGHT_INTAKE_OPEN);
@@ -178,7 +182,7 @@ public class Robot_Parent extends LinearOpMode {
     }
 
     protected void openTopIntake() {
-        if (!isSpinnerRotated ^ SWITCH_INTAKES) {
+        if (!isClockwise ^ SWITCH_INTAKES) {
             setIntake(I0_OPEN, I1_OPEN, intake2.getPosition(), intake3.getPosition());
         } else {
             setIntake(intake0.getPosition(), intake1.getPosition(), I2_OPEN, I3_OPEN);
@@ -186,7 +190,7 @@ public class Robot_Parent extends LinearOpMode {
     }
 
     protected void closeTopIntake() {
-        if (!isSpinnerRotated ^ SWITCH_INTAKES) {
+        if (!isClockwise ^ SWITCH_INTAKES) {
             setIntake(I0_CLOSE, I1_CLOSE, intake2.getPosition(), intake3.getPosition());
         } else {
             setIntake(intake0.getPosition(), intake1.getPosition(), I2_CLOSE, I3_CLOSE);
@@ -194,7 +198,7 @@ public class Robot_Parent extends LinearOpMode {
     }
 
     protected void releaseTopIntake() {
-        if (!isSpinnerRotated ^ SWITCH_INTAKES) {
+        if (!isClockwise ^ SWITCH_INTAKES) {
             setIntake(I0_CLOSE + SLIGHT_INTAKE_OPEN, I1_CLOSE + SLIGHT_INTAKE_OPEN, intake2.getPosition(), intake3.getPosition());
         } else {
             setIntake(intake0.getPosition(), intake1.getPosition(), I2_CLOSE + SLIGHT_INTAKE_OPEN, I3_CLOSE + SLIGHT_INTAKE_OPEN);
@@ -213,43 +217,21 @@ public class Robot_Parent extends LinearOpMode {
         setJewelArm(JEWEL_ARM_UP);
     }
 
+    protected void setSpinner(double spinnerPower) {
+        setSpinner(spinnerPower);
+    }
+
     protected void lowerJewelArm() {
         setJewelArm(JEWEL_ARM_DOWN);
     }
 
     protected void spin() {
-
-
-    }
-
-
-    /*
-    protected void spin() {
-        if (liftMotor.getCurrentPosition() < LIFT_SPIN_LOCATION) {
-            isSpinning = true;
-            liftMotor.setTargetPosition(LIFT_SPIN_LOCATION);
+        if (isClockwise == true) {
+            setSpinner(-SPINNER_FAST_POWER);
+            isClockwise = false;
         } else {
-            if (liftMotor.getTargetPosition() < LIFT_SPIN_LOCATION)
-                liftMotor.setTargetPosition(LIFT_SPIN_LOCATION);
-            finishSpin();
+            setSpinner(SPINNER_FAST_POWER);
+            isClockwise = true;
         }
     }
-
-    private void finishSpin() {
-        if (isSpinnerRotated) {
-            spinner.setTargetPosition(0);
-        } else {
-            spinner.setTargetPosition(SPUN_LOCATION);
-        }
-        if (topOpen)
-        {
-            topOpen = bottomOpen;
-            bottomOpen = true;
-        } else {
-            topOpen = bottomOpen;
-            bottomOpen = false;
-        }
-        isSpinnerRotated = !isSpinnerRotated;
-        isSpinning = false;
-    }*/
 }

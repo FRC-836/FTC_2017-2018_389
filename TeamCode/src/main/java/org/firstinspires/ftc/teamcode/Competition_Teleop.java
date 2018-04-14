@@ -9,6 +9,7 @@ public class Competition_Teleop extends Teleop_Parent
     private boolean isJewelArmUp = true;
     private boolean isJewelArmReady = true;
 
+
     @Override
     public void cycle() {
         // Setup a variable for each drive wheel to save power level for telemetry
@@ -76,14 +77,6 @@ public class Competition_Teleop extends Teleop_Parent
         else {
             telemetry.addLine("Mode is Slow");
         }
-        /*
-        if (gamepad1.dpad_left && spinner.getCurrentPosition() > 0)
-            spinner.setPower(-0.2);
-        else if (gamepad1.dpad_right && spinner.getCurrentPosition() < SPUN_LOCATION)
-            spinner.setPower(0.2);
-        else
-            spinner.setPower(0.0);
-            */
         if (gamepad1.y) {
             spin();
         }
@@ -91,6 +84,12 @@ public class Competition_Teleop extends Teleop_Parent
         {
             openTopIntake();
             spin();
+        }
+        if (isClockwise && cwLimitSwitch.getState()){
+            setSpinner(SPINNER_SLOW_POWER);
+        }
+        if (!isClockwise && ccwLimitSwitch.getState()){
+            setSpinner(-SPINNER_SLOW_POWER);
         }
         if (gamepad1.a)
         {
@@ -114,8 +113,6 @@ public class Competition_Teleop extends Teleop_Parent
         else{
             isJewelArmReady = true;
         }
-
-
 
         telemetry.addData("Left, Right power","%4.2f, %4.2f", leftPower, rightPower);
         telemetry.addData("Left Encoder", backLeftDrive.getCurrentPosition());
