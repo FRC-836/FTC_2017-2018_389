@@ -335,7 +335,7 @@ public class Autonomous_Parent extends Robot_Parent {
             moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER);
         else
             moveStraightTime(-0.35, 500);
-    }
+    }// TODO: Change if necessary, (estimates)
     protected void scoreOneMoreGlyph(){
         // Steps for Scoring the 2nd Glyph:
         // 1. Turn 180 Degrees
@@ -350,7 +350,7 @@ public class Autonomous_Parent extends Robot_Parent {
         timedLiftUp(SLIGHT_LIFT_TIME);
         sleep(100);
         // 4. Move backward 1 3/4 feet
-        moveBackwardEncoder(1.2);
+        moveBackwardEncoder(1.5);
         sleep(PAUSE_BETWEEN_TEST_CODE);
         // 5. Turn 180 Degrees
         turnRight(180.0);

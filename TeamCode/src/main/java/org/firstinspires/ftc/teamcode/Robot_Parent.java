@@ -1,4 +1,6 @@
+// This is Robot 1 which is the bot that lifts and has grippers as the intake
 package org.firstinspires.ftc.teamcode;
+
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -30,8 +32,9 @@ public class Robot_Parent extends LinearOpMode {
     private final double I3_CLOSE = 0.1;
     private final double SLIGHT_INTAKE_OPEN = 0.1;
 
+
     private final double JEWEL_ARM_UP = 0.7;
-    private final double JEWEL_ARM_DOWN = 0.2;
+    private final double JEWEL_ARM_DOWN = 0.3;
     protected final double JEWEL_ARM_FULLY_UP = 1.0; // Servo Position
 
     private final double SPINNER_MAX_POWER = 0.3;
@@ -71,10 +74,10 @@ public class Robot_Parent extends LinearOpMode {
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         liftMotor.setDirection(DcMotor.Direction.REVERSE);
-        intake0.setDirection(Servo.Direction.FORWARD);
+        intake0.setDirection(Servo.Direction.REVERSE);
         intake1.setDirection(Servo.Direction.REVERSE);
         intake2.setDirection(Servo.Direction.FORWARD);
-        intake3.setDirection(Servo.Direction.REVERSE);
+        intake3.setDirection(Servo.Direction.FORWARD);
         jewelArm.setDirection(Servo.Direction.FORWARD);
         spinner.setDirection(DcMotor.Direction.FORWARD);
 
@@ -213,6 +216,13 @@ public class Robot_Parent extends LinearOpMode {
     protected void lowerJewelArm() {
         setJewelArm(JEWEL_ARM_DOWN);
     }
+
+    protected void spin() {
+
+
+    }
+
+
     /*
     protected void spin() {
         if (liftMotor.getCurrentPosition() < LIFT_SPIN_LOCATION) {

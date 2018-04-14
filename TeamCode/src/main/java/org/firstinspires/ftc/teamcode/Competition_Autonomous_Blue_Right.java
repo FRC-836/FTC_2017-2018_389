@@ -1,3 +1,4 @@
+//TODO: Test Programs for values.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -26,12 +27,13 @@ public class Competition_Autonomous_Blue_Right extends Autonomous_Parent {
         telemetry.addLine("Looking for Pictograph");
         telemetry.update();
         cryptoboxKey = getPictographKey();
+        // TODO: Change Values if needed, just an estimate
 
         //turnRight(25.0);
         sleep(1000);
-        moveBackwardEncoder(2.0);
+        moveBackwardEncoder(3.0);
         sleep(STEADY_STATE_SLEEP_TIME);
-        turnRight(30.0);
+        turnRight(35.0);
         sleep(STEADY_STATE_SLEEP_TIME);
         moveBackwardEncoder(1.0);
         sleep(STEADY_STATE_SLEEP_TIME);

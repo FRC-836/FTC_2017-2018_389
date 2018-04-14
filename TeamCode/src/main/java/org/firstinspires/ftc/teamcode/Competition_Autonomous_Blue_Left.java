@@ -1,3 +1,4 @@
+//TODO: Test Programs for values.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -12,7 +13,7 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
         telemetry.update();
 
         //Move Jewel arm to where it sees a jewel
-        lowerJewelArm();
+
         sleep(1500);
 
         timedLiftUp(SLIGHT_LIFT_TIME);
@@ -29,23 +30,24 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
 
         //turnRight(25.0);
         sleep(STEADY_STATE_SLEEP_TIME);
+        //TODO: Values below are just an estimate, change (if needed)
 
-        moveBackwardEncoder(2.0);
+        moveBackwardEncoder(1.8);
         sleep(STEADY_STATE_SLEEP_TIME);
-        turnLeft(60.0);
+        turnLeft(34.9);
         sleep(STEADY_STATE_SLEEP_TIME);
-        moveForwardEncoder(2.0);
+        moveForwardEncoder(0.5);
         sleep(STEADY_STATE_SLEEP_TIME);
         switch (cryptoboxKey) {
             case LEFT:
-                turnLeft(162.0);//was orignally 175 then 160
+                turnLeft(160.0);//was orignally 175 then 160
                 break;
             case UNKNOWN:
             case CENTER:
-                turnLeft(144.0);//was originally 150 then 140 then 142
+                turnLeft(140.0);//was originally 150 then 140 then 142
                 break;
             case RIGHT:
-                turnLeft(124.0);//was orignally 100 then 120 then 122
+                turnLeft(120.0);//was orignally 100 then 120 then 122
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);

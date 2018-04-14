@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="Tank Drive", group="Competition")//Competition/Main
 public class Competition_Teleop extends Teleop_Parent
 {
     private boolean isIdle = true;
+    private boolean isJewelArmUp = true;
+    private boolean isJewelArmReady = true;
 
     @Override
     public void cycle() {
@@ -21,6 +22,9 @@ public class Competition_Teleop extends Teleop_Parent
         double turn  =  controllerThreshold(gamepad1.right_stick_x);
         leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
         rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;*/
+
+
+
 
         if (!isModeFast)
         {
@@ -72,24 +76,46 @@ public class Competition_Teleop extends Teleop_Parent
         else {
             telemetry.addLine("Mode is Slow");
         }
+        /*
         if (gamepad1.dpad_left && spinner.getCurrentPosition() > 0)
             spinner.setPower(-0.2);
         else if (gamepad1.dpad_right && spinner.getCurrentPosition() < SPUN_LOCATION)
             spinner.setPower(0.2);
         else
             spinner.setPower(0.0);
-        /*        if (gamepad1.y) {
+            */
+        if (gamepad1.y) {
             spin();
         }
         if (gamepad1.b)
         {
             openTopIntake();
             spin();
-        }*/
+        }
         if (gamepad1.a)
         {
             releaseBothIntakes();
         }
+
+        if (gamepad1.x) {
+            if(isJewelArmReady == true)
+            {
+                if (isJewelArmUp == true) {
+                    lowerJewelArm();
+                    isJewelArmUp = false;
+                } else {
+                    raiseJewelArm();
+                    isJewelArmUp = true;
+                }
+                isJewelArmReady = false;
+            }
+
+        }
+        else{
+            isJewelArmReady = true;
+        }
+
+
 
         telemetry.addData("Left, Right power","%4.2f, %4.2f", leftPower, rightPower);
         telemetry.addData("Left Encoder", backLeftDrive.getCurrentPosition());
@@ -97,4 +123,15 @@ public class Competition_Teleop extends Teleop_Parent
         telemetry.addData("Spinner", spinner.getCurrentPosition());
         telemetry.update();
     }
+
+
 }
+
+/* Teleop Brainstorms: (This is for robot 2!!! IGNORE!!!)
+- Wheel intake, 4 wheels, has to roll certain direction to push glyphs to the platform to dump over
+- Jewel Arm on right
+- Method for dumper (2nd Intake)
+
+- Probably need to lower the power on wheels because it is flying the glyphs off of the dumper platform
+- Lock arms that hold intake wheels
+ */
