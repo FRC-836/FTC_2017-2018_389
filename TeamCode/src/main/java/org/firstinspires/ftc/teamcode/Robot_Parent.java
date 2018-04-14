@@ -23,20 +23,20 @@ public class Robot_Parent extends LinearOpMode {
     protected DigitalChannel ccwLimitSwitch = null;
 
 
-    private final double I0_OPEN = 0.3;
-    private final double I0_CLOSE = 0.1;
-    private final double I1_OPEN = 0.8;
+    private final double I0_OPEN = 0.9;
+    private final double I0_CLOSE = 0.7;
+    private final double I1_OPEN = 0.2;
     private final double I1_CLOSE = 0.1;
     private final double I2_OPEN = 0.5;
     private final double I2_CLOSE = 0.1;
-    private final double I3_OPEN = 0.5;
-    private final double I3_CLOSE = 0.1;
+    private final double I3_OPEN = 0.9;
+    private final double I3_CLOSE = 0.5;
     private final double SLIGHT_INTAKE_OPEN = 0.1;
 
 
-    private final double JEWEL_ARM_UP = 0.7;
-    private final double JEWEL_ARM_DOWN = 0.3;
-    protected final double JEWEL_ARM_FULLY_UP = 1.0; // Servo Position
+    private final double JEWEL_ARM_UP = 0.5;
+    private final double JEWEL_ARM_DOWN = 0.95;
+    protected final double JEWEL_ARM_FULLY_UP = 0.35; // Servo Position
 
     private final double SPINNER_MAX_POWER = 0.3;
     protected final int SPUN_LOCATION = 720;
