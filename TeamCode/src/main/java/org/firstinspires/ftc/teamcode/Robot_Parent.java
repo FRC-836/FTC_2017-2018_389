@@ -49,8 +49,8 @@ public class Robot_Parent extends LinearOpMode {
     private boolean bottomOpen = true;
 
     private final int LIFT_SPIN_LOCATION = 1000;
-    protected final double SPINNER_FAST_POWER = 0.35;
-    protected final double SPINNER_SLOW_POWER = 0.05;
+    protected final double SPINNER_FAST_POWER = 0.45;
+    protected final double SPINNER_SLOW_POWER = 0.15;
 
     @Override
     public void runOpMode() {
@@ -85,7 +85,7 @@ public class Robot_Parent extends LinearOpMode {
         intake2.setDirection(Servo.Direction.FORWARD);
         intake3.setDirection(Servo.Direction.FORWARD);
         jewelArm.setDirection(Servo.Direction.FORWARD);
-        spinner.setDirection(DcMotor.Direction.FORWARD);
+        spinner.setDirection(DcMotor.Direction.REVERSE);
 
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -220,7 +220,7 @@ public class Robot_Parent extends LinearOpMode {
     }
 
     protected void setSpinner(double spinnerPower) {
-        setSpinner(spinnerPower);
+        spinner.setPower(spinnerPower);
     }
 
     protected void lowerJewelArm() {
