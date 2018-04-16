@@ -46,6 +46,7 @@ public class Autonomous_Parent extends Robot_Parent {
     private ElapsedTime runtime = new ElapsedTime();
     private ColorSensor colorSensor = null;
 
+
     protected final long STEADY_STATE_SLEEP_TIME = 500;
     protected final double LIFT_POWER_DOWN = -0.10;
     protected final double LIFT_POWER_IDLE = 0.12;//Original arm: 0.09, double arm originally 0.18-too high
