@@ -49,8 +49,8 @@ public class Robot_Parent extends LinearOpMode {
     private boolean bottomOpen = true;
 
     private final int LIFT_SPIN_LOCATION = 1000;
-    protected final double SPINNER_FAST_POWER = 0.45;
-    protected final double SPINNER_SLOW_POWER = 0.15;
+    protected final double SPINNER_FAST_POWER = 0.75;
+    protected final double SPINNER_SLOW_POWER = 0.45;
 
     @Override
     public void runOpMode() {
