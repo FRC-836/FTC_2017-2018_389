@@ -29,8 +29,8 @@ public class Robot_Parent extends LinearOpMode {
     private final double I0_CLOSE = 0.7;
     private final double I1_OPEN = 0.2;
     private final double I1_CLOSE = 0.1;
-    private final double I2_OPEN = 0.5;
-    private final double I2_CLOSE = 0.1;
+    private final double I2_OPEN = 0.9;
+    private final double I2_CLOSE = 0.7;
     private final double I3_OPEN = 0.9;
     private final double I3_CLOSE = 0.5;
     private final double SLIGHT_INTAKE_OPEN = 0.1;
