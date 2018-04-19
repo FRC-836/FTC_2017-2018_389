@@ -6,8 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import java.io.BufferedReader;
 
 public class Robot_Parent extends LinearOpMode {
     protected DcMotor backLeftDrive = null;
@@ -25,14 +23,14 @@ public class Robot_Parent extends LinearOpMode {
     protected DigitalChannel ccwLimitSwitch = null;
 
 
-    private final double I0_OPEN = 0.9;
-    private final double I0_CLOSE = 0.7;
-    private final double I1_OPEN = 0.2;
-    private final double I1_CLOSE = 0.1;
-    private final double I2_OPEN = 0.9;
-    private final double I2_CLOSE = 0.7;
-    private final double I3_OPEN = 0.9;
-    private final double I3_CLOSE = 0.5;
+    private final double I0_CLOSE = 0.9;
+    private final double I0_OPEN = 0.7;
+    private final double I1_CLOSE = 0.5;
+    private final double I1_OPEN = 0.75;
+    private final double I2_CLOSE = 0.3;
+    private final double I2_OPEN = 0.6;
+    private final double I3_CLOSE = 0.9;
+    private final double I3_OPEN = 0.5;
     private final double SLIGHT_INTAKE_OPEN = 0.1;
 
 
@@ -44,12 +42,12 @@ public class Robot_Parent extends LinearOpMode {
     protected final int SPUN_LOCATION = 720;
     protected boolean isClockwise = true;
 
-    private final boolean SWITCH_INTAKES = true;
+    private final boolean SWITCH_INTAKES = false;
     private boolean topOpen = true;
     private boolean bottomOpen = true;
 
     private final int LIFT_SPIN_LOCATION = 1000;
-    protected final double SPINNER_FAST_POWER = 0.75;
+    protected final double SPINNER_FAST_POWER = 0.30;
     protected final double SPINNER_SLOW_POWER = 0.05;
 
     @Override
@@ -85,7 +83,7 @@ public class Robot_Parent extends LinearOpMode {
         intake2.setDirection(Servo.Direction.FORWARD);
         intake3.setDirection(Servo.Direction.FORWARD);
         jewelArm.setDirection(Servo.Direction.FORWARD);
-        spinner.setDirection(DcMotor.Direction.REVERSE);
+        spinner.setDirection(DcMotor.Direction.FORWARD);
 
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -146,12 +144,12 @@ public class Robot_Parent extends LinearOpMode {
         intake3.setPosition(i3Pos);
     }
 
-    protected void openBothIntakes() {
-        setIntake(I0_OPEN, I1_OPEN, I2_OPEN, I3_OPEN);
-    }
-
     protected void closeBothIntakes() {
         setIntake(I0_CLOSE, I1_CLOSE, I2_CLOSE, I3_CLOSE);
+    }
+
+    protected void openBothIntakes() {
+        setIntake(I0_OPEN, I1_OPEN, I2_OPEN, I3_OPEN);
     }
 
     protected void releaseBothIntakes() {
@@ -159,19 +157,19 @@ public class Robot_Parent extends LinearOpMode {
                 I2_CLOSE + SLIGHT_INTAKE_OPEN, I3_CLOSE + SLIGHT_INTAKE_OPEN);
     }
 
-    protected void openBottomIntake() {
-        if (isClockwise ^ SWITCH_INTAKES) {
-            setIntake(I0_OPEN, I1_OPEN, intake2.getPosition(), intake3.getPosition());
-        } else {
-            setIntake(intake0.getPosition(), intake1.getPosition(), I2_OPEN, I3_OPEN);
-        }
-    }
-
     protected void closeBottomIntake() {
         if (isClockwise ^ SWITCH_INTAKES) {
             setIntake(I0_CLOSE, I1_CLOSE, intake2.getPosition(), intake3.getPosition());
         } else {
             setIntake(intake0.getPosition(), intake1.getPosition(), I2_CLOSE, I3_CLOSE);
+        }
+    }
+
+    protected void openBottomIntake() {
+        if (isClockwise ^ SWITCH_INTAKES) {
+            setIntake(I0_OPEN, I1_OPEN, intake2.getPosition(), intake3.getPosition());
+        } else {
+            setIntake(intake0.getPosition(), intake1.getPosition(), I2_OPEN, I3_OPEN);
         }
     }
 
@@ -183,19 +181,19 @@ public class Robot_Parent extends LinearOpMode {
         }
     }
 
-    protected void openTopIntake() {
-        if (!isClockwise ^ SWITCH_INTAKES) {
-            setIntake(I0_OPEN, I1_OPEN, intake2.getPosition(), intake3.getPosition());
-        } else {
-            setIntake(intake0.getPosition(), intake1.getPosition(), I2_OPEN, I3_OPEN);
-        }
-    }
-
     protected void closeTopIntake() {
         if (!isClockwise ^ SWITCH_INTAKES) {
             setIntake(I0_CLOSE, I1_CLOSE, intake2.getPosition(), intake3.getPosition());
         } else {
             setIntake(intake0.getPosition(), intake1.getPosition(), I2_CLOSE, I3_CLOSE);
+        }
+    }
+
+    protected void openTopIntake() {
+        if (!isClockwise ^ SWITCH_INTAKES) {
+            setIntake(I0_OPEN, I1_OPEN, intake2.getPosition(), intake3.getPosition());
+        } else {
+            setIntake(intake0.getPosition(), intake1.getPosition(), I2_OPEN, I3_OPEN);
         }
     }
 
@@ -235,5 +233,13 @@ public class Robot_Parent extends LinearOpMode {
             setSpinner(SPINNER_FAST_POWER);
             isClockwise = true;
         }
+    }
+
+    protected boolean getCWSwitchPressed() {
+        return !cwLimitSwitch.getState();
+    }
+
+    protected boolean getCCWSwitchPressed() {
+        return !ccwLimitSwitch.getState();
     }
 }

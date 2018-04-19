@@ -8,7 +8,7 @@ public class Competition_Teleop extends Teleop_Parent
     private boolean isIdle = true;
     private boolean isJewelArmUp = true;
     private boolean isJewelArmReady = true;
-
+    private boolean isSpinnerEnabled = true;
 
     @Override
     public void cycle() {
@@ -57,10 +57,10 @@ public class Competition_Teleop extends Teleop_Parent
 
         // Set intake position
         if (gamepad1.right_trigger > 0.1f) {
-            closeBothIntakes();
+            openBothIntakes();
         }
         else if (gamepad1.right_bumper) {
-            openBothIntakes();
+            closeBothIntakes();
         }
         else {
             intakeOff();
@@ -75,20 +75,23 @@ public class Competition_Teleop extends Teleop_Parent
             telemetry.addLine("Mode is Fast");
         }
         else {
+        }
             telemetry.addLine("Mode is Slow");
-        }
         if (gamepad1.y) {
-            spin();
-        }
-        if (gamepad1.b)
-        {
-            openTopIntake();
-            spin();
-        }
-        if (isClockwise && cwLimitSwitch.getState()){
+            if (isSpinnerEnabled)
+                spin();
+            isSpinnerEnabled = false;
+        } else if (gamepad1.b) {
+            if (isSpinnerEnabled) {
+                openTopIntake();
+                spin();
+            }
+            isSpinnerEnabled = false;
+        } else isSpinnerEnabled = true;
+        if (isClockwise && getCWSwitchPressed()){
             setSpinner(SPINNER_SLOW_POWER);
         }
-        if (!isClockwise && ccwLimitSwitch.getState()){
+        if (!isClockwise && getCCWSwitchPressed()){
             setSpinner(-SPINNER_SLOW_POWER);
         }
         if (gamepad1.a)
@@ -117,9 +120,13 @@ public class Competition_Teleop extends Teleop_Parent
         telemetry.addData("Left, Right power","%4.2f, %4.2f", leftPower, rightPower);
         telemetry.addData("Left Encoder", backLeftDrive.getCurrentPosition());
         telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
-        telemetry.addData("cw limit switch", cwLimitSwitch.getState());
-        telemetry.addData("ccw limit switch", ccwLimitSwitch.getState());
+        telemetry.addData("cw limit switch", getCWSwitchPressed());
+        telemetry.addData("ccw limit switch", getCCWSwitchPressed());
         telemetry.addData("Spinner", spinner.getPower());
+        telemetry.addData("I0", intake0.getPosition());
+        telemetry.addData("I1", intake1.getPosition());
+        telemetry.addData("I2", intake2.getPosition());
+        telemetry.addData("I3", intake3.getPosition());
         telemetry.update();
     }
 

@@ -307,7 +307,7 @@ public class Autonomous_Parent extends Robot_Parent {
         runtime.reset();
 
         raiseJewelArm();
-        closeBothIntakes();
+        openBothIntakes();
     }
 
     protected RelicRecoveryVuMark getPictographKey() {
@@ -330,7 +330,7 @@ public class Autonomous_Parent extends Robot_Parent {
         relicTemplate = relicTrackables.get(0);
     }
     protected void scoreGlyph(boolean encoderUsed) {
-        openBothIntakes();
+        closeBothIntakes();
         sleep(500);
         if(encoderUsed)
             moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER);
@@ -346,7 +346,7 @@ public class Autonomous_Parent extends Robot_Parent {
         moveForwardEncoder(2.0);
         sleep(PAUSE_BETWEEN_TEST_CODE);
         // 3. Pick up glyph
-        closeBothIntakes();
+        openBothIntakes();
         sleep(PAUSE_BETWEEN_TEST_CODE);
         timedLiftUp(SLIGHT_LIFT_TIME);
         sleep(100);
