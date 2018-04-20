@@ -8,13 +8,11 @@ public class Competition_Autonomous_Drive_And_Drop_Red extends Autonomous_Parent
     @Override
     public void runAutonomous() {
         //timedLiftUp(SLIGHT_LIFT_TIME);
-        moveStraightTime(0.7, 1300);
+        moveStraightTime(2.875, 1300);
         sleep(1000);
-        setDrive(0.5, -0.5);
+        setDrive(-0.5, 0.5);
         sleep(1000);
-        setDrive(0.0, 0.0);
-        sleep(1000);
-        moveStraightTime(0.7, 1000);
+        moveStraightTime(-0.5, 1000);
         scoreGlyph(false);
     }
 }
