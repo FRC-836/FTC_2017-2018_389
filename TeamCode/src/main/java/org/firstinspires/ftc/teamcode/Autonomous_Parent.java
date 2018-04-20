@@ -46,29 +46,26 @@ public class Autonomous_Parent extends Robot_Parent {
     private ElapsedTime runtime = new ElapsedTime();
     private ColorSensor colorSensor = null;
 
-
     protected final long STEADY_STATE_SLEEP_TIME = 500;
-    protected final double LIFT_POWER_DOWN = -0.10;
-    protected final double LIFT_POWER_IDLE = 0.12;//Original arm: 0.09, double arm originally 0.18-too high
-    protected final double LIFT_POWER_UP = 0.50;
     protected final double ENCODER_TURN_POWER = 0.19;//was 6
     protected final double ENCODER_DRIVE_POWER = 0.2;//was 0.5
 
     private final boolean USE_LEFT_ENCODER = true;
     protected final boolean RUN_TEST_CODE = false;
+    protected final double FLIPPER_POWER_UP = 0.3;
+    protected final double FLIPPER_POWER_IDLE = 0.20;
+    protected final double FLIPPER_POWER_DOWN = -0.3;
 
     private final double BEEP_EC_PER_FEET = 1304.8; // Encoder counts per Foot
     private final double BEEP_EC_PER_DEGREES_180 = 15.8;
     private final double BEEP_EC_PER_DEGREES_DEFAULT = BEEP_EC_PER_DEGREES_180;
 
-    private final double I0_START = 0.0;
-    private final double I1_START = 0.0;
-    private final double I2_START = 0.0;
-    private final double I3_START = 0.0;
-
     protected final double JEWEL_DRIVE_DISTANCE = 0.21; // feet
     protected final double SPECIAL_JEWEL_DRIVE_DISTANCE = 0.3;
     protected final double JEWEL_DRIVE_POWER = 0.10;
+
+    private final double RIGHT_POWER = 0.0;
+    private final double LEFT_POWER = 0.0;
 
     private final double COLOR_UNCERTAINTY = 0.05; // Amount that (Red/Blue) > 1 or vice-versa to determine a color
 
@@ -301,13 +298,12 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected void startUp() {
         raiseJewelArmMore(); // Locks jewel arm
-        setIntake(I0_START, I1_START, I2_START, I3_START);
+        setIntake(RIGHT_POWER, LEFT_POWER);
 
         waitForStart();
         runtime.reset();
 
         raiseJewelArm();
-        openBothIntakes();
     }
 
     protected RelicRecoveryVuMark getPictographKey() {
@@ -330,14 +326,15 @@ public class Autonomous_Parent extends Robot_Parent {
         relicTemplate = relicTrackables.get(0);
     }
     protected void scoreGlyph(boolean encoderUsed) {
-        closeBothIntakes();
-        sleep(500);
         if(encoderUsed)
             moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER);
         else
             moveStraightTime(-0.35, 500);
-    }// TODO: Change if necessary, (estimates)
-    protected void scoreOneMoreGlyph(){
+        setFlipper(0.5);
+        sleep(500);
+        setFlipper(0.0);
+    }
+    /*protected void scoreOneMoreGlyph(){
         // Steps for Scoring the 2nd Glyph:
         // 1. Turn 180 Degrees
         turnLeft(180.0);
@@ -346,18 +343,18 @@ public class Autonomous_Parent extends Robot_Parent {
         moveForwardEncoder(2.0);
         sleep(PAUSE_BETWEEN_TEST_CODE);
         // 3. Pick up glyph
-        openBothIntakes();
+        closeBothIntakes();
         sleep(PAUSE_BETWEEN_TEST_CODE);
         timedLiftUp(SLIGHT_LIFT_TIME);
         sleep(100);
         // 4. Move backward 1 3/4 feet
-        moveBackwardEncoder(1.5);
+        moveBackwardEncoder(1.2);
         sleep(PAUSE_BETWEEN_TEST_CODE);
         // 5. Turn 180 Degrees
         turnRight(180.0);
         sleep(PAUSE_BETWEEN_TEST_CODE);
         // 6. Lift a little bit so glyph doesn't drag
-        timedLiftUp(SECOND_ROW_LIFT_TIME);
+        timedFlipUp(SECOND_ROW_LIFT_TIME);
         sleep(PAUSE_BETWEEN_TEST_CODE);
         // 7. Drive forward time based
         moveStraightTime(0.5, 1000);
@@ -368,20 +365,20 @@ public class Autonomous_Parent extends Robot_Parent {
         scoreGlyph(true);
         // 11. Lower lift
         sleep(PAUSE_BETWEEN_TEST_CODE);
-        timedLiftDown(SLIGHT_LIFT_TIME);
+        timedFlipDown(SLIGHT_LIFT_TIME);
         // 12.(Optional)Drive forward to park
 
-    }
+    }*/
 
-    protected void timedLiftUp(long milliseconds){
-        setLift(LIFT_POWER_UP);
+    protected void timedFlipUp(long milliseconds){
+        setFlipper(FLIPPER_POWER_UP);
         sleep(milliseconds);
-        setLift(LIFT_POWER_IDLE);
+        setFlipper(FLIPPER_POWER_IDLE);
     }
-    protected void timedLiftDown(long milliseconds){
-        setLift(LIFT_POWER_DOWN);
+    protected void timedFlipDown(long milliseconds){
+        setFlipper(FLIPPER_POWER_DOWN);
         sleep(milliseconds);
-        setLift(0.0);
+        setFlipper(0.0);
     }
     protected void knockOffJewel(boolean isBlueTeam){
         switch (getColorSeen()) {

@@ -1,4 +1,3 @@
-//TODO: Test Programs for values.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -8,6 +7,7 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
 
     @Override
     public void runAutonomous() {
+        /*
         relicTrackables.activate();
         telemetry.addLine("Looking for Color");
         telemetry.update();
@@ -57,6 +57,6 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
             return;
 
         //Test code goes beyond this point
-        scoreOneMoreGlyph();
+        scoreOneMoreGlyph();*/
     }
 }

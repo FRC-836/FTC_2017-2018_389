@@ -1,4 +1,3 @@
-//TODO: Test Programs for values.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -16,7 +15,6 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
         lowerJewelArm();
         sleep(1500);
 
-        timedLiftUp(SLIGHT_LIFT_TIME);
         knockOffJewel(false);
 
         telemetry.addLine("Done with Jewel. About to look for Pictograph");
@@ -24,35 +22,29 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
 
         sleep(2000);
 
-
         telemetry.addLine("Looking for Pictograph");
         telemetry.update();
         cryptoboxKey = getPictographKey();
 
 
         sleep(1000);
-        moveForwardEncoder(2.0);
-        sleep(STEADY_STATE_SLEEP_TIME);
-        turnLeft(60.0);
-        sleep(STEADY_STATE_SLEEP_TIME);
-        moveForwardEncoder(1.5);
-        sleep(STEADY_STATE_SLEEP_TIME);
         switch (cryptoboxKey) {
             case LEFT:
-                turnRight(118.0);// was originally 2.15
+                moveForwardEncoder(2.25);
                 break;
             case UNKNOWN:
             case CENTER:
-                turnRight(135.0);//was originally 2.8
+                moveForwardEncoder(2.875);
                 break;
             case RIGHT:
-                turnRight(149.0);//was originally 3.4
+                moveForwardEncoder(3.5);
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);
-
+        turnLeft(90.0);
+        sleep(STEADY_STATE_SLEEP_TIME);
         // These two steps move the robot from the red platform to the red goal.
-        moveStraightTime(0.5, 1000);
+        moveStraightTime(-0.5, 1000);
 
         // Drops pre-loaded glyph into the cryptobox
         scoreGlyph(true);
@@ -61,6 +53,6 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
             return;
 
         //Test code goes beyond this point
-        scoreOneMoreGlyph();
+        //scoreOneMoreGlyph();
     }
 }
