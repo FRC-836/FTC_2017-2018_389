@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name="Tank Drive", group="Competition")//Competition/Main
-public class Competition_Teleop extends Teleop_Parent
+@TeleOp(name="Arcade Drive", group="Competition")//Competition/Main
+public class Competition_Teleop_Arcade extends Teleop_Parent
 {
     private boolean isIdle = true;
     private boolean isJewelArmUp = true;
@@ -16,16 +17,13 @@ public class Competition_Teleop extends Teleop_Parent
         double leftPower;
         double rightPower;
 
-        leftPower = -controllerThreshold(gamepad1.left_stick_y);
-        rightPower = -controllerThreshold(gamepad1.right_stick_y);
+        //leftPower = -controllerThreshold(gamepad1.left_stick_y);
+        //rightPower = -controllerThreshold(gamepad1.right_stick_y);
 
-        /*double drive = -controllerThreshold(gamepad1.left_stick_y);
+        double drive = -controllerThreshold(gamepad1.left_stick_y);
         double turn  =  controllerThreshold(gamepad1.right_stick_x);
         leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-        rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;*/
-
-
-
+        rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
         if (!isModeFast)
         {
