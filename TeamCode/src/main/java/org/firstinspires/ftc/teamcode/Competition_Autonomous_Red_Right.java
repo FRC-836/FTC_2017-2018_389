@@ -7,7 +7,7 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
 
     @Override
     public void runAutonomous() {
-        /*
+
         relicTrackables.activate();
         telemetry.addLine("Looking for Color");
         telemetry.update();
@@ -16,7 +16,6 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
         lowerJewelArm();
         sleep(1500);
 
-        timedLiftUp(SLIGHT_LIFT_TIME);
         knockOffJewel(false);
 
         telemetry.addLine("Done with Jewel. About to look for Pictograph");
@@ -37,11 +36,11 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
 
         switch (cryptoboxKey) {
             case LEFT:
-                turnLeft(52.0);//was originally 45, then 57 then 50
+                moveForwardEncoder(52.0);//was originally 45, then 57 then 50
                 break;
             case UNKNOWN:
             case CENTER:
-                turnLeft(39.0);//was originally 45.0, then 35 then 40
+                moveForwardEncoder(39.0);//was originally 45.0, then 35 then 40
                 break;
             case RIGHT:
                 turnLeft(29.0);//was orignally 15, then 27 then 28
@@ -57,6 +56,6 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
             return;
 
         //Test code goes beyond this point
-        scoreOneMoreGlyph();*/
+        //scoreOneMoreGlyph();*/
     }
 }
