@@ -22,7 +22,7 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
 
         sleep(2000);
 
-        telemetry.addLine("Lo oking for Pictograph");
+        telemetry.addLine("Looking for Pictograph");
         telemetry.update();
         cryptoboxKey = getPictographKey();
 
