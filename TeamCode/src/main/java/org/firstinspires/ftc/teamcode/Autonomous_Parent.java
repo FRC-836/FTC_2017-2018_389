@@ -56,7 +56,7 @@ public class Autonomous_Parent extends Robot_Parent {
     protected final double FLIPPER_POWER_IDLE = 0.20;
     protected final double FLIPPER_POWER_DOWN = -0.3;
 
-    private final double BEEP_EC_PER_FEET = 1304.8; // Encoder counts per Foot
+    private final double BEEP_EC_PER_FEET = 1471.3 ; // Encoder counts per Foot
     private final double BEEP_EC_PER_DEGREES_180 = 15.8;
     private final double BEEP_EC_PER_DEGREES_DEFAULT = BEEP_EC_PER_DEGREES_180;
 

@@ -30,7 +30,7 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
 
         moveForwardEncoder(2.166);
         sleep(STEADY_STATE_SLEEP_TIME);
-        turnLeft(90.0);
+        turnRight(90.0);
         sleep(STEADY_STATE_SLEEP_TIME);
         switch (cryptoboxKey) {
             case LEFT:
@@ -45,7 +45,7 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);
-        turnLeft(90.0);
+        turnRight(90.0);
         sleep(STEADY_STATE_SLEEP_TIME);
         moveStraightTime(-0.5,1000);
         sleep(1000);
