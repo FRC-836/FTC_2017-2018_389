@@ -28,24 +28,24 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
 
         sleep(STEADY_STATE_SLEEP_TIME);
 
-        moveForwardEncoder(2.083);
+        moveForwardEncoder(2.166);
         sleep(STEADY_STATE_SLEEP_TIME);
-        turnRight(90.0);
+        turnLeft(90.0);
         sleep(STEADY_STATE_SLEEP_TIME);
         switch (cryptoboxKey) {
             case LEFT:
-                moveForwardEncoder(162.0);//was orignally 175 then 160
+                moveForwardEncoder(1.66);//was orignally 175 then 160
                 break;
             case UNKNOWN:
             case CENTER:
-                moveForwardEncoder(144.0);//was originally 150 then 140 then 142
+                moveForwardEncoder(1.0);//was originally 150 then 140 then 142
                 break;
             case RIGHT:
-                moveForwardEncoder(124.0);//was orignally 100 then 120 then 122
+                moveForwardEncoder(0.33);//was orignally 100 then 120 then 122
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);
-        turnRight(90.0);
+        turnLeft(90.0);
         sleep(STEADY_STATE_SLEEP_TIME);
         moveStraightTime(-0.5,1000);
         sleep(1000);

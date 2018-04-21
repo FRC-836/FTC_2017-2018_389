@@ -334,41 +334,24 @@ public class Autonomous_Parent extends Robot_Parent {
         sleep(500);
         setFlipper(0.0);
     }
-    /*protected void scoreOneMoreGlyph(){
+    protected void scoreOneMoreGlyph(){
         // Steps for Scoring the 2nd Glyph:
         // 1. Turn 180 Degrees
+        moveForwardEncoder(2.0);
+        sleep(PAUSE_BETWEEN_TEST_CODE);
+        setIntake(0.8, 0.8);
+        sleep(PAUSE_BETWEEN_TEST_CODE);
         turnLeft(180.0);
+        sleep(PAUSE_BETWEEN_TEST_CODE);
+        moveBackwardEncoder(1.8);
         sleep(PAUSE_BETWEEN_TEST_CODE);
         // 2. Move forward 2 feet
         moveForwardEncoder(2.0);
         sleep(PAUSE_BETWEEN_TEST_CODE);
-        // 3. Pick up glyph
-        closeBothIntakes();
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        timedLiftUp(SLIGHT_LIFT_TIME);
-        sleep(100);
-        // 4. Move backward 1 3/4 feet
-        moveBackwardEncoder(1.2);
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        // 5. Turn 180 Degrees
-        turnRight(180.0);
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        // 6. Lift a little bit so glyph doesn't drag
-        timedFlipUp(SECOND_ROW_LIFT_TIME);
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        // 7. Drive forward time based
-        moveStraightTime(0.5, 1000);
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        // 8. Drop glyph
-        // 9. Sleep
-        // 10. Move backward
+        moveStraightTime(-0.5,1000);
         scoreGlyph(true);
-        // 11. Lower lift
-        sleep(PAUSE_BETWEEN_TEST_CODE);
-        timedFlipDown(SLIGHT_LIFT_TIME);
-        // 12.(Optional)Drive forward to park
 
-    }*/
+    }
 
     protected void timedFlipUp(long milliseconds){
         setFlipper(FLIPPER_POWER_UP);
