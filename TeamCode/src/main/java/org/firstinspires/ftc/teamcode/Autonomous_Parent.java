@@ -30,6 +30,7 @@ public class Autonomous_Parent extends Robot_Parent {
     private final boolean USE_COMPASS_TURN = true;
 
     private final double COMPASS_TURN_POWER = 0.19;
+    private final double DEGREE_OFFSET = -5.0;
     // COMPASS_PAUSE_TIME - When using compassTurn, it waits COMPASS_PAUSE_TIME milliseconds before
     // using the compass to ensure the robot has begun moving.
     private final long COMPASS_PAUSE_TIME = 200;
@@ -87,7 +88,7 @@ public class Autonomous_Parent extends Robot_Parent {
         runAutonomous();
         telemetry.clear();
         telemetry.addData("Total runtime", "%6.3f seconds", runtime.seconds());//allows calculation of total runtime after the program ends to show on the phone.
-        telemetry.update();
+        displayPicto(cryptoboxKey,1);
         while (opModeIsActive());
     }
 
@@ -317,6 +318,8 @@ public class Autonomous_Parent extends Robot_Parent {
         raiseJewelArmMore(); // Locks jewel arm
         setIntake(RIGHT_POWER, LEFT_POWER);
 
+        telemetry.addLine("Ready for Play button");
+        telemetry.update();
         waitForStart();
         runtime.reset();
 
@@ -450,7 +453,7 @@ public class Autonomous_Parent extends Robot_Parent {
         float goalAngle;
         if (degrees < 0.0)
         {
-            degrees += 10.0;
+            degrees -= DEGREE_OFFSET;
             goalAngle = startPos - ((float) degrees);
             // Turning left
             setDrive(-COMPASS_TURN_POWER, COMPASS_TURN_POWER);
@@ -471,7 +474,7 @@ public class Autonomous_Parent extends Robot_Parent {
         }
         else
         {
-            degrees -= 10.0;
+            degrees += DEGREE_OFFSET;
             goalAngle = startPos - ((float) degrees);
             // Turning right
             setDrive(COMPASS_TURN_POWER, -COMPASS_TURN_POWER);
@@ -504,5 +507,24 @@ public class Autonomous_Parent extends Robot_Parent {
         parameters.loggingTag          = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu.initialize(parameters);
+    }
+    protected void displayPicto(RelicRecoveryVuMark vuMark, long ms) {
+        switch (vuMark)
+        {
+            case UNKNOWN:
+                telemetry.addLine("Unknown");
+                break;
+            case LEFT:
+                telemetry.addLine("Left");
+                break;
+            case RIGHT:
+                telemetry.addLine("Right");
+                break;
+            case CENTER:
+                telemetry.addLine("Center");
+                break;
+        }
+        telemetry.update();
+        sleep(ms);
     }
 }

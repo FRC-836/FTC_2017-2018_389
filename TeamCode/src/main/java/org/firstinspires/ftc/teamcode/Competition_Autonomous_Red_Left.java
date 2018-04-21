@@ -26,25 +26,25 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
         telemetry.update();
         cryptoboxKey = getPictographKey();
 
-
+        displayPicto(cryptoboxKey,1000);
         sleep(1000);
         switch (cryptoboxKey) {
             case LEFT:
-                moveForwardEncoder(2.25);
+                moveForwardEncoder(3.1);
                 break;
             case UNKNOWN:
             case CENTER:
-                moveForwardEncoder(2.875);
+                moveForwardEncoder(2.5165);
                 break;
             case RIGHT:
-                moveForwardEncoder(3.5);
+                moveForwardEncoder(1.933);
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);
         turnRight(90.0);
         sleep(STEADY_STATE_SLEEP_TIME);
+        moveStraightTime(0.35, 1000);
         setIntake(-0.8, -0.8);
-        sleep(STEADY_STATE_SLEEP_TIME);
         // These two steps move the robot from the red platform to the red goal.
         moveStraightTime(0.3, 1000);
 
