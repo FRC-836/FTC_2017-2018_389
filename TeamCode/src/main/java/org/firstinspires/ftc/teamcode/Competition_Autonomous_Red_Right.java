@@ -16,7 +16,7 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
         lowerJewelArm();
         sleep(1500);
 
-        knockOffJewel(false);
+        knockOffJewel(true);
 
         telemetry.addLine("Done with Jewel. About to look for Pictograph");
         telemetry.update();
@@ -26,12 +26,7 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
         telemetry.addLine("Looking for Pictograph");
         telemetry.update();
 
-        cryptoboxKey = getPictographKey();
-
-        //turnRight(25.0);
-        sleep(STEADY_STATE_SLEEP_TIME);
-
-        moveForwardEncoder(2.166);
+        cryptoboxKey = moveForwardEncoderPicto(2.166);
         sleep(STEADY_STATE_SLEEP_TIME);
 
         turnLeft(90.0);
@@ -39,24 +34,39 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
 
         switch (cryptoboxKey) {
             case LEFT:
-                moveForwardEncoder(0.33);//was originally 45, then 57 then 50
+                telemetry.addLine("LEFT");
+                telemetry.update();
+                sleep(2000);
+                moveForwardEncoder(1.6);//was originally 45, then 57 then 50
                 break;
             case UNKNOWN:
+                telemetry.addLine("?");
             case CENTER:
+                telemetry.addLine("CENTER");
+                telemetry.update();
+                sleep(2000);
                 moveForwardEncoder(1.0);//was originally 45.0, then 35 then 40
                 break;
             case RIGHT:
-                moveForwardEncoder(1.66);//was orignally 15, then 27 then 28
+                telemetry.addLine("RIGHT");
+                telemetry.update();
+                sleep(2000);
+                moveForwardEncoder(0.371);//was orignally 15, then 27 then 28
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);
-            turnLeft(90.0);
+        turnRight(90.0);
+        sleep(STEADY_STATE_SLEEP_TIME);
 
-        moveStraightTime(-0.5, 1000);
+        setIntake(-0.8, -0.8);
+        sleep(STEADY_STATE_SLEEP_TIME);
+
+        moveStraightTime(0.3, 1000);
         sleep(STEADY_STATE_SLEEP_TIME);
         // Drops pre-loaded glyph into the cryptobox
         scoreGlyph(true);
-        if (!RUN_TEST_CODE)
+        setIntake(0.0, 0.0);
+       /* if (!RUN_TEST_CODE)
             return;
 
         //Test code goes beyond this point

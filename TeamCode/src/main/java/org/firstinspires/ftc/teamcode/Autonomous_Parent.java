@@ -62,7 +62,7 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected final double JEWEL_DRIVE_DISTANCE = 0.21; // feet
     protected final double SPECIAL_JEWEL_DRIVE_DISTANCE = 0.3;
-    protected final double JEWEL_DRIVE_POWER = 0.10;
+    protected final double JEWEL_DRIVE_POWER = 0.2;
 
     private final double RIGHT_POWER = 0.0;
     private final double LEFT_POWER = 0.0;
@@ -105,6 +105,23 @@ public class Autonomous_Parent extends Robot_Parent {
             moveForwardLeftEncoder(distanceInFeet, ENCODER_DRIVE_POWER);//
         else
             moveForwardRightEncoder(distanceInFeet, ENCODER_DRIVE_POWER);//
+    }
+
+    protected RelicRecoveryVuMark moveForwardEncoderPicto(double distanceInFeet) {
+        int targetPos = backLeftDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
+        setDrive(ENCODER_DRIVE_POWER * 0.75,ENCODER_DRIVE_POWER * 0.75);
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+        while (backLeftDrive.getCurrentPosition() < targetPos && opModeIsActive())
+        {
+            if (vuMark == RelicRecoveryVuMark.UNKNOWN)
+                vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            telemetry.addLine("Test: While Current Position < Goal");
+            telemetry.addData("Current Position","%d",backLeftDrive.getCurrentPosition());
+            telemetry.addData("Goal","%d",targetPos);
+            telemetry.update();
+        }
+        setDrive(0.0, 0.0);
+        return vuMark;
     }
 
     protected void moveBackwardEncoder(double distanceInFeet) {// move backward  encoder based which allows you to drive using distance based.
@@ -330,9 +347,6 @@ public class Autonomous_Parent extends Robot_Parent {
             moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER);
         else
             moveStraightTime(-0.35, 500);
-        setFlipper(0.5);
-        sleep(500);
-        setFlipper(0.0);
     }
     protected void scoreOneMoreGlyph(){
         // Steps for Scoring the 2nd Glyph:

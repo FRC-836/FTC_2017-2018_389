@@ -15,7 +15,7 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
         lowerJewelArm();
         sleep(1500);
 
-        knockOffJewel(false);
+        knockOffJewel(true);
 
         telemetry.addLine("Done with Jewel. About to look for Pictograph");
         telemetry.update();
@@ -41,14 +41,16 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);
-        turnLeft(90.0);
+        turnRight(90.0);
+        sleep(STEADY_STATE_SLEEP_TIME);
+        setIntake(-0.8, -0.8);
         sleep(STEADY_STATE_SLEEP_TIME);
         // These two steps move the robot from the red platform to the red goal.
-        moveStraightTime(-0.5, 1000);
+        moveStraightTime(0.3, 1000);
 
         // Drops pre-loaded glyph into the cryptobox
         scoreGlyph(true);
-
+        setIntake(0.0, 0.0);
         if (!RUN_TEST_CODE)
             return;
 
