@@ -30,14 +30,14 @@ public class Competition_Autonomous_Blue_Right extends Autonomous_Parent {
         sleep(1000);
         switch (cryptoboxKey) {
             case LEFT:
-                moveBackwardEncoder(1.933);// was originally 19, then 28
+                moveBackwardEncoder(2.433);// was originally 19, then 28
                 break;
             case UNKNOWN:
             case CENTER:
-                moveBackwardEncoder(2.5165);//was originally 28 then 45
+                moveBackwardEncoder(3.0165);//was originally 28 then 45
                 break;
             case RIGHT:
-                moveBackwardEncoder(3.1);//was originally 45
+                moveBackwardEncoder(3.6);//was originally 45
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);

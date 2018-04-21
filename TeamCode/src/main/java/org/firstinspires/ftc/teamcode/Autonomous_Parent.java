@@ -346,6 +346,13 @@ public class Autonomous_Parent extends Robot_Parent {
         relicTemplate = relicTrackables.get(0);
     }
     protected void scoreGlyph(boolean encoderUsed) {
+        if(encoderUsed) {
+            moveBackwardEncoder(1.0, ENCODER_DRIVE_POWER / 2.0);
+            sleep(500);
+        }
+        else
+            moveStraightTime(-0.35, 1000);
+        moveStraightTime(0.4, 10 00);
         if(encoderUsed)
             moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER);
         else
@@ -525,6 +532,6 @@ public class Autonomous_Parent extends Robot_Parent {
                 break;
         }
         telemetry.update();
-        sleep(ms);
+        //sleep(ms);
     }
 }
