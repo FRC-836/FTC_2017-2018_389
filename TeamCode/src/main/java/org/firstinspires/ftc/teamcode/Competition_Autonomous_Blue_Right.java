@@ -52,7 +52,6 @@ public class Competition_Autonomous_Blue_Right extends Autonomous_Parent {
 
         // Drops pre-loaded glyph into the cryptobox
         scoreGlyph(true);
-        setIntake(0.0, 0.0);
         if (!RUN_TEST_CODE)
             return;
 

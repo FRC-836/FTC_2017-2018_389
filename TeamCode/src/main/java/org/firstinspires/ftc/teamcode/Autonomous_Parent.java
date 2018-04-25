@@ -352,6 +352,7 @@ public class Autonomous_Parent extends Robot_Parent {
         }
         else
             moveStraightTime(-0.35, 1000);
+        setIntake(0.0, 0.0);
         moveStraightTime(0.4, 1000);
         if(encoderUsed)
             moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER);
