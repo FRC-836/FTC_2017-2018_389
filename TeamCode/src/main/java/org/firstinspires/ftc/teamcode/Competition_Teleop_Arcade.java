@@ -51,9 +51,9 @@ public class Competition_Teleop_Arcade extends Teleop_Parent
         else if (gamepad1.right_trigger > 0.8f)
             setIntake(INTAKE_POWER_BACKWARDS, INTAKE_POWER_BACKWARDS);
         else if(gamepad1.x)
-            setIntake(INTAKE_POWER_BACKWARDS, INTAKE_POWER_IN);
+            setIntake(-INTAKE_FLIP_POWER, INTAKE_FLIP_POWER);
         else if (gamepad1.a)
-            setIntake(INTAKE_POWER_IN, INTAKE_POWER_BACKWARDS);
+            setIntake(INTAKE_FLIP_POWER, -INTAKE_FLIP_POWER);
         else
             setIntake(0.0, 0.0);
 

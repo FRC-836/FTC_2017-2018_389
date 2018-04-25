@@ -8,6 +8,7 @@ public class Teleop_Parent extends Robot_Parent
     protected final double SLOW_DRIVE_SCALE_FACTOR = 0.5;
     protected final double INTAKE_POWER_BACKWARDS = -0.8;//Original arm: 0.09, double arm originally 0.18-too high
     protected final double INTAKE_POWER_IN = 0.8;
+    protected final double INTAKE_FLIP_POWER = 0.5;
 
     @Override
     public void initializeRobot() {
