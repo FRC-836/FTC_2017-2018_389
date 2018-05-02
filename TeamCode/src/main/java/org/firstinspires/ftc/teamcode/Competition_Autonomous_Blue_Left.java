@@ -40,20 +40,18 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
                 break;
             case UNKNOWN:
             case CENTER:
-                moveForwardEncoder(1.193);//was originally 150 then 140 then 142
+                moveForwardEncoder(0.9); // 1.193
                 break;
             case RIGHT:
-                moveForwardEncoder(1.73);//was orignally 100 then 120 then 122
+                moveForwardEncoder(1.52); // 1.73
                 break;
         }
         sleep(STEADY_STATE_SLEEP_TIME);
         turnLeft(85.0);
         sleep(STEADY_STATE_SLEEP_TIME);
+        moveStraightTime(0.3,500);
         setIntake(-0.8, -0.8);
-        sleep(STEADY_STATE_SLEEP_TIME);
-
-
-        moveStraightTime(0.3,1000);
+        moveStraightTime(0.3,500);
         sleep(1000);
         // Drops pre-loaded glyph into the cryptobox
         scoreGlyph(true);

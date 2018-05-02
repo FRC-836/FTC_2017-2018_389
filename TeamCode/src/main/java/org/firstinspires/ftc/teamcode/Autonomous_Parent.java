@@ -352,12 +352,13 @@ public class Autonomous_Parent extends Robot_Parent {
         }
         else
             moveStraightTime(-0.35, 1000);
-        setIntake(0.0, 0.0);
-        moveStraightTime(0.4, 1000);
+        setIntake(-0.25, -0.25);
+        moveStraightTime(0.35, 1000);
         if(encoderUsed)
-            moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER);
+            moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER*0.75);
         else
-            moveStraightTime(-0.35, 500);
+            moveStraightTime(-0.3, 600);
+        setIntake(0.0,0.0);
     }
     protected void scoreOneMoreGlyph(){
         // Steps for Scoring the 2nd Glyph:
