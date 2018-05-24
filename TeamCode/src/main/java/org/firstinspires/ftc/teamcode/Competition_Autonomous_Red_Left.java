@@ -13,7 +13,7 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
 
         //Move Jewel arm to where it sees a jewel
         lowerJewelArm();
-        sleep(1000);
+        sleep(750);
 
         knockOffJewel(true);
 

@@ -47,8 +47,8 @@ public class Autonomous_Parent extends Robot_Parent {
     private ElapsedTime runtime = new ElapsedTime();
     private ColorSensor colorSensor = null;
 
-    protected final double ENCODER_TURN_POWER = 0.25;//was 6
-    protected final double ENCODER_DRIVE_POWER = 0.5;//was 0.5
+    protected final double ENCODER_TURN_POWER = 0.3;//was 6
+    protected final double ENCODER_DRIVE_POWER = 0.4;//was 0.5
 
     private final boolean USE_LEFT_ENCODER = true;
     protected final boolean RUN_TEST_CODE = false;
@@ -71,7 +71,7 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected final long SLIGHT_LIFT_TIME = 150;
     protected final long SECOND_ROW_LIFT_TIME = 500;
-    private  final long TIME_FOR_JEWEL = 300;
+    private  final long TIME_FOR_JEWEL = 250;
     private final long PAUSE_BETWEEN_TEST_CODE = 500;
 
     @Override
@@ -433,7 +433,6 @@ public class Autonomous_Parent extends Robot_Parent {
                 }
                 sleep(TIME_FOR_JEWEL);
                 //turnLeft(20.0);
-                sleep(1000);
                 //turnLeft(20.0);
                 telemetry.addLine("Saw blue, done moving.");
                 telemetry.update();
