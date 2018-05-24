@@ -13,21 +13,20 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
 
         //Move Jewel arm to where it sees a jewel
         lowerJewelArm();
-        sleep(1500);
+        sleep(1000);
 
         knockOffJewel(true);
 
         telemetry.addLine("Done with Jewel. About to look for Pictograph");
         telemetry.update();
 
-        sleep(2000);
+        sleep(500);
 
         telemetry.addLine("Looking for Pictograph");
         telemetry.update();
         cryptoboxKey = getPictographKey();
 
         displayPicto(cryptoboxKey,1000);
-        sleep(1000);
         switch (cryptoboxKey) {
             case LEFT:
                 moveForwardEncoder(3.1);
@@ -40,10 +39,10 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
                 moveForwardEncoder(1.933);
                 break;
         }
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(250);
         turnRight(90.0);
-        sleep(STEADY_STATE_SLEEP_TIME);
-        moveStraightTime(0.35, 1000);
+        sleep(250);
+        moveStraightTime(0.35, 500);
         setIntake(-0.8, -0.8);
         // These two steps move the robot from the red platform to the red goal.
         moveStraightTime(0.3, 1000);

@@ -27,11 +27,11 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
         telemetry.update();
 
         cryptoboxKey = moveForwardEncoderPicto(2.166);
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(500);
 
         turnLeft(90.0);
         displayPicto(cryptoboxKey,1000);
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(500);
         switch (cryptoboxKey) {
             case LEFT:
                 moveForwardEncoder(1.45);//was originally 45, then 57 then 50
@@ -44,11 +44,11 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
                 moveForwardEncoder(0.385);//was orignally 15, then 27 then 28
                 break;
         }
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(500);
         turnRight(90.0);
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(500);
         setIntake(-0.8, -0.8);
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(500);
 
         moveStraightTime(0.3, 1000);
         sleep(1000);

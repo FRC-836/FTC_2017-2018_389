@@ -47,9 +47,8 @@ public class Autonomous_Parent extends Robot_Parent {
     private ElapsedTime runtime = new ElapsedTime();
     private ColorSensor colorSensor = null;
 
-    protected final long STEADY_STATE_SLEEP_TIME = 500;
-    protected final double ENCODER_TURN_POWER = 0.19;//was 6
-    protected final double ENCODER_DRIVE_POWER = 0.2;//was 0.5
+    protected final double ENCODER_TURN_POWER = 0.25;//was 6
+    protected final double ENCODER_DRIVE_POWER = 0.5;//was 0.5
 
     private final boolean USE_LEFT_ENCODER = true;
     protected final boolean RUN_TEST_CODE = false;
@@ -72,7 +71,7 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected final long SLIGHT_LIFT_TIME = 150;
     protected final long SECOND_ROW_LIFT_TIME = 500;
-    private  final long TIME_FOR_JEWEL = 500;
+    private  final long TIME_FOR_JEWEL = 300;
     private final long PAUSE_BETWEEN_TEST_CODE = 500;
 
     @Override
@@ -348,7 +347,7 @@ public class Autonomous_Parent extends Robot_Parent {
     protected void scoreGlyph(boolean encoderUsed) {
         if(encoderUsed) {
             moveBackwardEncoder(1.0, ENCODER_DRIVE_POWER / 2.0);
-            sleep(500);
+            sleep(250);
         }
         else
             moveStraightTime(-0.35, 1000);

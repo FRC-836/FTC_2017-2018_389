@@ -26,14 +26,14 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
         telemetry.update();
         cryptoboxKey = getPictographKey();
 
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(500);
 
         moveBackwardEncoder(2.166);
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(500);
         turnLeft(90.0);
 
         displayPicto(cryptoboxKey,1000);
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(500);
         switch (cryptoboxKey) {
             case LEFT:
                 moveForwardEncoder(0.355);//was orignally 175 then 160
@@ -46,9 +46,9 @@ public class Competition_Autonomous_Blue_Left extends Autonomous_Parent {
                 moveForwardEncoder(1.52); // 1.73
                 break;
         }
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(500);
         turnLeft(85.0);
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(500);
         moveStraightTime(0.3,500);
         setIntake(-0.8, -0.8);
         moveStraightTime(0.3,500);

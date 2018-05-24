@@ -40,9 +40,9 @@ public class Competition_Autonomous_Blue_Right extends Autonomous_Parent {
                 moveBackwardEncoder(3.6);//was originally 45
                 break;
         }
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(500);
         turnRight(90.0);
-        sleep(STEADY_STATE_SLEEP_TIME);
+        sleep(500);
         moveStraightTime(0.35, 1000);
         setIntake(-0.8, -0.8);
 
