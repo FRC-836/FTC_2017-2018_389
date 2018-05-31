@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 /**
  * Created by user on 5/31/2018.
  */
-@TeleOp(name = "Mini_Bot", group = "void")
-public class Mini_Bot extends OpMode{
+@TeleOp(name = "Offroad_Bot", group = "void")
+public class Offroad_Bot extends OpMode{
 
     private DcMotor left1 = null;
     private DcMotor right1 = null;
@@ -40,9 +40,9 @@ public class Mini_Bot extends OpMode{
         right2 = hardwareMap.get(DcMotor.class, "right2");
         left2 = hardwareMap.get(DcMotor.class, "left2");
         left1.setDirection(DcMotor.Direction.REVERSE);
-        right1.setDirection(DcMotor.Direction.REVERSE);
+        right1.setDirection(DcMotor.Direction.FORWARD);
         left2.setDirection(DcMotor.Direction.REVERSE);
-        right2.setDirection(DcMotor.Direction.REVERSE);
+        right2.setDirection(DcMotor.Direction.FORWARD);
         right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
