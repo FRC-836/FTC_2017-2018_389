@@ -36,7 +36,7 @@ public class Competition_Autonomous_Red_Left extends Autonomous_Parent {
                 moveForwardEncoder(2.5165);
                 break;
             case RIGHT:
-                moveForwardEncoder(1.933);
+                moveForwardEncoder(1.723);
                 break;
         }
         sleep(250);

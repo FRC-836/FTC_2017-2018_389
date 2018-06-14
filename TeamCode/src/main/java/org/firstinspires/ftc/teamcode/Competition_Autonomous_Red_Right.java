@@ -38,7 +38,7 @@ public class Competition_Autonomous_Red_Right extends Autonomous_Parent {
                 break;
             case UNKNOWN:
             case CENTER:
-                moveForwardEncoder(1.11);//was originally 45.0, then 35 then 40
+                moveForwardEncoder(0.783);//was originally 45.0, then 35 then 40
                 break;
             case RIGHT:
                 moveForwardEncoder(0.385);//was orignally 15, then 27 then 28
