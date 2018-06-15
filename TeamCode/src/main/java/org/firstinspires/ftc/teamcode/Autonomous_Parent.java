@@ -73,6 +73,7 @@ public class Autonomous_Parent extends Robot_Parent {
     protected final long SECOND_ROW_LIFT_TIME = 500;
     private  final long TIME_FOR_JEWEL = 250;
     private final long PAUSE_BETWEEN_TEST_CODE = 500;
+    protected double timesRepeated = 0;
 
     @Override
     public void initializeRobot() {
@@ -533,5 +534,15 @@ public class Autonomous_Parent extends Robot_Parent {
         }
         telemetry.update();
         //sleep(ms);
+    }
+    protected void ScoreAnotherGlyph(double distanceFromPile, double angleFromPile){
+            moveZigZag();
+            moveBackwardEncoder(distanceFromPile);
+            setIntake(-0.8, -0.8);
+            moveStraightTime(0.3, 1000);
+            scoreGlyph(true);
+    }
+    protected void moveZigZag(double distanceFromPile){
+
     }
 }
