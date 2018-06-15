@@ -536,7 +536,7 @@ public class Autonomous_Parent extends Robot_Parent {
         //sleep(ms);
     }
     protected void ScoreAnotherGlyph(double distanceFromPile, double angleFromPile){
-            moveZigZag();
+            moveZigZag(0.0);
             moveBackwardEncoder(distanceFromPile);
             setIntake(-0.8, -0.8);
             moveStraightTime(0.3, 1000);
