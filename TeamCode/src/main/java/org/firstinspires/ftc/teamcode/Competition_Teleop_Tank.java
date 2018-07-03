@@ -26,6 +26,11 @@ public class Competition_Teleop_Tank extends Teleop_Parent
         else
             isFastModeButtonEnabled = true;
 
+       if(gamepad1.y)
+           setJewelArm(JEWEL_ARM_FULLY_UP);
+       else
+           setJewelArm(JEWEL_ARM_UP);
+
         if (!isModeFast)
         {
             leftDrive = leftDrive * SLOW_DRIVE_SCALE_FACTOR;

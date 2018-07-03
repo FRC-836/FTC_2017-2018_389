@@ -19,8 +19,8 @@ public class Robot_Parent extends LinearOpMode {
     protected Servo jewelArm = null;
     protected DcMotor flipper = null;
 
-    private final double JEWEL_ARM_UP = 0.5;
-    private final double JEWEL_ARM_DOWN = 1.0;
+    protected final double JEWEL_ARM_UP = 0.5;
+    protected final double JEWEL_ARM_DOWN = 1.0;
     protected final double JEWEL_ARM_FULLY_UP = 0.4; // Servo Position
     protected final int FLIPPED_LOCATION = 150;
 
@@ -45,7 +45,7 @@ public class Robot_Parent extends LinearOpMode {
         flipper = hardwareMap.get(DcMotor.class, "flipper");
 
         // Most robots need the motor on one side to be reversed to drive forward
-            // Reverse the motor that runs backwards when connected directly to the battery
+        // Reverse the motor that runs backwards when connected directly to the battery
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
