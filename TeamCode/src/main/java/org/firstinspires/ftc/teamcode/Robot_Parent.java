@@ -1,11 +1,18 @@
 //Wheeled-intake Robot Code
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import java.io.BufferedReader;
 
@@ -18,6 +25,8 @@ public class Robot_Parent extends LinearOpMode {
     protected DcMotor leftIntake = null;
     protected Servo jewelArm = null;
     protected DcMotor flipper = null;
+    protected BNO055IMU imu = null;
+
 
     protected final double JEWEL_ARM_UP = 0.5;
     protected final double JEWEL_ARM_DOWN = 1.0;
@@ -43,6 +52,7 @@ public class Robot_Parent extends LinearOpMode {
         leftIntake = hardwareMap.get(DcMotor.class, "left_intake");
         jewelArm = hardwareMap.get(Servo.class, "jewel_arm");
         flipper = hardwareMap.get(DcMotor.class, "flipper");
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -62,6 +72,16 @@ public class Robot_Parent extends LinearOpMode {
         leftIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         flipper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        BNO055IMU.Parameters imuParameters = new BNO055IMU.Parameters();
+        imuParameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        imuParameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        imuParameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        imuParameters.loggingEnabled = true;
+        imuParameters.loggingTag = "IMU";
+        imuParameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        imu.initialize(imuParameters);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -87,12 +107,14 @@ public class Robot_Parent extends LinearOpMode {
         backRightDrive.setPower(rightPower);
         backLeftDrive.setPower(leftPower);
     }
+
     protected void setDrive(double forwardsPower, double turnPower, double strafePower) {
         frontRightDrive.setPower(forwardsPower - turnPower - strafePower);
         backRightDrive.setPower(forwardsPower - turnPower + strafePower);
         frontLeftDrive.setPower(forwardsPower + turnPower + strafePower);
         backLeftDrive.setPower(forwardsPower + turnPower - strafePower);
     }
+
     protected void setDrive(double frPower, double brPower, double flPower, double blPower) {
         frontRightDrive.setPower(frPower);
         backRightDrive.setPower(brPower);
@@ -108,7 +130,6 @@ public class Robot_Parent extends LinearOpMode {
         rightIntake.setPower(rightPos);
         leftIntake.setPower(leftPos);
     }
-
 
 
     protected void intakeOff() {
@@ -127,5 +148,9 @@ public class Robot_Parent extends LinearOpMode {
         setJewelArm(JEWEL_ARM_DOWN);
     }
 
-
+    protected float calculateHeading() {
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        float heading = angles.firstAngle;
+        return heading;
+    }
 }
