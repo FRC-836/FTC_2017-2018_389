@@ -26,6 +26,8 @@ public class Driver_Centric_Mode_Test extends Teleop_Parent
         double heading = calculateHeading();
         double fieldOrientedHeading = heading - CORRECTION_VALUE_IN_DEGREES;
 
+        // TODO: Consider the angle of the input controller!
+
         double inputSize = Math.sqrt(Math.pow(away, 2) + Math.pow(side, 2));
         double strafe = inputSize * Math.sin(Math.toRadians(fieldOrientedHeading));
         double forward =  inputSize * Math.cos(Math.toRadians(fieldOrientedHeading));
