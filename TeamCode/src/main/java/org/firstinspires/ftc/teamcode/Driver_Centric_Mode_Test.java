@@ -28,7 +28,7 @@ public class Driver_Centric_Mode_Test extends Teleop_Parent
         double away = -controllerThreshold(gamepad1.left_stick_y);
         double side  = controllerThreshold(gamepad1.left_stick_x);
         double turn  =  controllerThreshold(gamepad1.right_stick_x);
-        double directionOfJoystick = 60 * (Math.atan2(side, away));
+        double directionOfJoystick = Math.toDegrees(Math.atan2(side, away));
 
         double heading = calculateHeading();
         double fieldOrientedHeading = heading - correctionValueInDegrees;
