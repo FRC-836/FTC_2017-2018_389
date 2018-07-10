@@ -9,7 +9,6 @@ public class Teleop_Parent extends Robot_Parent
     protected final double INTAKE_POWER_BACKWARDS = -0.8;//Original arm: 0.09, double arm originally 0.18-too high
     protected final double INTAKE_POWER_IN = 0.8;
     protected final double INTAKE_FLIP_POWER = 0.5;
-    protected final double CORRECTION_VALUE_IN_DEGREES = 90.0;
 
     @Override
     public void initializeRobot() {

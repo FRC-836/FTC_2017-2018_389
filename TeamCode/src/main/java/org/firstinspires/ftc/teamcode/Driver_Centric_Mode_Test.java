@@ -8,6 +8,12 @@ import org.opencv.core.Mat;
 public class Driver_Centric_Mode_Test extends Teleop_Parent
 {
     private boolean isFastModeButtonEnabled = true;
+    private double correctionValueInDegrees;
+
+    @Override
+    public void initializeRobot() {
+        correctionValueInDegrees = calculateHeading();
+    }
 
     @Override
     public void cycle() {
@@ -22,16 +28,15 @@ public class Driver_Centric_Mode_Test extends Teleop_Parent
         double away = -controllerThreshold(gamepad1.left_stick_y);
         double side  = controllerThreshold(gamepad1.left_stick_x);
         double turn  =  controllerThreshold(gamepad1.right_stick_x);
-        double direction = Math.atan2(away, side);
+        double directionOfJoystick = 60 * (Math.atan2(side, away));
 
         double heading = calculateHeading();
-        double fieldOrientedHeading = (heading - CORRECTION_VALUE_IN_DEGREES) - direction;
-
-        // TODO: Consider the angle of the input controller!
+        double fieldOrientedHeading = heading - correctionValueInDegrees;
+        double robotOrientedCommand = directionOfJoystick - fieldOrientedHeading;
 
         double inputSize = Math.sqrt(Math.pow(away, 2) + Math.pow(side, 2));
-        double strafe = inputSize * Math.sin(Math.toRadians(fieldOrientedHeading));
-        double forward =  inputSize * Math.cos(Math.toRadians(fieldOrientedHeading));
+        double strafe = inputSize * Math.sin(Math.toRadians(robotOrientedCommand));
+        double forward =  inputSize * Math.cos(Math.toRadians(robotOrientedCommand));
 
         if (gamepad1.b)
         {
