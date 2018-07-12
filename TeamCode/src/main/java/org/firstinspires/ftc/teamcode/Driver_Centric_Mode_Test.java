@@ -30,9 +30,8 @@ public class Driver_Centric_Mode_Test extends Teleop_Parent
         double turn  =  controllerThreshold(gamepad1.right_stick_x);
         double directionOfJoystick = Math.toDegrees(Math.atan2(side, away));
 
-        double heading = calculateHeading();
-        double fieldOrientedHeading = heading - correctionValueInDegrees;
-        double robotOrientedCommand = directionOfJoystick - fieldOrientedHeading;
+        double heading = -1 * calculateHeading();
+        double robotOrientedCommand = directionOfJoystick - heading;
 
         double inputSize = Math.sqrt(Math.pow(away, 2) + Math.pow(side, 2));
         double strafe = inputSize * Math.sin(Math.toRadians(robotOrientedCommand));
@@ -88,9 +87,14 @@ public class Driver_Centric_Mode_Test extends Teleop_Parent
             telemetry.addLine("Mode: Slow");
 
 
-        telemetry.addData("Left, Right power","%4.2f, %4.2f", away, turn, side);
+        telemetry.addData("Left, Right power","%4.2f, %4.2f", away, side);
         telemetry.addData("Left Encoder", backLeftDrive.getCurrentPosition());
         telemetry.addData("Right Encoder", backRightDrive.getCurrentPosition());
+        telemetry.addData("directionOfJoystick",directionOfJoystick);
+        telemetry.addData("robotOrientedCommand", robotOrientedCommand);
+        telemetry.addData("Heading", heading);
+        telemetry.addData("Stafe", strafe);
+        telemetry.addData("Forward", forward);
         telemetry.update();
     }
 }

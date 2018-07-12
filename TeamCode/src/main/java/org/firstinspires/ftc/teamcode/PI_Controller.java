@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class PI_Controller {
     ElapsedTime runtime;
 
-    private int setpoint = 0;
-    private int error = 0;
-    private int lastError = 0;
+    private double setpoint = 0;
+    private double error = 0;
+    private double lastError = 0;
     private double time = 0;
     private double lastTime = 0;
     private double pValue = 0;
@@ -19,7 +19,40 @@ public class PI_Controller {
     private double iValue = 0;
     private double IGAIN;
     private boolean isFirstTime = true;
-    //private double CONVERSION_RATE = conversionRate;
+    private double CONVERSION_RATE;
 
+    public void PI_Loop(double PGAIN, double IGAIN){
+        this.runtime = new ElapsedTime();
+        this.runtime.reset();
+        this.PGAIN = PGAIN;
+        this.IGAIN = IGAIN;
+    }
+    public void setSetpoint(double newSetpoint) {
+        this.setpoint = newSetpoint;
+    }
+    public double update(double input){
+        lastError = error;
+        error = setpoint - input;
+        time = runtime.seconds();
+        pValue = PGAIN * error;
+        iValue += IGAIN * (lastError + error) * (0.5) * (time - lastTime);
+        if (isFirstTime)
+        {
+            iValue = 0.0;
+            isFirstTime = false;
+        }
+        return pValue + iValue;
+    }
+
+
+    public void resetPID() {
+        resetPID(0.0);
+    }
+
+    public void resetPID(double startingIValue) {
+        runtime.reset();
+        isFirstTime = true;
+        iValue = startingIValue;
+    }
 
 }
