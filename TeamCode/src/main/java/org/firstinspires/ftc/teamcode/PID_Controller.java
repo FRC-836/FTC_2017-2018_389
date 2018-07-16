@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Created by user on 7/10/2018.
  */
 
-public class PI_Controller {
+public class PID_Controller {
     ElapsedTime runtime;
 
     private double setpoint = 0;
@@ -18,14 +18,17 @@ public class PI_Controller {
     private double PGAIN;
     private double iValue = 0;
     private double IGAIN;
+    private double dValue = 0.0;
+    private double DGAIN;
     private boolean isFirstTime = true;
     private double CONVERSION_RATE;
 
-    public void PI_Loop(double PGAIN, double IGAIN){
+    public void PI_Loop(double PGAIN, double IGAIN, double dGain){
         this.runtime = new ElapsedTime();
         this.runtime.reset();
         this.PGAIN = PGAIN;
         this.IGAIN = IGAIN;
+        this.DGAIN = dGain;
     }
     public void setSetpoint(double newSetpoint) {
         this.setpoint = newSetpoint;
@@ -36,6 +39,8 @@ public class PI_Controller {
         time = runtime.seconds();
         pValue = PGAIN * error;
         iValue += IGAIN * (lastError + error) * (0.5) * (time - lastTime);
+        //dValue
+        dValue = DGAIN * (error - lastError) / (time - lastTime);
         if (isFirstTime)
         {
             iValue = 0.0;

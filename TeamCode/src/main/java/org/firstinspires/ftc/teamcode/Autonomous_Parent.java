@@ -67,6 +67,7 @@ public class Autonomous_Parent extends Robot_Parent {
 
     private final double RIGHT_POWER = 0.0;
     private final double LEFT_POWER = 0.0;
+    private final double isRobotStraightInDegrees = 0.0;
 
     private final double COLOR_UNCERTAINTY = 0.05; // Amount that (Red/Blue) > 1 or vice-versa to determine a color
 
@@ -535,5 +536,16 @@ public class Autonomous_Parent extends Robot_Parent {
         }
         telemetry.update();
         //sleep(ms);
+    }
+    protected double moveToPosition(double distance){
+        while(opModeIsActive()){
+            calculateHeading();
+            if(robotDrivingStraight){
+            moveForwardEncoder(distance);}
+            else {
+                (calculateHeading()) -
+            }
+            }
+        }
     }
 }
