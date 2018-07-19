@@ -57,7 +57,7 @@ public class Autonomous_Parent extends Robot_Parent {
     protected final double FLIPPER_POWER_IDLE = 0.20;
     protected final double FLIPPER_POWER_DOWN = -0.3;
 
-    private final double BEEP_EC_PER_FEET = 1471.3 ; // Encoder counts per Foot
+    private final double BEEP_EC_PER_FEET = 1471.3; // Encoder counts per Foot
     private final double BEEP_EC_PER_DEGREES_180 = 15.8;
     private final double BEEP_EC_PER_DEGREES_DEFAULT = BEEP_EC_PER_DEGREES_180;
 
@@ -73,8 +73,11 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected final long SLIGHT_LIFT_TIME = 150;
     protected final long SECOND_ROW_LIFT_TIME = 500;
-    private  final long TIME_FOR_JEWEL = 500;
+    private final long TIME_FOR_JEWEL = 500;
     private final long PAUSE_BETWEEN_TEST_CODE = 500;
+   // private double heading = calculateHeading();
+    //private double currentPosition = getCurrentDegrees();
+    //private double turnPower = 0;
 
     @Override
     public void initializeRobot() {
@@ -89,8 +92,8 @@ public class Autonomous_Parent extends Robot_Parent {
         runAutonomous();
         telemetry.clear();
         telemetry.addData("Total runtime", "%6.3f seconds", runtime.seconds());//allows calculation of total runtime after the program ends to show on the phone.
-        displayPicto(cryptoboxKey,1);
-        while (opModeIsActive());
+        displayPicto(cryptoboxKey, 1);
+        while (opModeIsActive()) ;
     }
 
     public void runAutonomous() {
@@ -102,6 +105,7 @@ public class Autonomous_Parent extends Robot_Parent {
         sleep(timeInMilliseconds);
         setDrive(0.0, 0.0);
     }
+
     protected void moveForwardEncoder(double distanceInFeet) {// move forward encoder based which allows you to drive using distance based.
         if (USE_LEFT_ENCODER)
             moveForwardLeftEncoder(distanceInFeet, ENCODER_DRIVE_POWER);//
@@ -111,15 +115,14 @@ public class Autonomous_Parent extends Robot_Parent {
 
     protected RelicRecoveryVuMark moveForwardEncoderPicto(double distanceInFeet) {
         int targetPos = backLeftDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
-        setDrive(ENCODER_DRIVE_POWER * 0.75,ENCODER_DRIVE_POWER * 0.75);
+        setDrive(ENCODER_DRIVE_POWER * 0.75, ENCODER_DRIVE_POWER * 0.75);
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        while (backLeftDrive.getCurrentPosition() < targetPos && opModeIsActive())
-        {
+        while (backLeftDrive.getCurrentPosition() < targetPos && opModeIsActive()) {
             if (vuMark == RelicRecoveryVuMark.UNKNOWN)
                 vuMark = RelicRecoveryVuMark.from(relicTemplate);
             telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backLeftDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
+            telemetry.addData("Current Position", "%d", backLeftDrive.getCurrentPosition());
+            telemetry.addData("Goal", "%d", targetPos);
             telemetry.update();
         }
         setDrive(0.0, 0.0);
@@ -138,7 +141,7 @@ public class Autonomous_Parent extends Robot_Parent {
             moveForwardLeftEncoder(distanceInFeet, drivePower);
         else
             moveForwardRightEncoder(distanceInFeet, drivePower);
-      }
+    }
 
     protected void moveBackwardEncoder(double distanceInFeet, double drivePower) {
         if (USE_LEFT_ENCODER)
@@ -150,11 +153,10 @@ public class Autonomous_Parent extends Robot_Parent {
     private void moveForwardRightEncoder(double distanceInFeet, double drivePower) {
         int targetPos = backRightDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(drivePower, drivePower);
-        while (backRightDrive.getCurrentPosition() < targetPos && opModeIsActive())
-        {
+        while (backRightDrive.getCurrentPosition() < targetPos && opModeIsActive()) {
             telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backRightDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
+            telemetry.addData("Current Position", "%d", backRightDrive.getCurrentPosition());
+            telemetry.addData("Goal", "%d", targetPos);
             telemetry.update();
         }
         setDrive(0.0, 0.0);
@@ -163,11 +165,10 @@ public class Autonomous_Parent extends Robot_Parent {
     private void moveBackwardRightEncoder(double distanceInFeet, double drivePower) {
         int targetPos = backRightDrive.getCurrentPosition() - (int) (distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(-drivePower, -drivePower);
-        while (backRightDrive.getCurrentPosition() > targetPos && opModeIsActive())
-        {
+        while (backRightDrive.getCurrentPosition() > targetPos && opModeIsActive()) {
             telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backRightDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
+            telemetry.addData("Current Position", "%d", backRightDrive.getCurrentPosition());
+            telemetry.addData("Goal", "%d", targetPos);
             telemetry.update();
         }
         setDrive(0.0, 0.0);
@@ -176,11 +177,10 @@ public class Autonomous_Parent extends Robot_Parent {
     private void moveForwardLeftEncoder(double distanceInFeet, double drivePower) {
         int targetPos = backLeftDrive.getCurrentPosition() + (int) (distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(drivePower, drivePower);
-        while (backLeftDrive.getCurrentPosition() < targetPos && opModeIsActive())
-        {
+        while (backLeftDrive.getCurrentPosition() < targetPos && opModeIsActive()) {
             telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backLeftDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
+            telemetry.addData("Current Position", "%d", backLeftDrive.getCurrentPosition());
+            telemetry.addData("Goal", "%d", targetPos);
             telemetry.update();
         }
         setDrive(0.0, 0.0);
@@ -189,11 +189,10 @@ public class Autonomous_Parent extends Robot_Parent {
     private void moveBackwardLeftEncoder(double distanceInFeet, double drivePower) {
         int targetPos = backLeftDrive.getCurrentPosition() - (int) (distanceInFeet * BEEP_EC_PER_FEET);
         setDrive(-drivePower, -drivePower);
-        while (backLeftDrive.getCurrentPosition() > targetPos && opModeIsActive())
-        {
+        while (backLeftDrive.getCurrentPosition() > targetPos && opModeIsActive()) {
             telemetry.addLine("Test: While Current Position < Goal");
-            telemetry.addData("Current Position","%d",backLeftDrive.getCurrentPosition());
-            telemetry.addData("Goal","%d",targetPos);
+            telemetry.addData("Current Position", "%d", backLeftDrive.getCurrentPosition());
+            telemetry.addData("Goal", "%d", targetPos);
             telemetry.update();
         }
         setDrive(0.0, 0.0);
@@ -203,8 +202,7 @@ public class Autonomous_Parent extends Robot_Parent {
     {
         if (USE_COMPASS_TURN) {
             compassTurn(degreesOfTurn);
-        }
-        else {
+        } else {
             if (USE_LEFT_ENCODER)
                 turnRight_LeftEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
             else
@@ -216,8 +214,7 @@ public class Autonomous_Parent extends Robot_Parent {
     {
         if (USE_COMPASS_TURN) {
             compassTurn(-degreesOfTurn);
-        }
-        else {
+        } else {
             if (USE_LEFT_ENCODER)
                 turnLeft_LeftEncoder(degreesOfTurn, BEEP_EC_PER_DEGREES_DEFAULT);
             else
@@ -225,12 +222,10 @@ public class Autonomous_Parent extends Robot_Parent {
         }
     }
 
-    protected void turnRight(double degreesOfTurn, double ecPerDegree)
-    {
+    protected void turnRight(double degreesOfTurn, double ecPerDegree) {
         if (USE_COMPASS_TURN) {
             compassTurn(degreesOfTurn);
-        }
-        else {
+        } else {
             if (USE_LEFT_ENCODER)
                 turnRight_LeftEncoder(degreesOfTurn, ecPerDegree);
             else
@@ -241,8 +236,7 @@ public class Autonomous_Parent extends Robot_Parent {
     protected void turnLeft(double degreesOfTurn, double ecPerDegree) {
         if (USE_COMPASS_TURN) {
             compassTurn(-degreesOfTurn);
-        }
-        else {
+        } else {
             if (USE_LEFT_ENCODER)
                 turnLeft_LeftEncoder(degreesOfTurn, ecPerDegree);
             else
@@ -303,12 +297,11 @@ public class Autonomous_Parent extends Robot_Parent {
     }// Allows us to raise our arm back closer to its starting position
 
     protected ColorViewed getColorSeen() {
-        if(colorSensor.blue() == 0){
+        if (colorSensor.blue() == 0) {
             return ColorViewed.NEITHER;
-        }
-        else if(((double)colorSensor.red()) / ((double)colorSensor.blue()) > (1.0 + COLOR_UNCERTAINTY)) {
+        } else if (((double) colorSensor.red()) / ((double) colorSensor.blue()) > (1.0 + COLOR_UNCERTAINTY)) {
             return ColorViewed.RED;
-        } else if (((double)colorSensor.red()) / ((double)colorSensor.blue()) < (1.0 - COLOR_UNCERTAINTY)) {
+        } else if (((double) colorSensor.red()) / ((double) colorSensor.blue()) < (1.0 - COLOR_UNCERTAINTY)) {
             return ColorViewed.BLUE;
         } else {
             return ColorViewed.NEITHER;
@@ -336,7 +329,8 @@ public class Autonomous_Parent extends Robot_Parent {
         }
         return vuMark;
     }
-    protected void setupVuMarkData(){// Enables the VuMark data which allows to use the phone to scan the pictograph
+
+    protected void setupVuMarkData() {// Enables the VuMark data which allows to use the phone to scan the pictograph
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         vParameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         vParameters.vuforiaLicenseKey = "Ad/QI4f/////AAAAGTjpPxbdZUqSnVc3mldXKV0E3Ubo8UkPrp0l5P0ie1EXwbAiJNburExxvybAM/e5esxGLn3dl5zN73V9qcvBOROjy68/GQ8c0doo8ApEL127pzLSQEP6rZeq589EtDerLpgCqhsXSnU1hzLJ8S0UcgM9MeeUErzvfso6YAjLGZ9JXzLZHjXlX9lapHT64fBax9lZvMw5pmmZQE/j7oXqeamcdgnKyUn+wQN/3Gb+I2Ye7utY/LFJTiXFYesZsmE/eaq2mGnKVmqA4u6hvrSbEx/QudLqhl3nlXrAUPK+tx+5ersWNIB6OnNaRQApdYJb4mnO8qP8MgWhMIdT4Fuqd3WbitRP1NPUzqO+pJ63c36u";
@@ -346,22 +340,23 @@ public class Autonomous_Parent extends Robot_Parent {
         relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         relicTemplate = relicTrackables.get(0);
     }
+
     protected void scoreGlyph(boolean encoderUsed) {
-        if(encoderUsed) {
+        if (encoderUsed) {
             moveBackwardEncoder(1.0, ENCODER_DRIVE_POWER / 2.0);
             sleep(500);
-        }
-        else
+        } else
             moveStraightTime(-0.35, 1000);
         setIntake(-0.25, -0.25);
         moveStraightTime(0.35, 1000);
-        if(encoderUsed)
-            moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER*0.75);
+        if (encoderUsed)
+            moveBackwardEncoder(0.5, ENCODER_DRIVE_POWER * 0.75);
         else
             moveStraightTime(-0.3, 600);
-        setIntake(0.0,0.0);
+        setIntake(0.0, 0.0);
     }
-    protected void scoreOneMoreGlyph(){
+
+    protected void scoreOneMoreGlyph() {
         // Steps for Scoring the 2nd Glyph:
         // 1. Turn 180 Degrees
         moveForwardEncoder(2.0);
@@ -375,29 +370,31 @@ public class Autonomous_Parent extends Robot_Parent {
         // 2. Move forward 2 feet
         moveForwardEncoder(2.0);
         sleep(PAUSE_BETWEEN_TEST_CODE);
-        moveStraightTime(-0.5,1000);
+        moveStraightTime(-0.5, 1000);
         scoreGlyph(true);
 
     }
 
-    protected void timedFlipUp(long milliseconds){
+    protected void timedFlipUp(long milliseconds) {
         setFlipper(FLIPPER_POWER_UP);
         sleep(milliseconds);
         setFlipper(FLIPPER_POWER_IDLE);
     }
-    protected void timedFlipDown(long milliseconds){
+
+    protected void timedFlipDown(long milliseconds) {
         setFlipper(FLIPPER_POWER_DOWN);
         sleep(milliseconds);
         setFlipper(0.0);
     }
-    protected void knockOffJewel(boolean isBlueTeam){
+
+    protected void knockOffJewel(boolean isBlueTeam) {
         switch (getColorSeen()) {
             case RED:
                 // Moving Forward knocks off blue.
                 telemetry.addLine("Saw red.");
                 telemetry.update();
 
-                if(isBlueTeam)
+                if (isBlueTeam)
                     moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 else
                     moveForwardEncoder(SPECIAL_JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
@@ -405,7 +402,7 @@ public class Autonomous_Parent extends Robot_Parent {
                 //turnLeft(20.0);
                 raiseJewelArm();
                 sleep(1000);
-                if(isBlueTeam) {
+                if (isBlueTeam) {
                     moveForwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 } else {
                     moveBackwardEncoder(SPECIAL_JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
@@ -419,7 +416,7 @@ public class Autonomous_Parent extends Robot_Parent {
                 // Turning Left knocks off red.
                 telemetry.addLine("Saw blue.");
                 telemetry.update();
-                if(isBlueTeam) {
+                if (isBlueTeam) {
                     moveForwardEncoder(SPECIAL_JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 } else {
                     moveBackwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
@@ -428,7 +425,7 @@ public class Autonomous_Parent extends Robot_Parent {
                 //turnRight(20.0);
                 raiseJewelArm();
                 sleep(1000);
-                if(isBlueTeam) {
+                if (isBlueTeam) {
                     moveBackwardEncoder(SPECIAL_JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
                 } else {
                     moveForwardEncoder(JEWEL_DRIVE_DISTANCE, JEWEL_DRIVE_POWER);
@@ -452,8 +449,7 @@ public class Autonomous_Parent extends Robot_Parent {
     }
 
     // compassTurn, setupIMU, and getCurrentDegrees from team 12888
-    private float getCurrentDegrees()
-    {
+    private float getCurrentDegrees() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return AngleUnit.DEGREES.normalize(AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
     }
@@ -461,8 +457,7 @@ public class Autonomous_Parent extends Robot_Parent {
     protected void compassTurn(double degrees) {
         float startPos = getCurrentDegrees();
         float goalAngle;
-        if (degrees < 0.0)
-        {
+        if (degrees < 0.0) {
             degrees -= DEGREE_OFFSET;
             goalAngle = startPos - ((float) degrees);
             // Turning left
@@ -470,20 +465,16 @@ public class Autonomous_Parent extends Robot_Parent {
             if (goalAngle > 175.0) {
                 goalAngle -= 360.0;
                 sleep(COMPASS_PAUSE_TIME);
-                while (getCurrentDegrees() >= startPos && opModeIsActive())
-                {
-                    telemetry.addData("Angle1","%.2f",getCurrentDegrees());
+                while (getCurrentDegrees() >= startPos && opModeIsActive()) {
+                    telemetry.addData("Angle1", "%.2f", getCurrentDegrees());
                     telemetry.update();
                 }
             }
-            while (getCurrentDegrees() < goalAngle && opModeIsActive())
-            {
-                telemetry.addData("Angle1","%.2f",getCurrentDegrees());
+            while (getCurrentDegrees() < goalAngle && opModeIsActive()) {
+                telemetry.addData("Angle1", "%.2f", getCurrentDegrees());
                 telemetry.update();
             }
-        }
-        else
-        {
+        } else {
             degrees += DEGREE_OFFSET;
             goalAngle = startPos - ((float) degrees);
             // Turning right
@@ -491,36 +482,33 @@ public class Autonomous_Parent extends Robot_Parent {
             if (goalAngle < -175.0) {
                 goalAngle += 360.0;
                 sleep(COMPASS_PAUSE_TIME);
-                while (getCurrentDegrees() <= startPos && opModeIsActive())
-                {
-                    telemetry.addData("Angle1","%.2f",getCurrentDegrees());
+                while (getCurrentDegrees() <= startPos && opModeIsActive()) {
+                    telemetry.addData("Angle1", "%.2f", getCurrentDegrees());
                     telemetry.update();
                 }
             }
-            while (getCurrentDegrees() > goalAngle && opModeIsActive())
-            {
-                telemetry.addData("Angle1","%.2f",getCurrentDegrees());
+            while (getCurrentDegrees() > goalAngle && opModeIsActive()) {
+                telemetry.addData("Angle1", "%.2f", getCurrentDegrees());
                 telemetry.update();
             }
         }
         setDrive(0.0, 0.0);
     }
 
-    private void setupIMU()
-    {
+    private void setupIMU() {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu.initialize(parameters);
     }
+
     protected void displayPicto(RelicRecoveryVuMark vuMark, long ms) {
-        switch (vuMark)
-        {
+        switch (vuMark) {
             case UNKNOWN:
                 telemetry.addLine("Unknown");
                 break;
@@ -537,15 +525,19 @@ public class Autonomous_Parent extends Robot_Parent {
         telemetry.update();
         //sleep(ms);
     }
-    protected double moveToPosition(double distance){
-        while(opModeIsActive()){
+
+    /*protected void moveToPosition(double distance) {
+        while (opModeIsActive()) {
             calculateHeading();
-            if(robotDrivingStraight){
-            moveForwardEncoder(distance);}
-            else {
-                (calculateHeading()) -
+            if (heading == 0) {
+                moveForwardEncoder(distance);
+            } else {
+                turnPower = BEEP_EC_PER_DEGREES_180 * (heading - currentPosition);
+                setDrive(turnPower, turnPower);
             }
-            }
+
         }
-    }
+
+    }*/
 }
+
