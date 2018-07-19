@@ -75,9 +75,7 @@ public class Autonomous_Parent extends Robot_Parent {
     protected final long SECOND_ROW_LIFT_TIME = 500;
     private final long TIME_FOR_JEWEL = 500;
     private final long PAUSE_BETWEEN_TEST_CODE = 500;
-   // private double heading = calculateHeading();
-    //private double currentPosition = getCurrentDegrees();
-    //private double turnPower = 0;
+
 
     @Override
     public void initializeRobot() {
@@ -449,7 +447,7 @@ public class Autonomous_Parent extends Robot_Parent {
     }
 
     // compassTurn, setupIMU, and getCurrentDegrees from team 12888
-    private float getCurrentDegrees() {
+    protected float getCurrentDegrees() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return AngleUnit.DEGREES.normalize(AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
     }
@@ -526,18 +524,6 @@ public class Autonomous_Parent extends Robot_Parent {
         //sleep(ms);
     }
 
-    /*protected void moveToPosition(double distance) {
-        while (opModeIsActive()) {
-            calculateHeading();
-            if (heading == 0) {
-                moveForwardEncoder(distance);
-            } else {
-                turnPower = BEEP_EC_PER_DEGREES_180 * (heading - currentPosition);
-                setDrive(turnPower, turnPower);
-            }
 
-        }
-
-    }*/
 }
 
