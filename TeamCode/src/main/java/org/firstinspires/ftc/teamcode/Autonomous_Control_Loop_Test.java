@@ -9,13 +9,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 public class Autonomous_Control_Loop_Test extends Autonomous_Parent {
     private final double BEEP_EC_PER_DEGREES_180 = 15.8;
-    private double heading = calculateHeading();
         @Override
         public void runAutonomous () {
             while (opModeIsActive() &&  (backLeftDrive.getCurrentPosition() < 7356.5)){
                 PID_Loop(0.15, 0.10, 0.10);
                 setSetpoint(0.0);
-                double turnCorrection = update(heading);
+                double turnCorrection = update(calculateHeading());
                 setDrive(1.0, turnCorrection, 0);
             }
 
