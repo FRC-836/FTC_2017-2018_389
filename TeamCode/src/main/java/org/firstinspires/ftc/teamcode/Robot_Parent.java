@@ -166,9 +166,17 @@ public class Robot_Parent extends LinearOpMode {
     }
 
     protected float calculateHeading() {
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        float heading = angles.firstAngle;
-        return heading;
+        try {
+            Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            float heading = angles.firstAngle;
+            return heading;
+        }catch(Exception e){
+            telemetry.addLine("calculateHeading Failed.");
+            telemetry.update();
+            sleep(2000);
+            e.printStackTrace();
+            return 0.0f;
+        }
     }
     public void PID_Loop(double PGAIN, double IGAIN, double DGAIN){
         this.runtime = new ElapsedTime();
