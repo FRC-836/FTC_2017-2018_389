@@ -170,7 +170,7 @@ public class Robot_Parent extends LinearOpMode {
             Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             float heading = angles.firstAngle;
             return heading;
-        }catch(Exception e){
+        } catch(Exception e){
             telemetry.addLine("calculateHeading Failed.");
             telemetry.update();
             sleep(2000);
@@ -195,7 +195,12 @@ public class Robot_Parent extends LinearOpMode {
         pValue = PGAIN * error;
         iValue += IGAIN * (lastError + error) * (0.5) * (time - lastTime);
         //dValue
+        if((time - lastTime) == 0){
+            dValue = 0;
+        }
+        else {
         dValue = DGAIN * (error - lastError) / (time - lastTime);
+        }
         if (isFirstTime)
         {
             iValue = 0.0;

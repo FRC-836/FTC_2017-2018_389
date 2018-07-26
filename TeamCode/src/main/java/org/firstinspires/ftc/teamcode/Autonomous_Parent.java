@@ -21,7 +21,7 @@ public class Autonomous_Parent extends Robot_Parent {
     private int cameraMonitorViewId;
     private VuforiaLocalizer.Parameters vParameters;
     protected VuforiaTrackables relicTrackables;
-    protected RelicRecoveryVuMark cryptoboxKey = null;
+    protected RelicRecoveryVuMark cryptoboxKey = RelicRecoveryVuMark.UNKNOWN;
     private VuforiaTrackable relicTemplate = null;
     private VuforiaLocalizer vuforia;
 
