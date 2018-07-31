@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 public class Robot_Parent extends LinearOpMode {
     ElapsedTime runtime;
 
+    private float zeroFactor = 0.0f;
     private double setpoint = 0;
     private double error = 0;
     private double lastError = 0;
@@ -168,7 +169,11 @@ public class Robot_Parent extends LinearOpMode {
     protected float calculateHeading() {
         try {
             Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            float heading = angles.firstAngle;
+            float heading = angles.firstAngle - zeroFactor;
+            while (heading > 180.0f)
+                heading -= 360.0f;
+            while (heading < -180.0f)
+                heading += 360.0f;
             return heading;
         } catch(Exception e){
             telemetry.addLine("calculateHeading Failed.");
