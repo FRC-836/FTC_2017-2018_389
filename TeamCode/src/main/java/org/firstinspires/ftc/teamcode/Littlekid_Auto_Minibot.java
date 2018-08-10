@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.internal.android.dx.dex.code.DalvCode;
 
-@Autonomous(name = "Lil Timmy",group = "")
 public class Littlekid_Auto_Minibot extends LinearOpMode {
     DcMotor leftDrive;
     DcMotor rightDrive;
@@ -25,33 +24,20 @@ public class Littlekid_Auto_Minibot extends LinearOpMode {
 
         waitForStart();
 
-        leftDrive.setPower(1.0);
-        rightDrive.setPower(1.0);
-
-        wait(1000);
-
-        leftDrive.setPower(1.0);
-        rightDrive.setPower(-1.0);
-
-        wait(1000);
-
-        leftDrive.setPower(-1.0);
-
-        wait(800);
-
-        rightDrive.setPower(1);
-
-        wait(400);
-
-        leftDrive.setPower(1);
-
-        wait(200);
-
-        rightDrive.setPower(-0.5);
-
-        wait(1000);
+        runAuto();
     }
 
+    protected void runAuto() {
+
+
+    }
+    public void setDrive(double leftPower, double rightPower) {
+        leftDrive.setPower(leftPower);
+        rightDrive.setPower(rightPower);
+        //delete code
+        //manual admin override
+        //self destruct
+    }
 
 }
 
